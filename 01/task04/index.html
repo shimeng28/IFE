@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>定位和居中问题</title>
+<style>
+	div#container{
+		width:400px;
+		height:200px;
+		background-color:#ccc;
+		overflow:hidden;
+		position:absolute;
+		top:50%;
+		left:50%;
+		margin-top:-100px;
+		z-index:1;
+		margin:-100px auto auto -200px ;		
+	}
+	div.quartCircle{
+		background-color:#fc0;
+		width:100px;
+		height:100px;
+		border-radius:50px;
+		position:absolute;
+		z-index:2;
+	}
+	#top_left{
+		top:-50px;
+		left:-50px;
+	}
+	#bottom_right{
+		bottom:-50px;
+		right:-50px;
+	}
+</style>
+</head>
+<body>
+	<div id="container">
+		<div id="top_left" class="quartCircle"></div>
+		<div id="bottom_right" class="quartCircle"></div>
+	</div>
+</body>
+</html>

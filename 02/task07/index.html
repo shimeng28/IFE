@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+<title>JavaScript和树（一）</title>
+<style>
+  body, div{
+    margin     : 0;
+    padding    : 0;
+    box-sizing : border-box;
+  }
+  div{
+    border     : 1px solid #6e8095;
+    margin     : 15px;
+    background : #fff;
+  }
+  .container{
+    width           : 97%;
+    margin          : 1.5% auto;
+    height          : 200px;
+    display         : flex;
+    flex-flow       : row nowrap;
+    justify-content : space-around;
+    align-items     : center;
+  }
+  .item{
+    width   : 50%;
+    height  : 80%;
+  }
+  .item-container{
+    display         : inline-flex;
+    flex-flow       : row nowrap;
+    justify-content : space-around;
+    align-items     : center;
+  }
+  .operator{
+    width   : 200px;
+    height  : 120px;
+    margin  : auto;
+    border  : none;
+    font-size: 0;
+  }
+  button{
+    width  : 80px;
+    height : 40px;
+    background : #03A9F4;
+    border     :none;
+    margin   : 10px;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="item item-container">
+    <div class="item item-container">
+      <div class="item"></div>
+      <div class="item"></div>
+    </div>
+    <div class="item item-container">
+      <div class="item"></div>
+      <div class="item"></div>
+    </div>
+  </div>
+  <div class="item item-container">
+    <div class="item item-container">
+      <div class="item"></div>
+      <div class="item"></div>
+    </div>
+    <div class="item item-container">
+      <div class="item"></div>
+      <div class="item"></div>
+    </div>
+  </div>
+</div>
+<div class="operator">
+  <button>前序</button>
+  <button>中序</button>
+  <button>后序</button>
+  <button>重新开始</button>
+</div>
+
+<script>
+  var taskSeven = (function(){
+    var configMap, set_configMap, addEvent,  showNode,
+        preorder,  inorder,       postorder, reset;
+
+    configMap     = {
+      preorderBtn  : null,
+      inorderBtn   : null,
+      postorderBtn : null,
+      resetBtn     : null,
+
+      root         : null,
+
+      showtime     : 0,
+      startcolor   : '#f00',
+      showcolor    : '#00f',
+      endcolor     : '#0f0'
+    }; //配置信息
+    set_configMap = function( map ){
+      for( var i in map ){
+        if( map.hasOwnProperty(i) && configMap.hasOwnProperty(i) ){
+          configMap[i] = map[i];
+        }
+      }
+    };
+
+    showNode      = function(node){
+      var time       = configMap.showtime,
+          showcolor  = configMap.showcolor,
+          startcolor = configMap.startcolor,
+          endcolor   = configMap.endcolor;
+
+      node.style.backgroundColor  = startcolor;
+
+      setTimeout( function(){
+        node.style.backgroundColor = showcolor;
+      }, time += 500 );
+
+      //推迟每次显示时间
+      set_configMap({
+        showtime  : (configMap.showtime + 500)
+      });
+
+      setTimeout( function(){
+        node.style.backgroundColor = endcolor;
+      }, time += 500 );
+
+      set_configMap({
+        showtime  : (configMap.showtime + 500)
+      });
+
+    };
+    //二叉树遍历
+      //前序
+    preorder      = function(){
+      var root  = configMap.root,
+          stack = [];
+      set_configMap({
+        showtime  : 0
+      });
+      while( root || stack.length !== 0 ){
+        while( root ){
+          showNode( root );  //输出根节点
+          stack.push( root );
+          root = root.firstElementChild;
+        }
+        if( stack.length !== 0 ){
+          root = stack.pop();
+          root = root.lastElementChild;
+        }
+      }
+    };
+      //中序
+    inorder       = function(){
+      var root  = configMap.root,
+          stack = [];
+      set_configMap({
+        showtime  : 0
+      });
+      while( root || stack.length !== 0 ){
+        while( root ){
+          stack.push( root );
+          root = root.firstElementChild;
+        }
+        if( stack.length !== 0 ){
+          root = stack.pop();
+          showNode( root );
+          root = root.lastElementChild;
+        }
+      }
+    };
+      //后序
+    postorder     = function(){
+      var root    = configMap.root,
+          stack   = [],
+          visited = [],
+          i;
+      set_configMap({
+        showtime  : 0
+      });
+      while( root ){
+        if( root.children.length  ){
+          if( stack[ stack.length-1 ] !== root ){
+            stack.push( root );
+            visited.push( root );
+          }
+          if( root.lastElementChild.visited ){
+            root = stack.pop();
+            showNode( root );
+            root.visited = true;
+            root = stack[ stack.length-1 ];
+            continue;
+          }
+          for( i=root.children.length-1; i>=0; i-- ){
+            stack.push( root.children[i] );
+            visited.push( root.children[i] );
+          }
+        }
+        if( !root.children.length ){
+          root = stack.pop();
+          showNode( root );
+          root.visited = true;
+        }
+        root = stack[ stack.length-1 ];
+      }
+      visited.forEach( function(ele){
+        ele.visited = null;
+      } );
+      //清除visited属性
+    };
+
+    reset         = function (){
+      var root = configMap.root,
+          div  = root.getElementsByTagName( 'div' );
+      root.style.backgroundColor = '#fff';
+      Array.prototype.forEach.call( div, function(ele){
+        ele.style.backgroundColor = '#fff';
+      } );
+    };
+    addEvent      = function(ele, type, handler){
+      if( ele.addEventListener ){
+        addEvent = function (ele, type, handler) {
+          ele.addEventListener(type, handler, false);
+        };
+      }
+      else if( ele.attachEvent ){
+        addEvent = function (ele, type, handler) {
+          ele.attachEvent(type, handler);
+        };
+      }
+      else {
+        addEvent = function (ele, type, handler) {
+          ele['on' + type] = handler;
+        };
+      }
+      addEvent( ele, type, handler );
+    };
+    init          = function (){
+      set_configMap({
+        preorderBtn  : document.getElementsByTagName( 'button' )[0],
+        inorderBtn   : document.getElementsByTagName( 'button' )[1],
+        postorderBtn : document.getElementsByTagName( 'button' )[2],
+        resetBtn     : document.getElementsByTagName( 'button' )[3],
+
+        root         : document.getElementsByClassName( 'container' )[0],
+        showcolor    : '#00f'
+      });
+
+      addEvent( configMap.preorderBtn,  'click', preorder );
+      addEvent( configMap.inorderBtn,   'click', inorder  );
+      addEvent( configMap.postorderBtn, 'click', postorder );
+      addEvent( configMap.resetBtn,     'click', reset );
+
+    };
+
+    return init();
+  })();
+</script>
+</body>
+</html>

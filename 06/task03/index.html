@@ -1,0 +1,78 @@
+<!doctype html>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>动态数据绑定二</title>
+</head>
+<body>
+<script type="text/javascript">
+function Observer(data){
+  this.event = {};  //订阅事件列表
+  this.data = data;
+  this.walk(data);
+}
+
+Observer.prototype.walk = function(obj){
+  var val;
+  for(var key in obj){
+	val = obj[key];
+	if(obj.hasOwnProperty(key)){ //深度遍历
+	  if(typeof val === "object"){
+		new Observer(val);
+		return ;
+	  }
+	  this.setterAndGetter(key, val);
+	}
+  }
+};
+Observer.prototype.setterAndGetter = function(key, val){
+  var that = this;
+  Object.defineProperty(that.data, key, {
+	enumerable : true,
+	configurable : true,
+	get : function(){
+	  console.log("你访问了" + key);
+	  return val;
+	},
+	set : function(newVal){
+	  if(that.event[key]){
+		that.emit(key,newVal);
+		//触发订阅事件
+	  }
+	  else {
+		console.log("你设置了" + key +", " + "新的值=" + newVal);
+		//默认
+	  }
+	  if(typeof newVal === "object"){
+		new Observer(newVal);
+	  }
+	  val = newVal;
+	}
+  });
+};
+Observer.prototype.$watch = function(type, fn){
+  if(!this.event[type]) this.event[type] = [];
+  this.event[type].push(fn);
+};
+Observer.prototype.emit = function(type,argu){
+  if(!this.event[type]) return;
+  this.event[type].forEach(function(fn){fn(argu)})
+};
+var data1 = {
+  a : "a",
+  b : "b",
+  age: 100,
+  c : {
+	d : "d",
+	e : "e"
+  }
+};
+var app1 = new Observer(data1);
+app1.$watch("age", function(argu){
+  console.log("我的年龄变了, 现在是" + argu + "岁了");
+});
+app1.data.age = 10;
+
+</script>
+</body>
+</html>

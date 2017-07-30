@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<title>任务八：JavaScript和树（二）</title>
+<style>
+  body, div{
+    margin     : 0;
+    padding    : 0;
+    box-sizing : border-box;
+  }
+  div{
+    border     : 1px solid #6e8095;
+    height     : 80%;
+    margin     : 5px;
+    background : #fff;
+  }
+  div.container{
+    height    : 200px;
+    display   : flex;
+    flex-flow : row nowrap;
+    justify-content : flex-start;
+  }
+  .container > :not(:last-child){
+    width : 38%;
+  }
+  .container > :last-child{
+    width : 18%;
+  }
+  .item-container{
+    display         : inline-flex;
+    flex-flow       : row nowrap;
+    justify-content : space-around;
+  }
+  .container > .item-container:nth-child(1) > :first-child{
+    width : 35%;
+  }
+  .container > .item-container:nth-child(1) > div:nth-child(2),
+  .container > .item-container:nth-child(1) > div:nth-child(3){
+    width : 25%
+  }
+  .container > .item-container:nth-child(1) > :last-child{
+    width : 15%;
+  }
+
+  .container > .item-container:nth-child(2) > div{
+    width : 50%;
+  }
+  .operator{
+    width  : 400px;
+    margin : 30px auto;
+    height : 150px;
+    border : none;
+    text-align : center;
+  }
+  .operator > button{
+    font-size  : 16px;
+    width      : 150px;
+    height     : 40px;
+    margin     : 5px;
+    background : #03A9F4;
+  }
+  .operator > input{
+    width     : 200px;
+    height    : 40px;
+    font-size : 20px;
+    outline   : none;
+  }
+    .operator > input:focus{
+      border : 2px solid #cc8091;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+  前端
+  <div class="item-container">
+    JavaScript
+    <div>
+      vue
+    </div>
+    <div>
+      react
+    </div>
+    <div>
+      angular
+    </div>
+    <div>
+      js
+    </div>
+  </div>
+  <div class="item-container">
+    css
+    <div>css2</div>
+    <div>css3</div>
+  </div>
+  <div class="item-container">
+    HTML
+  </div>
+</div>
+<div class="operator">
+  <button>前序遍历</button>  <button>后序遍历</button>
+    <br />
+  <input type="text" />
+    <br />
+  <button>查询</button>
+</div>
+<script>
+  var task08 = (function (){
+    var configMap,  set_configMap, showNode,
+        preorder,   postorder,     search,
+        containStr, addEvent,      init;
+
+    configMap = {
+      root      : null,
+      preBtn    : null,
+      postBtn   : null,
+      searchBtn : null,
+      textInput : null,
+
+      searchStr : '',
+      showtime  : 500,
+      initcolor : '#8c8e93',
+      showcolor : '#0f0',
+      endcolor  : '#fff'
+    };
+    set_configMap = function ( map ){
+      var i;
+      for ( i in map ){
+        if( map.hasOwnProperty(i) && configMap.hasOwnProperty(i) ){
+          configMap[i] = map[i];
+        }
+      }
+    };
+    //检查是否包含输入的字符串，return true or false
+    containStr    = function ( node, str ) {
+      var childNodes = node.childNodes,
+          filterArr;
+      filterArr = Array.prototype.filter.call( childNodes,
+          function(ele, index, arr){
+            return  ele.nodeValue && ( ele.nodeValue.toLowerCase().indexOf(str) !== -1 );
+          }
+      );
+      return !!filterArr.length;
+    };
+    showNode      = function ( node ){
+      var showcolor = configMap.showcolor,
+          initcolor = configMap.initcolor,
+          endcolor  = configMap.endcolor,
+          showtime  = configMap.showtime;
+
+      node.style.backgroundColor = initcolor;
+      setTimeout( function (){
+        node.style.backgroundColor = showcolor;
+      }, showtime );
+      setTimeout( function (){
+        node.style.backgroundColor = endcolor;
+      }, showtime+500 );
+      set_configMap({
+        showtime : showtime+1000
+      });
+    };
+    //前序
+    preorder      = function (str){
+      var root     = configMap.root,
+          stack    = [],
+          contains = [],
+          i, text;
+      set_configMap({
+        showtime : 500
+      });
+      while( root ){
+        showNode( root );
+        if( containStr( root, str ) ){
+          contains.push( root );
+          (function(root){
+            setTimeout( function(){
+              root.style.backgroundColor = '#f00';
+            }, configMap.showtime );
+          })(root);
+        }
+        if( root.children.length === 0 ){
+          root = stack.pop();
+          continue;
+        }
+        for( i=root.children.length-1; i>=0; i-- ){
+          stack.push( root.children[i] );
+        }
+        root = stack.pop();
+      }
+      return contains;
+    };
+    //后序
+    postorder     = function (){
+      var root    = configMap.root,
+          stack   = [],
+          visited = [],
+          i;
+      set_configMap({
+        showtime : 500
+      });
+      while( root ){
+        if( !root.visited ) {
+          stack.push( root );
+          visited.push( root );
+          root.visited = true;
+        }
+        if( !root.children.length || root.lastElementChild.visited || !root.lastElementChild ){
+          root = stack.pop();
+          showNode( root );
+          root = stack[ stack.length-1 ];
+          continue;
+        }
+        for( i=root.children.length-1; i>=0; i-- ){
+          root.children[i].visited = true;
+          stack.push( root.children[i] );
+          visited.push( root );
+        }
+        root = stack[ stack.length-1 ];
+      }
+      visited.forEach( function(ele){
+        ele.visited = null;
+      });
+    };
+    search        = function (){
+      var text, containArr, showcolor, time;
+      set_configMap({
+        searchStr : configMap.textInput.value.toLowerCase().trim()
+      });
+      text       = configMap.searchStr;
+      containArr = preorder( text );
+      console.log( containArr );
+      alert( containArr.length );
+    };
+
+    addEvent      = function(ele, type, handler){
+      if( ele.addEventListener ){
+        addEvent = function (ele, type, handler) {
+          ele.addEventListener(type, handler, false);
+        };
+      }
+      else if( ele.attachEvent ){
+        addEvent = function (ele, type, handler) {
+          ele.attachEvent(type, handler);
+        };
+      }
+      else {
+        addEvent = function (ele, type, handler) {
+          ele['on' + type] = handler;
+        };
+      }
+      addEvent( ele, type, handler );
+    };
+    init          = function (){
+      set_configMap({
+        root      : document.getElementsByClassName( 'container' )[0],
+        preBtn    : document.getElementsByTagName( 'button' )[0],
+        postBtn   : document.getElementsByTagName( 'button' )[1],
+        searchBtn : document.getElementsByTagName( 'button' )[2],
+
+        textInput : document.getElementsByTagName( 'input' )[0]
+      });
+      addEvent( configMap.preBtn,    'click', preorder );
+      addEvent( configMap.postBtn,   'click', postorder );
+      addEvent( configMap.searchBtn, 'click', search )
+    };
+
+    return init();
+  })();
+</script>
+</body>
+</html>

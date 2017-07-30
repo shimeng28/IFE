@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,maximum-scale=1,initial-scale=1"/>
+  <title>CSS3实现3D 轮播图</title>
+  <style>
+    body{
+      position : relative;
+    }
+    #loopImgContainer{
+      margin-top : 100px;
+      display : flex;
+      flex-flow : row nowrap;
+      justify-content : space-between;
+      perspective : 800px;
+      cursor : pointer;
+    }
+    #loopImgContainer > div{
+      width : 200px;
+      height : 200px;
+    }
+    #loopImgContainer img{
+      width : 200px;
+      height : 200px;
+    }
+    .img1{
+      transform : rotateY( 70deg ) translateZ( 80px ) translateX( 360px );
+    }
+    .img2{
+      transform : rotateY( -30deg ) translateZ( 165px ) translateX( 90px );
+    }
+    .img3{
+      transform : rotateY( 0 ) translateZ( 300px ) translateX( 100px );
+    }
+    .img4{
+      transform : rotateY( 30deg ) translateZ( 260px ) translateX( 90px );
+    }
+    .img5{
+      transform : rotateY( -60deg ) translateZ( -240px ) translateX( -390px );
+    }
+    .img6{
+      z-index   : -1;
+      transform : rotateY( 0deg ) translateZ( -260px ) translateX( -590px );
+    }
+    .button{
+      width : 40px;
+      height : 40px;
+      border : 5px solid #6e8095;
+      transform : rotateZ( -45deg );
+      position : absolute;
+      top : 90px;
+      cursor : pointer;
+      z-index : 999;
+    }
+    .button:focus {
+      border-color : #cc8091;
+    }
+    .buttonLeft{
+      border-right-width : 0;
+      border-bottom-width : 0;
+      left : 65px;
+    }
+    .buttonRight{
+      border-top-width : 0;
+      border-left-width : 0;
+      right : 65px;
+    }
+  </style>
+</head>
+<body>
+<div class="buttonLeft button"></div>
+<div class="buttonRight button"></div>
+  <div id="loopImgContainer">
+    <div class="imgloop img1"><img src="" /></div>
+    <div class="imgloop img2"><img src="" /></div>
+    <div class="imgloop img3"><img src="" /></div>
+    <div class="imgloop img4"><img src="" /></div>
+    <div class="imgloop img5"><img src="" /></div>
+    <div class="imgloop img6"><img src="" /></div>
+  </div>
+<script>
+  var addEvent      = function( ele, type, fn ){
+      if( ele.addEventListener ){
+          addEvent = function( ele, type, fn ){
+              ele.addEventListener( type, fn, false );
+          }
+      }
+      else if( ele.attachEvent ){
+          addEvent = function( ele, type, fn ){
+              ele.attachEvent( type, fn );
+          }
+      }
+      else {
+          addEvent = function( ele, type, fn ){
+              ele[ 'on' + type ] = fn;
+          }
+      }
+      addEvent( ele, type, fn );
+  };
+  var loopImage = ( function(){
+    function LoopImg(){
+      this.wrapList    = [];
+      this.srcList     = [];
+      this.head        = null;
+      this.currentNode = null;
+      this.firstLoopNode = null;
+    }
+    LoopImg.prototype = {
+      constructor : LoopImg,
+      Node        : function ( wrapNode, src ){
+        this.container = wrapNode;
+        this.img       = this.container.getElementsByTagName('img')[0];
+        this.img.src   = src;
+        this.next      = null;
+        this.pre       = null;
+      },
+      setWrapList : function ( nodeList ){
+        if ( Object.prototype.toString.call( nodeList ).slice( 8, -1 ) !== Array ) {
+          nodeList = Array.prototype.slice.call( nodeList, 0 );
+        }
+        this.wrapList = nodeList;
+        return this;
+      },
+      addNode     : function( node ){
+        if( !node instanceof  this.Node ) node = new Node( node );
+        if( !this.head ) {
+          this.head        = node;
+          this.currentNode = this.head;
+          return this;
+        }
+        this.currentNode.next = node;
+        this.head.pre         = node;
+        node.pre              = this.currentNode;
+        node.next             = this.head;
+        this.currentNode      = node;
+        return this;
+      },
+      addNodeList : function( srcList ){
+        var that    = this,
+            addNode = this.addNode;
+        if( Object.prototype.toString.call( srcList ).slice( 8, -1 ) !== 'Array' ){
+          srcList = Array.prototype.slice.call( srcList, 0 );
+        }
+        this.srcList = srcList;
+        srcList.forEach(function( src, index ){
+          var wrapNode = that.wrapList[ index ];
+          var node = new that.Node( wrapNode, src );
+          addNode.call( that, node );
+        });
+        return this;
+      },
+      start       : function(){
+        var that = this;
+        if( !this.head || !this.wrapList.length ){
+          throw new Error('no node or no node wrap', 'loopImgError');
+        }
+        this.firstLoopNode = this.head;
+        return this;
+      },
+      moveNext    : function( ){
+        var currentLoopNode = this.firstLoopNode;
+        this.srcList.forEach( function( src ){
+          currentLoopNode.img.src = src;
+          currentLoopNode = currentLoopNode.next;
+        } );
+        this.firstLoopNode = this.firstLoopNode.next;
+      },
+      movePre    : function(){
+        var currentLoopNode = this.firstLoopNode;
+        this.srcList.forEach( function( src ){
+          currentLoopNode.img.src = src;
+          currentLoopNode = currentLoopNode.pre;
+        } );
+        this.firstLoopNode = this.firstLoopNode.pre;
+      },
+      loop       : function( interval ){
+        var that = this;
+        setInterval( function(){
+          that.moveNext();
+        }, interval || 1000 );
+        return this;
+      }
+    };
+    return LoopImg;
+  })();
+  var loopImageMap = new loopImage();
+  var imgSrcList = ["img/01.jpg", "img/02.jpg", "img/03.jpg", "img/04.jpg", "img/05.jpg", "img/06.jpg"];
+  var wrapList   = document.getElementsByClassName( 'imgloop' );
+  var loopLeft   = document.getElementsByClassName( 'buttonLeft'  )[0];
+  var loopRight  = document.getElementsByClassName( 'buttonRight' )[0];
+  loopImageMap.setWrapList( wrapList ).addNodeList( imgSrcList ).start().loop();
+  addEvent( loopLeft, 'click', function (  ){
+      loopImageMap.moveNext();
+  } );
+  addEvent( loopRight, 'click', function(){
+      loopImageMap.movePre();
+  } );
+</script>
+</body>
+</html>

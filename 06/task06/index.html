@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,maximum-scale=1,initial-scale=1"/>
+<title>自定义checkbox， radio样式</title>
+<style>
+  body, input{
+    margin  : 0;
+    padding : 0;
+  }
+  .wrap{
+    width : 200px;
+    margin: 20px auto auto;
+  }
+  .checkbox{
+    margin-bottom : 10px;
+  }
+  .checkBox+label, .radios+label{
+    width  : 16px;
+    height : 16px;
+    border : 1px solid #6e8095;
+    display : flex;
+  }
+  .checkBox:checked + label, .radios:checked + label{
+    border : 1px solid #d04a36;
+    font-weight : 900;
+  }
+  .checkBox:checked + label::after, .radios:checked + label::after{
+    content : '\2713';
+    margin  : auto;
+    color   : #d04a36;
+    width   : 8px;
+    height  : 8px;
+    line-height : 8px;
+    text-align  : center;
+    font-size   : 14px;
+  }
+  input{
+    display : none;
+  }
+  .radio{
+    width   : 50px;
+    display : flex;
+    flex-flow : row nowrap;
+    justify-content : space-between;
+  }
+  .radios + label{
+    border-radius : 50%;
+  }
+  .checkBox_sprit + label, .radios_sprit + label{
+    width  : 16px;
+    height : 16px;
+    border : 1px solid #6e8095;
+    display: inline-block;
+  }
+  .checkBox_sprit:checked + label, .radios_sprit:checked + label {
+    border     : none;
+    background : url(img/bg.png) no-repeat;
+  }
+  .checkBox_sprit:checked + label{
+    background-position : -60px -32px;
+  }
+  .radios_sprit:checked + label{
+    background-position : -59px -10px;
+  }
+  .radios_sprit + label{
+    border-radius : 50%;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h2>伪元素实现</h2>
+  <div class="checkbox">
+    <input type="checkbox" id="checkBox"  class="checkBox"/>
+    <label for="checkBox"></label>
+  </div>
+  <div class="radio">
+    <input type="radio" name="sex" value="male" id="radioBox0" class="radios" />
+    <label for="radioBox0"></label>
+    <input type="radio" name="sex" value="female" id="radioBox1" class="radios" />
+    <label for="radioBox1"></label>
+  </div>
+
+  <h2>雪碧图实现</h2>
+  <div class="checkbox">
+    <input type="checkbox" id="checkBox_sprit"  class="checkBox_sprit"/>
+    <label for="checkBox_sprit"></label>
+  </div>
+  <div class="radio">
+    <input type="radio" name="sex" value="male" id="radioBox0_sprit" class="radios_sprit" />
+    <label for="radioBox0_sprit"></label>
+    <input type="radio" name="sex" value="female" id="radioBox1_sprit" class="radios_sprit" />
+    <label for="radioBox1_sprit"></label>
+  </div>
+</div>
+</body>
+</html>

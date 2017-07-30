@@ -1,0 +1,195 @@
+<!doctype html>
+<html>
+<head>
+<title>任务二：表单（二）多个表单项的动态校验</title>
+<meta chatset="UTF-8" />
+<style>
+	form{
+		position:relative;
+		width:680px;
+		margin:0 auto;
+	}
+	label{
+		display:inline-block;
+		font:bold 25px "SimSun";
+		width:120px;
+		margin-right:30px;
+		text-align:right;
+	}
+	input{
+		width:500px;
+		height:35px;
+		outline:none;
+		margin:20px 0;
+		border-radius:5px;
+		font-size:25px;
+		border:2px solid #ccc;
+	}
+	button{
+		width:100px;
+		height:50px;
+		background-color:#51caac;
+		position:absolute;
+		top:420px;
+		right:420px;
+	}
+	div.remind{
+		font-size:14px;
+		margin-top:-21px;
+		padding-left:153px;
+		color:#666;
+		display:none;
+	}
+</style>
+</head>
+<body>
+	<form action="" method="post">
+		<label for="name_input">名称</label>
+		<input type="text" id="name_input">
+		<div class="remind">必填，长度为4~16个字符</div>
+
+
+		<label for="password_input">密码</label>
+		<input type="password" id="password_input">
+		<div class="remind">请输入密码</div>
+
+
+		<label for="password_input_again">密码确认</label>
+		<input type="password" id="password_input_again">
+		<div class="remind">请再次输入密码</div>
+
+
+		<label for="email_input">邮箱</label>
+		<input type="text" id="email_input" name="email">
+		<div class="remind">请输入邮箱</div>
+
+
+		<label for="mobile_input">手机</label>
+		<input type="text" id="mobile_input" name="phoneNum">
+		<div class="remind">请输入手机号码</div>
+
+		<button id="submit">提交</button>
+	</form>
+	
+	<script>
+		var inputArr = document.getElementsByTagName("input");
+		var remindArr = document.getElementsByClassName("remind");
+		var checkin = document.getElementById("submit");
+		var initRemind = ["必填，长度为4~16个字符","请输入密码","请再次输入密码","请输入邮箱","请输入手机号码"];
+		var errNothingInput = ["名称不能为空","密码不能为空","密码确认不能为空","邮箱不能为空","手机号码不能为空"];
+		var validate = {
+			0 : function(element,disResult){
+				var value = element.value;
+				var count = 0;
+				if(!value){
+					errNothing(disResult,errNothingInput[0]);
+					return ;	
+				}
+				value.split("").forEach(function(ele){
+					if(ele.charCodeAt()<0xff) count++;
+					else count = count + 2;
+				});
+				if(count>=4 && count<=16){
+					inputCorrect(disResult);
+				} else {
+					inputWrong(disResult,initRemind[0]);
+				}
+			},
+			1 : function(element,disResult){
+				var value = element.value;
+				if(!value){
+					errNothing(disResult,errNothingInput[1]);
+				} else {
+					inputCorrect(disResult);
+				}
+			},
+			2: function(obj,disResult){
+				var passwordInput = document.getElementById("password_input").value;
+				var value = obj.value;
+				if(!value){
+					errNothing(disResult,errNothingInput[2]);
+				} else if(value === passwordInput){
+					inputCorrect(disResult);
+				} else {
+					inputWrong(disResult,"两次密码输入不一样");
+				}
+			},
+			3 : function(obj,disResult){
+				if(!obj.value){
+					errNothing(disResult,errNothingInput[3]);
+				} else if(!/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/.test(obj.value)){
+					inputWrong(disResult,"输入邮箱格式不对");
+				} else {
+					inputCorrect(disResult);
+				}
+			},
+			4 : function(obj,disResult){
+				if(!obj.value){
+					errNothing(disResult,errNothingInput[4]);
+				}else if(!/^1[0-9]{10}/.test(obj.value)){
+					inputWrong(disResult,"输入手机号码格式错误")
+				} else {
+					inputCorrect(disResult);
+				}
+			}
+		}
+		function errNothing(validateDiv,disText){//没有输入
+			validateDiv.innerHTML = disText;
+			validateDiv.style.color = "red";
+			validateDiv.style.display = "block"; 
+		}
+		function inputCorrect(validateDiv){//输入正确·
+			validateDiv.innerHTML = "输入正确";
+			validateDiv.style.color = "green";
+			validateDiv.style.display = "block";
+		}
+		function inputWrong(validateDiv,disText){
+			validateDiv.innerHTML = disText;
+			validateDiv.style.color = "red";
+			validateDiv.style.display = "block";
+		}
+		function init(){
+			var len = inputArr.length;
+			//var validateKeys = Object.keys(validate);
+			for(var i=0; i<len; i++){
+				(function(i){
+					inputArr[i].onfocus = function(){
+						var index = i;
+						var dis = remindArr[index];
+						dis.innerHTML = initRemind[index];
+						dis.style.color = "#666";
+						dis.style.display = "block";
+					};
+					inputArr[i].onblur = function(){
+						var index = i;
+						var element = inputArr[index];
+						var disResult = remindArr[index];
+						remindArr[index].style.display = "none";
+						validate[index](element,disResult);
+					}
+				})(i);
+			}			
+		}
+		init();
+		
+		checkin.onclick = function checkin(event){
+			event = event || window.event;
+			if(event.preventDefault){
+				event.preventDefault();
+			}else {
+				event.returnValue = false;
+			}
+			var inputs = inputArr;
+			var reminds = remindArr;
+			var len = inputs.length;
+			for(var i=0; i<len; i++){
+				validate[i](inputs[i],reminds[i]);
+			}
+		};
+			
+
+		
+
+	</script>
+</body>
+</html>

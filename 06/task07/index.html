@@ -1,0 +1,121 @@
+<!doctype html>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>动态数据绑定五</title>
+</head>
+<body>
+<div id="app">
+	<p>姓名:{{user.name}}</p>
+	<p>年龄:{{user.age}}</p>
+</div>
+<script type="text/javascript">
+
+/*
+数据流 walk => convert / domCache => transform
+walk函数遍历传入对象的属性
+convert函数设置传入对象的属性的路径以及get和set
+domCache将属性的路径和值保存起来  路径作为domCache的属性，且为一个数组，
+        属性的值为数组中第一个元素的值
+*/
+function Vue(data){
+  this.data = data;
+  this.container = null;  //容器元素
+  this.mainTemp = null;   //模板内容
+  this.cacheInfo = {};   //缓存模板信息
+
+								//构造器
+  this.info(this.data);
+  this.walk(this.data.data);
+}
+Vue.prototype.info = function(obj){
+	this.container = document.querySelector(obj.el);
+	this.mainTemp  = this.container.innerHTML;
+};
+Vue.prototype.walk = function(obj,path){
+	var val,
+		path = path || '';       //路径 eg: user.age
+
+	for(var key in obj){
+	  if(obj.hasOwnProperty(key)){
+		val = obj[key];
+		if(Object.prototype.toString.call(val) === '[object Object]'){
+		  this.walk(val, key);  //将key传递， 作为路径
+		}
+		else {
+		  this.convert(path, key, val);
+		  this.domCache(path, key, val);
+		}
+	  }
+	}
+	this.transform();  //执行 模板转换
+};
+
+/*
+	设置对象
+*/
+Vue.prototype.convert = function(path, key, value){
+  var that = this, obj;
+  if(!path){
+	obj = this.data.data;
+  } else {
+	obj = this.data.data;
+	path.split(".").forEach(function(ele){
+	  obj = obj[ele];
+	})
+  }
+  Object.defineProperty(obj, key, {
+	enumerable   : true,
+	configurable : true,
+	get          : function(){
+	  return value;
+	},
+	set          : function(newValue){
+	  that.domCache(path, key, newValue);
+	  that.transform();
+	  value = newValue;
+	}
+  });
+};
+Vue.prototype.domCache = function(path, key, value){
+  var reg;
+  if(path){
+	reg = '{{'+ path + "." + key +'}}';
+  } else{
+	reg = '{{' + key + '}}';
+  }
+
+  if(!this.cacheInfo[reg]){   //如果cacheInfo对象中没有包含这个属性
+	this.cacheInfo[reg] = [];//令其为一个数组
+  }
+  this.cacheInfo[reg][0] = value;//将新的值替换原来的值
+};
+
+
+Vue.prototype.transform = function(){  //替换视图中的内容
+  var key, value, temp;
+  temp = this.mainTemp;
+  for(key in this.cacheInfo){
+	if(this.cacheInfo.hasOwnProperty(key)){
+	  value = this.cacheInfo[key][0];
+	  temp = temp.replace(new RegExp(key, 'g'), value);
+	}
+  }
+  this.container.innerHTML = temp;
+};
+var data = {
+  el : '#app',
+  data : {
+	user : {
+	  name : 'youngwind',
+	  age  : 25
+	},
+	school : 'bupt',
+	major  : 'computer'
+  }
+};
+var app1 = new Vue(data);
+app1.data.data.user.name = 'a';
+</script>
+</body>
+</html>

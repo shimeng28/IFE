@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<style>
+	input#input_num{
+		width:200px;
+		height:40px;
+	}
+	input[type="button"]{
+		width:80px;
+		height:40px;
+		margin:5px;
+	}
+	input#right_into{
+		margin-right:40px;
+	}
+	div#container{
+
+	}
+	div#container div{
+		width:100px;
+		height:100px;
+		line-height:100px;
+		font-size:30px;
+		text-align:center;
+		background-color:red;
+		float:left;
+		margin:30px 10px;
+	}
+</style>
+</head>
+<body>
+<div>
+  <input type="text" id="input_num" placeholder="请输入数字" />
+  <input type="button" value="左侧入" id="left_into"  />
+  <input type="button" value="右侧入" id="right_into" />
+
+  <input type="button" value="左侧出" id="left_out"  />
+  <input type="button" value="右侧出" id="right_out" />
+  <div id="container">
+  </div>
+</div>
+<script>
+var taskFour = ( function(){
+  var configMap, setConfigMap,
+      leftIntoHandler, rightIntoHandler,
+      leftOutHandler, rightOutHandler,
+      init;
+
+  configMap={};
+  setConfigMap = function (){
+    configMap.input_num  = document.getElementById("input_num");
+    configMap.contain    = document.getElementById("container");
+    configMap.left_into  = document.getElementById("left_into");
+    configMap.right_into = document.getElementById("right_into");
+    configMap.left_out   = document.getElementById("left_out");
+    configMap.right_out  = document.getElementById("right_out");
+  };
+
+  leftIntoHandler = function (){
+	var newDiv         = document.createElement( "div" );
+	newDiv.textContent = parseInt( configMap.input_num.value );
+	if( configMap.contain.firstChild )
+	     return configMap.contain.insertBefore( newDiv, configMap.contain.firstChild );
+	else return configMap.contain.appendChild( newDiv );
+  };
+  rightIntoHandler = function (){
+	var newDiv = document.createElement( "div" );
+	newDiv.textContent = parseInt( configMap.input_num.value );
+	return configMap.contain.appendChild(newDiv);
+  };
+  leftOutHandler = function (){
+	if( configMap.contain.firstChild ){
+	  input_num.value = parseInt( configMap.contain.firstElementChild.textContent );
+      configMap.contain.removeChild( configMap.contain.firstChild );
+	  alert( input_num.value );
+	}
+  };
+  rightOutHandler = function (){
+	if( configMap.contain.lastChild){
+	  input_num.value = parseInt( configMap.contain.lastElementChild.textContent );
+      configMap.contain.removeChild( configMap.contain.lastElementChild );
+	  alert(input_num.value);
+	}
+  };
+  init   = function(){
+    setConfigMap();
+
+    left_into.onclick  = leftIntoHandler;
+    right_into.onclick = rightIntoHandler;
+    left_out.onclick   = leftOutHandler;
+    right_out.onclick  = rightOutHandler;
+  };
+  return init();
+} )();
+
+</script>
+</body>
+</html>

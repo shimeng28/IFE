@@ -1,0 +1,42 @@
+body, div, ul{
+  padding : 0;
+  margin  : 0;
+}
+ul, li{
+  list-style : none;
+}
+.treeContainer{
+  color       : #adadad;
+  display     : inline-block;
+  margin-left : 20px;
+  padding     : 15px;
+  border      : 1px solid #6e8095;
+  background  : #3c3f41;
+}
+.dir{
+  cursor : pointer;
+}
+.dir::before{
+  display : inline-block;
+  content : ' ';
+  width : 20px;
+  height : 10px;
+  background : url("./img/closeFile.jpg") no-repeat;
+}
+.dir.openDir::before{
+  background : url("./img/openFile.jpg") no-repeat;
+}
+.dir .file{
+  min-height : 24px;
+  line-height: 24px;
+}
+.dir > ul{
+  margin-left : 20px;
+}
+.file::before{
+  display : inline-block;
+  content : ' ';
+  width : 20px;
+  height : 10px;
+  background : url("./img/fileIcon.jpg") no-repeat;
+}

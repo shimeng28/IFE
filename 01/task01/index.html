@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<title>零基础html编码</title>
+	<link rel="stylesheet" type="text/css" href="IFE_html2.css" />
+</head>
+<body>
+	<div id="header">
+		<ul id="nav">
+			<li id="icon_header"><a href="http://www.ife.baidu.com"><img src="image/icon.png" /></a></li>
+			<li><a href="#">首页</a></li>
+			<li><a href="#">所有课程</a></li>
+			<li><a href="#">精彩笔记</a></li>
+			<li><a href="#">学院贴吧</a></li>
+			<li class="usertitle"><a href="#"><img src="image/headPhoto.png" /></a></li>
+			<li class="username"><a href="#">时猛</a></li>
+		</ul>
+	</div>
+	<div id="contentBody">
+		<div id="wrapper">
+			<div id="course_img">
+				<img src="image/contentBody_1.png" />
+			</div>
+			<div id="course_info">
+				<div class="course_title">任务一：零基础HTML编码 </div>
+				<div class="course_rank">
+					<img src="image/contentBody_4.png" />
+				</div>  
+				<div class="course_tea_and_acad">
+					<span class="course_teacher" ><img src="image/course_teacher.png" /><a href="#">导师小薇</a></span>  
+					<span><img src="image/course_academy.png" /><a href="#">小薇学院</a></span>
+				</div>
+				<div class="course_desc">
+					<p><span class="bolder">人数</span> <span>有<span class="blue_color">2533</span>人在学习该课程，有<span class="blue_color" >608</span>人已经完成该课程</span></p>
+					<p><span class="bolder">时间</span> <span>平均用时<span class="blue_color">0.6</span>天</span></p>
+					<p><span class="bolder">关键词</span> <span class="course_keywords">HTML</span></p>
+				</div>
+			</div>
+
+			<div id="course_requirment">
+				<p class="course_summarize">课程概述</p>
+				<p class="course_deadline">作业提交截止时间：04-24</p>
+
+				<h2 class="important_descr">重要说明</h2>
+				<p>百度前端技术学院的课程任务是由百度前端工程师专为对前端不同掌握程度的同学设计。我们尽力保证课程内容的质量以及学习难度的合理性，但即使如此，真正决定课程效果的，还是你的每一次思考和实践。
+				</p>
+
+				<p>
+				课程多数题目的解决方案都不是唯一的，这和我们在实际工作中的情况也是一致的。因此，我们的要求不仅仅是实现设计稿的效果，更是要多去思考不同的解决方案，评估不同方案的优劣，然后使用在该场景下最优雅的方式去实现。那些最终没有被我们采纳的方案，同样也可以帮助我们学到很多知识。所以，我们列出的参考资料未必是实现需求所必须的。有的时候，实现题目的要求很简单，甚至参考资料里就有，但是背后的思考和亲手去实践却是任务最关键的一部分。在学习这些资料时，要多思考，多提问，多质疑。相信通过和小伙伴们的交流，能让你的学习事半功倍。
+				</p>
+
+				<h2>任务目的</h2>
+				<ul>
+					<li>了解HTML的定义、概念、发展简史</li>
+					<li>掌握常用HTML标签的含义、用法</li>
+					<li>能够基于设计稿来合理规划HTML文档结构</li>
+					<li>理解语义化，合理地使用HTML标签来构建页面</li>
+				</ul>
+
+				<h2>任务描述</h2>
+				<ul>
+					<li>参考<a href="#">示例图(点击查看),</a>完成一个HTML页面编码（不写CSS，不需要关注样式，只关注文档结构）
+					</li>
+				</ul>
+
+				<h2>任务注意事项</h2>
+				<ul>
+					<li>只需要完成HTML，CSS代码编写，不需要写JavaScript</li>
+					<li>示例图仅为参考，不需要完全实现一致，其中的图片、文案均可自行设定</li>
+					<li>尽可能多地尝试不同的、更多的样式设定来实践各种CSS属性</li>
+					<li>HTML 及 CSS 代码结构清晰、规范</li>
+				</ul>
+
+				<h2>在线学习参考资料</h2>
+				<ul>
+					<li><a href="">MDN HTML入门</a></li>
+					<li><a href="">MDN CSS入门教程</a></li>
+					<li><a href="">慕课HTML+CSS基础教程视频</a></li>
+					</ul>
+			</div>	
+		
+		</div>
+
+		<div id="learn_status">
+			<div class="spend_time">
+				<div>
+					<div class="icon_calendar"><img src="image/contentBody_2.png"/></div>
+				 	<span>你已在该课程学习了2.6天</span>
+				</div>
+				<button class="submit_work">完成学习提交作业</button>
+				<button>放弃学习</button>
+			</div>
+		</div>
+
+		<div id="complete_info">
+			<p>您已经在该课程发表了<span class="blue_color">0</span>篇学习日记
+				<input type="button" value="新建笔记"  id="createNotes"/>
+			</p>
+
+			<div id="excell_note">
+			<table>
+				<caption>课程优秀学习笔记</caption>
+				<thead>
+					<tr>
+						<th class="title_table">标题</th>
+						<th class="time_table">发布时间</th>
+						<th class="broswer_count">浏览量</th>
+						<th class="like_count">点赞量</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><a href="" class="blue_color">小萌新学习HTML/CSS第一天...</a></td>
+						<td>2017-02-25 00:23</td>
+						<td>529</td>
+						<td>25</td>
+					</tr>
+					<tr>
+						<td><a href="" class="blue_color">关于语义化标签的一些思考</a></td>
+						<td>2017-02-28 11:38</td>
+						<td>28</td>
+						<td>2</td>
+					</tr>
+					<tr>
+						<td colspan="4"><a href="#" style="color:black;">点击查看更多优秀笔记</a></td>
+					</tr>
+				</tbody>
+			</table>
+			</div>
+		</div>
+	</div>
+	<div id="footer">
+		<p><span class="ife_wechat">IFE微信公众号：baidu_ife</span>  <span class="ife_weibo">IFE微博：Baidu前端技术学院</span></p>
+
+		<p>
+			<span><a href="http://efe.baidu.com/">百度EFE</a></span>  <span><a href="http://campus.baidu.com/">百度校园</a></span>  <span><a href="http://talent.baidu.com/external/baidu/campus.html">百度校园招聘</a></span>
+		</p>
+	</div>
+</body>
+</html>

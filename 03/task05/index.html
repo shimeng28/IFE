@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>任务五：听指令的小方块2</title>
+<style>
+	*{
+		margin:0;
+		padding:0;
+	}
+	ul,li{
+		list-style:none;	
+	}
+	ul#upNum{
+		width:320px;
+		height:30px;
+		position:absolute;
+		top:10px;
+		left:50%;
+		margin-left:-160px;
+	}
+	ul#upNum li{
+		height:30px;
+		width:32px;
+		float:left;
+		text-align:center;
+	}
+	ul#leftNum{
+		height:320px;
+		width:30px;
+		position:absolute;
+		top:40px;
+		left:50%;
+		margin-left:-192px;
+	}
+	ul#leftNum li{
+		height:32px;
+		width:30px;
+		line-height:32px;
+		text-align:center;
+	}
+	ul#box{
+		border:1px solid #000;
+		width:320px;
+		height:320px;
+		margin:40px auto;
+	}
+	ul#box li{
+		width:30px;
+		height:30px;
+		border:1px solid #ccc;
+		float:left;
+		position:relative;
+	}
+	div.innerBox{
+		width:30px;
+		height:30px;
+		background:red;
+		z-index: 1;
+	}
+	div.boxDirect{
+		background:blue;
+		width:30px;
+		height:10px;
+		margin-bottom:20px;
+		z-index: 2;
+	}
+
+	div.controlBox{
+		width:300px;
+		height:300px;
+		position:absolute;
+		left:50%;
+		margin-left:-150px;
+		top:400px;
+		padding:20px 50px;
+	}
+	div.controlBox input{
+		width:100px;
+		height:50px;
+		border-radius:5px;
+		margin:10px;
+	}
+	div.controlBox input:nth-child(1),div.controlBox input:nth-child(4){
+		display: block;
+		margin:0 65px;
+	}
+	div#control_1{
+		left:38%;
+	}
+	div#control_2{
+		left:59%;
+	}
+</style>
+</head>
+<body>
+	<ul id="upNum">
+		<li>1</li>
+		<li>2</li>
+		<li>3</li>
+		<li>4</li>
+		<li>5</li>
+		<li>6</li>
+		<li>7</li>
+		<li>8</li>
+		<li>9</li>
+		<li>10</li>
+	</ul>
+	<ul id="leftNum">
+		<li>1</li>
+		<li>2</li>
+		<li>3</li>
+		<li>4</li>
+		<li>5</li>
+		<li>6</li>
+		<li>7</li>
+		<li>8</li>
+		<li>9</li>
+		<li>10</li>
+	</ul>
+	<ul id="box">
+		<li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+		<li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+		<li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+		<li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+		<li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+		<li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+		<li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+		<li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+		<li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+		<li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+	</ul>
+	<div class="controlBox" id="control_1">
+		<input type="button" value="TRA TOP"/>
+		<input type="button" value="TRA LEF" />
+		<input type="button" value="TRA RIG" />
+		<input type="button" value="TRA BOT" />
+	</div>
+	
+	<div class="controlBox" id="control_2">
+		<input type="button" value="MOV TOP"/>
+		<input type="button" value="MOV LEF" />
+		<input type="button" value="MOV RIG" />
+		<input type="button" value="MOV BOT" />
+	</div>
+	<script>
+		var box = document.getElementById("box");
+		var aLi = box.getElementsByTagName("li");
+		var innerBox = document.createElement("div");
+		var littleBox = innerBox.cloneNode();
+		var currentNum = 55;  //小方块初始位置
+		littleBox.className = "boxDirect";  //小方块初始方向
+		innerBox.appendChild(littleBox);	
+		innerBox.className = "innerBox";
+		innerBox.style.transform ="rotate(0deg)";
+		aLi[currentNum].appendChild(innerBox);
+
+	
+
+		var turnDirect = 0; //0 top 1 right 2 bottom 3 left
+		var turnArr =["top","right","bottom","left"];
+		var control_1 = document.getElementById("control_1");
+		var control_2 = document.getElementById("control_2");
+		control_1.onclick = function(event){
+			event = event || window.event;
+			var ele = event.target.value;
+			switch(ele){
+				case "TRA TOP":
+					moveTop();
+				break;
+				case "TRA RIG":
+					moveRight();
+				break;
+				case "TRA BOT":
+					moveBottom();
+				break;
+				case "TRA LEF":
+					moveLeft();
+				break;
+			}
+		}
+		function moveTop(){
+			if(currentNum<10){
+							currentNum +=100;
+			}
+			currentNum -=10;
+			aLi[currentNum].appendChild(innerBox);
+		}
+		function moveRight(){
+			var num = currentNum + "";
+			if(num.lastIndexOf("9")>-1){
+							currentNum -=10;
+						}
+						currentNum +=1;
+					aLi[currentNum].appendChild(innerBox);
+		}
+		function moveBottom(){
+			if(currentNum>89){
+							currentNum -=100;
+					}
+					currentNum +=10;
+					aLi[currentNum].appendChild(innerBox);
+		}
+		function moveLeft(){
+			var num = currentNum + "";
+			if(num.lastIndexOf("0")>-1){
+							currentNum +=10;
+						}
+						currentNum -=1;
+					aLi[currentNum].appendChild(innerBox);
+		}
+		control_2.onclick = function(event){
+			var box = innerBox;
+			event = event || window.event;
+			var ele = event.target.value;
+			var num = currentNum + "";
+			switch(ele){
+				case "MOV TOP":
+					transformDirect(box,0,1000,moveTop);
+				break;
+				case "MOV RIG":
+					transformDirect(box,90,1000,moveRight);
+				break;
+				case "MOV BOT":
+					transformDirect(box,180,1000,moveBottom);
+				break;
+				case "MOV LEF":
+					transformDirect(box,270,1000,moveLeft);
+				break;
+			}
+		}
+		function transformDirect(ele,angle,timeout,callback){
+			var rotate = innerBox.style.transform;
+			var rotateValue = parseInt( rotate.substring( rotate.indexOf("(")+1,rotate.lastIndexOf("deg") ) );
+			var angleDiff = angle -rotateValue;
+			var bonus = false;
+			if(angleDiff<0){
+				angleDiff = -angleDiff;
+				if(angleDiff>179){
+					angleDiff -= 180;
+				} else{
+					bonus = true;
+				}		
+			} else{
+				if(angleDiff>179){
+					angleDiff -= 180;
+					bonus = true;
+				}
+			}
+			var count =parseFloat( ( (angleDiff/timeout)*10 ).toFixed(3) );
+
+			var currentAngle = count;
+			var time = 0;
+			function trans(){
+				if(currentAngle<angleDiff && time<timeout){
+					time += 10;
+					if(bonus){
+						ele.style.transform = "rotate(" +(rotateValue-currentAngle)+"deg)";
+						console.log("rotateValue-currentAngle",rotateValue-currentAngle);
+					} else{
+						ele.style.transform = "rotate(" +(rotateValue+currentAngle)+"deg)";
+						console.log(rotateValue+currentAngle);
+					}
+					currentAngle = parseFloat( (currentAngle + count).toFixed(3) );
+					setTimeout(function(){trans();},10);
+				} else{
+					ele.style.transform = "rotate("  +angle+"deg)";
+					setTimeout(function(){callback();},300);		
+				}
+			}
+			trans();
+			
+			function setAngle(){
+				var element = ele;
+				/*element.style.transform = "rotate(" +(rotateValue +count)+"deg)";*/
+				element.style.transform = "rotate("  +count+"deg)";
+			/*	if(count < angle){
+					count =parseFloat( (count + count).toFixed(3) );
+				}*/
+			}			 
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!doctype html>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>动态数据绑定四</title>
+</head>
+<body>
+<div id="app">
+	<p>姓名:{{user.name}}</p>
+	<p>年龄:{{user.age}}</p>
+</div>
+<script type="text/javascript">
+  function Vue(data){
+	this.data = data;
+	this.container = null;
+	this.mainTemp = null;
+
+
+	//构造器
+	this.viewInfo(this.data); //解析元素， 模板
+	this.walk(this.data.data);
+}
+  Vue.prototype.viewInfo = function(obj){
+	this.container = document.querySelector(obj.el);
+	this.mainTemp  = this.container.innerHTML;
+};
+  Vue.prototype.walk = function(obj){
+	for(var key in obj){
+	  if(obj.hasOwnProperty(key)){
+		var val = obj[key];
+		this.transform(key, val);
+	  }
+	}
+};
+  Vue.prototype.transform = function(dataName, dataVal) {  //替换模板内容
+	for(var key in dataVal){
+	  if(dataVal.hasOwnProperty(key)){
+		var name = dataName + "." + key;
+		var value = dataVal[key];
+		var reg   = "{{" + name + "}}";
+		this.mainTemp = this.mainTemp.replace(new RegExp(reg, "g"), value);
+		this.container.innerHTML = this.mainTemp;
+	  }
+	}
+};
+  var app={
+	el : '#app',
+	data : {
+	  user : {
+		name : "youngwind",
+		age  : 25
+	  }
+	}
+};
+  new Vue(app);
+</script>
+</body>
+</html>

@@ -1,0 +1,263 @@
+<!doctype html>
+<html>
+<head>
+	<title>任务三：表单（三）联动</title>
+	<style>
+		*{
+			margin:0;
+			padding:0;
+		}
+		input{
+			outline:none;
+		}
+		form{
+			width:800px;
+			height:500px;
+			margin:0 auto;
+			font-family: "宋体" ;
+		}
+		label.radio{
+			display:inline-block;
+			width:150px;
+			height:25px;
+			
+			position:relative;
+			margin-right:50px;
+			margin-bottom:50px;
+		}
+		label.radio input{
+			visibility:hidden;
+		}
+		label.radio i.chose{  /*点击切换*/
+			display:inline-block;
+			cursor:pointer;
+			width:16px;
+			height:16px;
+			border:1px solid #03A9F4;
+			border-radius:50%;
+			background-color: #03A9F4;
+
+		}
+		label.radio i{
+			cursor:pointer;
+			display:inline-block;
+			width:16px;
+			height:16px;
+			border:1px solid #000;
+			border-radius:50%;
+			background-color: white;
+		}
+		label.radio i:after{
+			display:inline-block;
+			content:"";
+			width:8px;
+			height:8px;
+			border-radius:50%;
+			background-color: #fff;
+			position:absolute;
+			top:5px;
+			left:26px;
+		}
+		
+		#container input{
+			width:150px;
+			height:35px;
+			border-radius:4px;
+			border:2px solid #e4d6d6;
+			margin:0 30px 0 88px;;
+			font-size:18px;
+		}
+		#container label{
+			position:relative;
+			display:inline-block;
+		}
+		input#school{
+			width:200px;
+		}
+		div#container label span{
+			width:0;
+			height:0;
+			border-width:8px;
+			border-style:solid;
+			display:inline-block;
+			cursor:pointer;
+
+			position:absolute;
+			left:220px;
+		}
+		span.down{
+			border-color:#333 transparent transparent;
+			top:28px;
+			
+		}
+		span.up{
+			border-color:transparent transparent #333;
+			top:-3px;
+		}
+		#container label[for=school] span{
+			left:270px;
+		}
+
+		#container input#work{
+			width:350px;
+		}
+		#container #stu{
+			display:inline;
+		}
+		#container label.wor{
+			display:none;
+		}
+	</style>
+</head>
+<body>
+	<form method="GET" action="">
+		<label for="student" class="radio">
+			<input type="radio" id="student"  name="identify" />
+			<i class="chose"></i>
+			在校生
+		</label>
+		<label for="non_student" class="radio">
+			<input type="radio" id="non_student" name="identify"/>
+			<i></i>
+			非在校生
+		</label>
+		<div id="container">
+			<span id="workshop">学校</span>
+			<div id="stu">
+				<label for="province" >
+					<input type="text" id="province" value="北京" readonly="readonly" />
+					<span  class="up" id="provUp"></span><span class="down" id="provDown"></span>
+				</label>
+				<label for="school" >
+					<input type="text" id="school" value="北京大学" readonly="readonly"/>
+					<span class="down" id="schoolDown" ></span><span  class="up" id="schoolDown"></span>
+				</label>
+			</div>
+			<label class="wor" for="work">
+				<input type="text" id="work" value=""/>
+			</label>
+		</div>
+	</form>
+
+	<script>
+			var inputGlobal = {
+				work_stu : [],
+				provinceNum : 0,
+				schoolNum : 0,
+				workshop :["学校","工作单位"],
+				schoolAddress : ["北京","上海","广州","郑州"],
+				schName : [	["清华大学","北京大学"],
+										["上海交通大学","上海大学"],
+										["广州大学","华南理工大学","暨南大学"],
+										["郑州大学","郑州轻工业大学"]
+									],
+				clickEle : [],
+				currentTarget : [0]
+			};
+			var label = document.getElementsByClassName("radio");
+			var inputFir = document.getElementById("student");
+			var study = document.getElementById("stu");
+			var work = document.getElementsByClassName("wor")[0];
+			var stuOrWork = document.getElementById("workshop");
+			var eventUtil = {
+				getEvent : function(event){
+					return event || window.event;
+				},
+				addHandler : function(element,type,handler){
+					if(element.addEventListerner){
+						element.addEventListerner(type,handler);
+					} else if(element.attachEvent){
+						element.attachEvent("on"+type,handler);
+					} else {
+						element["on"+type]=handler;
+					}
+				},
+			};
+
+			var provin = document.getElementById("province");
+			var schoolName = document.getElementById("school");
+
+			eventUtil.addHandler(study,"click",choseSch);
+			function choseSch(event){
+				var event = eventUtil.getEvent(event);
+				var target = event.target;
+				switch(target.id){
+					case "provDown" :
+						if(inputGlobal.provinceNum == 0 ){
+							inputGlobal.provinceNum = inputGlobal.schoolAddress.length;
+						}
+						var num = --inputGlobal.provinceNum ;
+						provin.value = inputGlobal.schoolAddress[num];
+						schoolName.value = inputGlobal.schName[num][0];
+					break;
+					case "provUp" :
+						if(inputGlobal.provinceNum === inputGlobal.schoolAddress.length -1){
+							inputGlobal.provinceNum = -1;
+						}
+						var num= ++inputGlobal.provinceNum ;
+						provin.value = inputGlobal.schoolAddress[num];
+						schoolName.value = inputGlobal.schName[num][0];
+					break;
+					case "schoolDown" :
+						var pro   = inputGlobal.provinceNum;
+						if(inputGlobal.schoolNum === 0){
+							inputGlobal.schoolNum = inputGlobal.schName[pro].length;
+						}
+						var count = --inputGlobal.schoolNum ;
+						schoolName.value = inputGlobal.schName[pro][count];
+					break;
+					case "schoolUp" :
+						var pro   = inputGlobal.provinceNum;
+						if(inputGlobal.schoolNum === inputGlobal.schName[pro].length -1){
+							inputGlobal.schoolNum = -1;
+						}
+						var count = ++inputGlobal.schoolNum ;
+						schoolName.value = inputGlobal.schName[pro][count];
+					break;
+				}
+			}
+			init();
+			function init(){
+				inputFir.checked = true;
+				inputGlobal["work_stu"].push(study);
+				inputGlobal["work_stu"].push(work);
+				
+
+				for(var i=0, len=label.length; i<len; i++){
+					var iTag = label[i].getElementsByTagName("i")[0];
+					iTag.index = i;
+					inputGlobal["clickEle"].push(iTag);
+				}
+
+				inputGlobal["clickEle"].forEach(function(ele,index,arr){
+					eventUtil.addHandler(ele,"click",radioHandler);
+				});
+
+				function radioHandler(event){
+				for(var i=0,len=inputGlobal["clickEle"].length; i<len; i++){
+					inputGlobal["clickEle"][i].classList.remove("chose");
+				}
+				event = event || window.event;
+				var target = event.target;
+				var index = target.index;
+				inputGlobal.currentTarget.pop();
+				inputGlobal.currentTarget.push(index);
+				stuOrWork.innerHTML = inputGlobal["workshop"][index];
+				
+				var dis = inputGlobal["work_stu"];
+				for(var j=0,disLen=dis.length; j<disLen; j++){
+					dis[j].style.display = "none";
+				}
+				dis[index].style.display = "inline-block";
+
+				if(!target.classList.contains("chose")){
+					return target.classList.add("chose");
+				} 
+				event.preventDefault();
+				}
+			}
+			
+			
+	</script>
+</body>
+</html>

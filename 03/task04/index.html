@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>任务四：听指令的小方块</title>
+<style>
+	*{
+		margin:0;
+		padding:0;
+	}
+	ul,li{
+		list-style:none;	
+	}
+	ul#upNum{
+		width:320px;
+		height:30px;
+		position:absolute;
+		top:10px;
+		left:50%;
+		margin-left:-160px;
+	}
+	ul#upNum li{
+		height:30px;
+		width:32px;
+		float:left;
+		text-align:center;
+	}
+	ul#leftNum{
+		height:320px;
+		width:30px;
+		position:absolute;
+		top:40px;
+		left:50%;
+		margin-left:-192px;
+	}
+	ul#leftNum li{
+		height:32px;
+		width:30px;
+		line-height:32px;
+		text-align:center;
+	}
+	ul#box{
+		border:1px solid #000;
+		width:320px;
+		height:320px;
+		margin:40px auto;
+	}
+	ul#box li{
+		width:30px;
+		height:30px;
+		border:1px solid #ccc;
+		float:left;
+	}
+	div.innerBox{
+		width:30px;
+		height:30px;
+		background:red;
+		float:left;
+	}
+	div.top{
+		background:blue;
+		width:30px;
+		height:10px;
+		margin-bottom:20px;
+	}
+	div.left{
+		background:blue;
+		width:10px;
+		height:30px;
+		margin-right:20px;
+	}
+	div.right{
+		background:blue;
+		width:10px;
+		height:30px;
+		margin-left:20px;
+	}
+	div.bottom{
+		background:blue;
+		width:30px;
+		height:10px;
+		margin-top:20px;
+	}
+
+	div#controlBox{
+		width:300px;
+		height:300px;
+		position:absolute;
+		left:50%;
+		margin-left:-150px;
+		top:400px;
+		padding:20px 50px;
+	}
+	div#controlBox input{
+		width:100px;
+		height:50px;
+		border-radius:5px;
+		margin:10px;
+	}
+	div#controlBox input:nth-child(1),div#controlBox input:nth-child(4){
+		display: block;
+		margin:0 65px;
+	}
+</style>
+</head>
+<body>
+	<ul id="upNum">
+		<li>1</li>
+		<li>2</li>
+		<li>3</li>
+		<li>4</li>
+		<li>5</li>
+		<li>6</li>
+		<li>7</li>
+		<li>8</li>
+		<li>9</li>
+		<li>10</li>
+	</ul>
+	<ul id="leftNum">
+		<li>1</li>
+		<li>2</li>
+		<li>3</li>
+		<li>4</li>
+		<li>5</li>
+		<li>6</li>
+		<li>7</li>
+		<li>8</li>
+		<li>9</li>
+		<li>10</li>
+	</ul>
+	<ul id="box">
+		<li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+		<li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+		<li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+		<li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+		<li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+		<li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+		<li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+		<li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+		<li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+		<li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+	</ul>
+	<div id="controlBox">
+		<input type="button" value="GO"/>
+		<input type="button" value="TURN LEFT" />
+		<input type="button" value="TURN RIGHT" />
+		<input type="button" value="BACK" />
+	</div>
+	
+
+	<script>
+		var box = document.getElementById("box");
+		var aLi = box.getElementsByTagName("li");
+		var innerBox = document.createElement("div");
+		var littleBox = innerBox.cloneNode();
+		littleBox.className = "top";
+		innerBox.appendChild(littleBox);	
+		innerBox.className = "innerBox";
+		var currentNum = 55;
+		aLi[currentNum].appendChild(innerBox);
+
+		var turnDirect = 0; //0 top 1 right 2 bottom 3 left
+		var turnArr =["top","right","bottom","left"];
+		var controlBox = document.getElementById("controlBox");
+		controlBox.onclick = function(event){
+			event = event || window.event;
+			var ele = event.target.value;
+			var num = currentNum + "";
+			switch(ele){
+				case "GO":
+					if(turnDirect === 0){
+						if(currentNum<10){
+							currentNum +=100;
+						}
+						currentNum -= 10;
+					} else if(turnDirect ===1){
+						if(num.lastIndexOf("9")>-1){
+							currentNum -=10;
+						}
+						currentNum +=1;
+					} else if(turnDirect ===2){
+						if(currentNum>90){
+							currentNum -= 100;
+						}
+						currentNum +=10;
+					} else if(turnDirect ===3){
+						if(num.lastIndexOf("0")>-1){
+							currentNum +=10;
+						}
+						currentNum -=1;
+					}
+					aLi[currentNum].appendChild(innerBox);
+				break;
+				case "TURN LEFT":
+					if(turnDirect ===0){
+						turnDirect = 4;
+					}
+					turnDirect --;
+					littleBox.className = "";
+					littleBox.className = turnArr[turnDirect];
+				break;
+				case "TURN RIGHT":
+					if(turnDirect ===3 ){
+						turnDirect = -1;
+					}
+					turnDirect ++;
+					littleBox.className = "";
+					littleBox.className = turnArr[turnDirect];
+				break;
+				case "BACK":
+					if(turnDirect === 0){
+						if(currentNum>90){
+							currentNum -= 100;
+						}
+						currentNum +=10;
+					} else if(turnDirect ===1){
+						if(num.lastIndexOf("0")>-1){
+							currentNum +=10;
+						}
+						currentNum -=1;
+					} else if(turnDirect ===2){
+						if(currentNum<10){
+							currentNum +=100;
+						}
+						currentNum -= 10;
+					} else if(turnDirect ===3){
+						if(num.lastIndexOf("9")>-1){
+							currentNum -=10;
+						}
+						currentNum +=1;
+					}
+					aLi[currentNum].appendChild(innerBox);
+				break;
+			}
+
+		}
+	</script>
+</body>
+</html>

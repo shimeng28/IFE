@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,maximum-scale=1,initial-scale=1"/>
+<title>自定义网页右键菜单</title>
+<style>
+ body, div{
+   margin  : 0;
+   padding : 0;
+   position: relative;
+ }
+ #wrap{
+   width      : 100%;
+   height     : 700px;
+   background : #6e8095;
+ }
+ .contextMenu{
+   min-width   : 50px;
+   min-height  : 50px;
+   z-index     : 999;
+   position    : absolute;
+   border      : 1px solid #c3c3c3;
+   background  : #fff;
+ }
+ .contextMenu > div{
+   color       : #000;
+   height      : 30px;
+   line-height : 30px;
+   padding     : 4px 8px;
+ }
+ .contextMenu > div:hover{
+   cursor : pointer;
+   background-color : #6e8095;
+ }
+</style>
+</head>
+<body>
+<div id="wrap">
+
+</div>
+<script>
+  var customizeMenu = function() {
+    var configMap,     set_configMap,  createMenu,
+        changeContent, getEventCoord,  addEvent,
+        clearMenu,     init;
+
+    configMap= {
+      element     : null,
+
+      menuSwitch  : false,
+      menu        : null,
+      menuContext : ['<div>前进</div>', '<div>后退</div>','<div>查看页面源码</div>']
+    };
+
+    //设置配置信息
+    set_configMap = function( map ){
+      var key;
+      for( key in map ){
+        if( map.hasOwnProperty( key ) && configMap.hasOwnProperty( key ) ){
+          configMap[key] = map[key];
+        }
+      }
+    };
+    //改变右击菜单内容 delete删除所有内容
+    // 其他则添加内容到右击菜单内
+    changeContent = function(){
+      var argument    = Array.prototype.slice.call( arguments ),
+          lastContent = configMap.menuContext,
+          length      = argument.length;
+
+      if( !length ) return false;
+      if( argument[0] === 'delete' ){//如果第一个参数是delete，则删除所有右击菜单的内容
+        lastContent.length = 0;
+        return false;
+      }
+      argument.forEach( function(cnt, index, arr){
+        cnt =  '<div>' + cnt + '</div>';
+        lastContent.push( cnt );
+      } );
+    };
+    //清除已经显示的菜单
+    clearMenu     = function( ){
+      if( configMap.menuSwitch ){
+        configMap.menu.parentNode.removeChild( configMap.menu );
+        set_configMap({
+          menu       : null,
+          menuSwitch : false
+        });
+      }
+    };
+    //获取事件点击坐标
+    getEventCoord = function( event ){
+      var
+        pageX = event.pageX,
+        pageY = event.pageY;
+
+      if( pageX === undefined ){
+          pageX = event.clientX + ( document.body.scrollLeft
+                  || document.documentElement.scrollLeft );
+        }
+      if( pageY === undefined ){
+          pageY = event.clientY + ( document.body.scrollTop
+                  || document.documentElement.scrollTop );
+        }
+      return {
+          pageX : pageX,
+          pageY : pageY
+        };
+    };
+    //生成菜单
+    createMenu    = function( event ){
+      var div, coordinate;
+
+      clearMenu();
+
+      event           = event || window.event;
+      event.preventDefault();
+      coordinate      = getEventCoord( event );
+
+      div             = document.createElement( 'div' );
+      div.className   = 'contextMenu';
+      div.style.width = configMap.menuWidth;
+      div.style.left  = coordinate.pageX + 'px';
+      div.style.top   = coordinate.pageY + 'px';
+      div.innerHTML   = configMap.menuContext.join('');
+      document.body.appendChild( div );
+      set_configMap({
+        menu        : div,
+        menuSwitch  : true
+      });
+    };
+
+
+    addEvent      = function( ele, type, handler ){
+      if( ele.addEventListener ){
+        addEvent = function( ele, type, handler ){
+          ele.addEventListener( type, handler, false );
+        }
+      }
+      else if( ele.attachEvent ){
+        addEvent = function( ele, type, handler ){
+           ele.attachEvent( type, handler );
+        }
+      }
+      else {
+        addEvent = function( ele, type, handler ){
+          ele['on' + type] = handler;
+        }
+      }
+      addEvent( ele, type, handler );
+    };
+
+    init          = function(){
+      set_configMap({
+        element : document.body
+      });
+
+      addEvent( configMap.element, 'contextmenu', createMenu );
+      addEvent( document.body,     'click',       clearMenu );
+    };
+
+    return{
+      init              : init,
+      setMenuStyle      : set_configMap,
+      changeMenuContent : changeContent
+    };
+
+  }();
+  customizeMenu.init();
+  customizeMenu.changeMenuContent('重新加载', '另存为');
+</script>
+</body>
+</html>

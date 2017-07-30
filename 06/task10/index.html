@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,maximum-scale=1,initial-scale=1"/>
+  <title>正则表达式之入门</title>
+</head>
+<body>
+<script>
+  function isPhoneNum( num ){
+    var re, result;
+    re = /1[34578]\d{9}/;
+    result = re.test( num );
+    return result;
+  }
+  function isRepeatWord( str ){
+    var re, result;
+    re = /(\w+\s+)\1/g;
+    result = re.test( str );
+    return result;
+  }
+
+  var num = '18812011232';
+  console.log( isPhoneNum( num ) );
+
+  var str = 'foofoo foofoobar';
+  console.log( isRepeatWord( str ) );
+
+</script>
+</body>
+</html>

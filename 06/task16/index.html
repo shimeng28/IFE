@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>音乐播放器</title>
+  <link href="index.css" type="text/css" rel="stylesheet" />
+
+</head>
+<body>
+<div id="player">
+  <h2>音乐播放器</h2>
+  <div>
+    <input id="search_song" type="text" value="" placeholder="搜索关键词"/><label for="search">搜索</label>
+  </div>
+  <div id="player_list">
+    <div class="scrollBar">
+      <div></div>
+    </div>
+    <ul id="song_list">
+      <li>
+        <div>歌曲</div>
+        <div>歌手</div>
+        <div>专辑</div>
+      </li>
+    </ul>
+    <div id="player_cover">
+      <div><img id="song_conver" src="img/album.jpg"></div>
+    </div>
+  </div>
+  <div id="player_song">
+    <div id="play_control" >
+      <span><i id="pre_song"></i></span>
+      <span><i id="play_pause" class=""></i></span>
+      <span><i id="next_song"></i></span>
+    </div>
+    <div id="song_info">
+      <div><span id="song_name">The Real Folk Blues</span><span id="song_auth">山根麻衣</span></div>
+      <div>
+        <span id="song_currTime">00:00</span>
+        /
+        <span id="song_endTime">00:00</span>
+        <span class="song_info_volume">
+          <img src="img/02.jpg">
+        </span>
+        <div class="progress_control" id="song_volume"><span><i></i></span></div>
+      </div>
+      <div>
+        <div class="progress_control" id="play_progress">
+          <span><i></i></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <video id="play_video" src="song/010%20Briefing.mp3" controls preload="auto">
+  </video>
+</div>
+<script src="index.js"></script>
+<script>
+  musicPlay.init();
+</script>
+</body>
+</html>

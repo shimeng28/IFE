@@ -1,0 +1,111 @@
+body, div,input{
+  padding : 0;
+  margin  : 0;
+  box-sizing : border-box;
+}
+#colorPicker{
+  font-size : 0;
+  width     : 900px;
+  margin-left : 20px;
+  margin-top : 40px;
+}
+#colorPicker > div{
+  display        : inline-block;
+  vertical-align : top;
+  margin-right   : 20px;
+}
+
+#disInfo{
+  font-size : 0;
+}
+#disInfo > div{
+  display: inline-block;
+  vertical-align: top;
+}
+
+#inputInfo input{
+  margin-left : 10px;
+}
+#inputInfo > hr{
+  width : 180px;
+  height : 3px;
+  background-color : #3c3f41;
+  margin-bottom : 20px;
+}
+#inputInfo label{
+  font-size : 20px;
+  display: inline-block;
+  width : 40px;
+  height : 60px;
+  line-height:60px;
+  vertical-align: top;
+}
+#inputInfo  input{
+  font-size : 20px;
+  width  : 80px;
+  height : 60px;
+}
+#inputInfo > div{
+  position: relative;
+  margin-bottom : 20px;
+}
+#inputInfo > div > div{
+  width    : 40px;
+  height   : 30px;
+  border   : 1px solid #8c8e93;
+  border-left : 0;
+  position : absolute;
+  top      : 0;
+  left     : 130px;
+}
+#inputInfo > div > div::after{
+  display: block;
+  content : '';
+  width  : 0;
+  height : 0;
+  border : 20px solid transparent;
+  border-bottom-color : #000;
+  margin-top : -18px;
+}
+#inputInfo > div > div:hover{
+  background-color : #8c8e93;
+}
+#inputInfo > div > div:nth-child(4){
+  top      : 30px;
+  border-top : 0;
+}
+#inputInfo > div > div:nth-child(4)::after{
+  border-bottom-color : transparent;
+  border-top-color    : #000;
+  margin-top : 6px;
+}
+
+#resultInfo > div:nth-child(1){
+  width  : 200px;
+  height : 200px;
+  background-color : red;
+  margin-bottom: 40px;
+  margin-left  : 40px;
+}
+#resultInfo > div:nth-child(2) > div{
+  margin-left : 20px;
+  margin-bottom : 20px;
+}
+#resultInfo > div:nth-child(2) > div > span{
+  font-size      : 20px;
+  display        : inline-block;
+  height         : 40px;
+  line-height    : 40px;
+  vertical-align : top;
+}
+#resultInfo > div:nth-child(2) > div > span:nth-child(1){
+  width : 186px;
+}
+#resultInfo > div:nth-child(2) > div > span:nth-child(2){
+  text-align : center;
+  width      : 60px;
+  border-radius    : 5px;
+  background-color : #03A9F4;
+  margin-left : 20px;
+  cursor      : pointer;
+}

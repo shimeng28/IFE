@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE-edge, chrome=1" />
+    <title>任务九：使用HTML/CSS实现一个复杂页面</title>
+    <style>
+      html, body, div, input,ul, li, dl, dd, dt, h1, h2, h3, h4, h5, h6, th{
+        font-family : SimHei,sans-serif;
+        margin      : 0;
+        padding     : 0;
+        border      : none;
+        box-sizing  : border-box;
+      }
+      input{
+        outline : none;
+      }
+      img{
+        border-width  : 0;
+      }
+      li{
+        list-style-type: none;
+      }
+      .clearfix:after{
+        display : table;
+        content : " ";
+        clear   : both;
+      }
+      .hd{
+        width      : 100%;
+        height     : 56px;
+        background-color : #2189bf;
+      }
+      .hd-wrap{
+        width       : 1180px;
+        height      : 56px;
+        line-height : 56px;
+        vertical-align : middle;
+        margin         : 0 auto;
+        position       : relative;
+      }
+        .hd-wrap:before{
+          content : ' ';
+          display : table;
+        }
+      .hd-icon{
+        width : 36px;
+        height: 36px;
+        background-color : #fff;
+        margin-top : 10px;
+        position : relative;
+        display  : inline-block;
+      }
+      .hd-icon div{
+        position : absolute;
+        bottom   : 0;
+        right    : 0;
+      }
+      .hd-icon div:first-child{
+        width    : 18px;
+        height   : 18px;
+        background-color : #2189bf;
+      }
+      .hd-icon div:last-child{
+        width    : 15px;
+        height   : 15px;
+        background-color : #fff;
+      }
+      #hd-search{
+        font-size     : 20px;
+        width         : 312px;
+        height        : 28px;
+        border-radius : 10px;
+        position      : absolute;
+        top           : 14px;
+        right         : 106px;
+        padding       : 6px 17px 6px 40px;
+      }
+      .hd-wrap label{
+        width    : 17px;
+        height   : 17px;
+        position : absolute;
+        top      : 20px;
+        left     : 779px;
+        background : url(img/hd-search-icon.png) no-repeat;
+        cursor     : pointer;
+      }
+      .hd-wrap span{
+        font-size    : 12px;
+        color        : #fff;
+        margin-right : 44px;
+        padding-left : 20px;
+        float        : right;
+        background   : url(img/hd-login-icon.png) no-repeat 0 50%;
+         cursor     : pointer;
+      }
+      .mn{
+        font-size : 12px;
+        width : 1280px;
+        margin: 0 auto;
+      }
+      .mn-asd{
+        float  : left;
+        width  : 260px;
+        height : 1210px;
+        padding-left : 45px;
+        overflow     : hidden;
+        background-color : #2a2e3d;
+      }
+      .mn-asd-psninfo{
+        margin-top : 18px;
+      }
+      .mn-psninfo-avtr{
+        height  : 57px;
+      }
+        .mn-psninfo-avtr span{
+          float      : left;
+          box-sizing : border-box;
+        }
+      .mn-avtr-img{
+        width : 57px;
+        height: 57px;
+        border-radius : 57px;
+        border : 1px solid #fff;
+        position : relative;
+      }
+        .mn-avtr-img img{
+          width     : 47px;
+          max-width : 47px;
+          height    : 47px;
+          max-height: 47px;
+          position  : absolute;
+          top       : 4px;
+          left      : 4px;
+
+        }
+      .mn-avtr-name{
+        color     : #fff;
+        font-size : 16px;
+        margin-left : 18px;
+        height      : 57px;
+        line-height : 57px;
+      }
+      .mn-psninfo-dtl{
+        height : 75px;
+        padding-top : 25px;
+      }
+      .mn-psninfo-dtl > div{
+        width : 76px;
+        float : left;
+        color : #6e8095;
+        text-indent : 3px;
+        padding-left : 16px;
+      }
+      .mn-asd-list{
+        color : #6e8095;
+        display: block;
+      }
+      .mn-asd-list > ul{
+        width : 215px
+      }
+      .mn-list-fir{
+        height : 37px;
+        line-height : 37px;
+        text-indent : 20px;
+      }
+      .mn-list-fir ~ dd{
+        margin-left : 20px;
+      }
+      .mn-asd-rep{
+        background : url('img/mn-re-icon.png') no-repeat 0 50%;
+      }
+      .mn-asd-col{
+        background : url('img/mn-list-coll.png') no-repeat 0 50%;
+      }
+      .mn-asd-shar{
+          background : url('img/mn-list-share.png') no-repeat 0 50%;
+      }
+      .mn-asd-img{
+          background : url('img/mn-list-coll.png') no-repeat 0 50%;
+      }
+      .mn-asd-grow{
+          background : url('img/mn-list-coll.png') no-repeat 0 50%;
+      }
+      .mn-asd-acc{
+          background : url('img/mn-list-acc.png') no-repeat 0 50%;
+      }
+      .nm-list-sec{
+        height : 30px;
+        line-height : 30px;
+        background  : url('img/mn-list-sec.png') no-repeat 0 50%;
+        text-indent : 18px;
+      }
+      .nm-list-sec ~ dd{
+        margin-left : 18px;
+      }
+      .nm-list-thi{
+        height : 30px;
+        line-height : 30px;
+        background: url('img/mn-list-thir.png') no-repeat 0 50%;
+        text-indent: 16px;
+      }
+      .mn-cnt{
+        float : right;
+        color : #aaa;
+        width : 1020px;
+        height: 1210px;
+      }
+      .mn-cnt-filetree {
+        height : 30px;
+        line-height : 30px;
+        background: #fff;
+      }
+      .mn-cnt-filetree div{
+        float : left;
+        cursor: pointer;
+      }
+      .mn-filetree-main{
+        margin-left  : 10px;
+        margin-right : 13px;
+      }
+      .mn-router-cur{
+        color : #75a0c6;
+      }
+      .mn-cnt-wrap{
+        padding-top  : 20px;
+        padding-left : 60px;
+        position     : relative;
+      }
+      .mn-cnt-bg{
+        position : absolute;
+        top      : 0;
+        left     : 76px;
+        width    : 944px;
+        height   : 933px;
+        background : #eeeded;
+        z-index  : -3;
+      }
+      .mn-cnt-sear{
+        width : 890px;
+        height: 85px;
+        background : #fff;
+        padding-top : 14px;
+        padding-left: 29px;
+        border   : 1px solid #d3d4d8;
+      }
+      .mn-cnt-sear > div{
+        float : left;
+      }
+      .mn-sear-item{
+        width : 121px;
+        height: 25px;
+        font-size : 0;
+        background : url('./img/mn-sear-item.png') no-repeat 94% 50%;
+      }
+      .mn-sear-item div{
+        font-size :12px;
+        display : inline-block;
+        width   : 51px;
+        height  : 25px;
+        line-height : 25px;
+      }
+      .mn-sear-item div:nth-child(2){
+        color  : #323333;
+        width  : 70px;
+        padding-left : 11px;
+        border : 1px solid #c3c3c4;
+      }
+      .mn-sear-trade{
+        width  : 187px;
+        height : 70px;
+        margin-left : 38px;
+        position    : relative;
+      }
+      .mn-sear-trade div{
+        font-size : 12px;
+        height : 25px;
+        margin-bottom : 5px;
+        line-height : 25px;
+      }
+      .mn-sear-trade > div > span{
+        color  : #323333;
+        display : inline-block;
+        width   : 121px;
+        height  : 25px;
+        border  : 1px solid #c3c3c4;
+        padding-left : 8px;
+        background : url('img/mn-trade-icon.png') no-repeat 93% 50% ;
+      }
+      div.mn-trade-img{
+        width : 27px;
+        height : 37px;
+        background : url('img/mn-trade-img.png') no-repeat 3px 0;
+        position : absolute;
+        top      : 10px;
+        left     : 156px;
+      }
+      div.mn-trade-img span{
+        color        : #fff;
+        border : none;
+        position : absolute;
+        top      : 7px;
+        left     : 6px;
+        background: none;
+      }
+      .mn-sear-other{
+        height: 70px;
+      }
+      .mn-sear-other > div{
+        font-size : 0;
+        margin-left : 32px;
+        margin-bottom : 4px;
+        height : 26px;
+        line-height : 26px;
+      }
+      .mn-sear-other > div > div{
+        font-size : 12px;
+        display : inline-block;
+        height : 26px;
+      }
+      .mn-sear-other > div > div >span{
+        color  : #323333;
+
+        height : 26px;
+        line-height : 26px;
+        padding-left : 7px;
+
+        display : inline-block;
+        box-sizing : border-box;
+        border  : 2px solid #c3c3c4;
+        background : url('./img/mn-trade-icon.png') no-repeat 83% 50%;
+      }
+      .mn-sear-other .mn-row1-date{
+        margin-right : 15px;
+      }
+      .mn-sear-other .mn-row1-date > span{
+        margin-left  : 17px;
+        width       : 120px;
+        background  : none;
+      }
+      .mn-sear-other .mn-row1-time > span{
+        margin-left : 11px;
+        width : 70px;
+      }
+      .mn-sear-other .mn-row2-popu{
+        margin-right : 14px;
+      }
+      .mn-sear-other .mn-row2-popu > span{
+        width : 71px;
+        margin-left : 17px;
+      }
+      .mn-sear-other .mn-row2-volu > span{
+        width : 120px;
+        margin-left : 11px;
+        background-position-x : 92%;
+      }
+      div.mn-sear-btn{
+        margin      : 17px auto auto 29px;
+        width       : 51px;
+        height      : 25px;
+        background  : #388bc2;
+        color       : white;
+        line-height : 25px;
+        text-align  : center;
+        cursor      : pointer;
+      }
+      .mn-cnt-price{
+        height   : 66px;
+        width    : 890px;
+        margin-top : 8px;
+        font-size: 0;
+      }
+      .mn-cnt-price > div{
+        display : inline-block;
+        background-color : #fff;
+      }
+      .mn-cnt-price .mn-price-month {
+        font-size   : 12px;
+        font-family : "Microsoft YaHei" , sans-serif;
+        width  : 111px;
+        height : 66px;
+        margin-right : 4px;
+        padding-top  : 10px;
+        vertical-align : top;
+        border       : 1px solid #c3c3c4;
+      }
+      .mn-price-month > div{
+        height : 56px;
+      }
+      .mn-price-month > div div:nth-child(1){
+        color  : #323333;
+        text-align : center;
+      }
+      .mn-price-month > div div:nth-child(2){
+        text-align : center;
+        margin-top : 8px;
+      }
+      .mn-price-month > div div:nth-child(2) span{
+        font-size : 21px;
+        color : #ec6500;
+      }
+      .mn-cnt-price .mn-price-left, .mn-cnt-price .mn-price-righ{
+        width  : 30px;
+        height : 66px;
+        cursor : pointer;
+        margin-right : 4px;
+        border       : 1px solid #c3c3c4;
+      }
+      .mn-price-left{
+        background : url('img/mn-price-left.png') no-repeat 50% 50%;
+      }
+      .mn-price-righ{
+        background : url('img/mn-price-righ.png') no-repeat 50% 50%;
+        margin-right : 4px;
+      }
+      .mn-price-hist{
+        width  : 131px;
+        height : 66px;
+        line-height : 66px;
+        font-size : 12px;
+        padding-left : 60px;
+        vertical-align : top;
+        border : 1px solid #c3c3c4;
+        cursor : pointer;
+        background : url('./img/mn-price-hst.png') no-repeat 18px 50%;
+      }
+      .mn-cnt-static{
+        width : 100%;
+        margin-top : 18px;
+      }
+      .mn-cnt-static > h3{
+        font-size : 12px;
+        color     : #323333;
+        height    : 20px;
+        line-height : 20px;
+      }
+      .mn-cnt-static > div{
+        width  : 100%;
+        font-size : 0;
+      }
+      .mn-cnt-static > div > div{
+        width  : 202px;
+        display: inline-block;
+        vertical-align : top;
+        border : 1px solid #d3d4d8;
+        padding-top    : 12px;
+        padding-bottom : 12px;
+        margin-right : 28px;
+        background   : #fff;
+        font-size    : 0;
+      }
+      .mn-cnt-static > div > div:last-child{
+        margin-right : 0;
+      }
+      .mn-cnt-static > div > div > div{
+        display : inline-block;
+        height  : 47px;
+        padding-left : 11px;
+      }
+      .mn-cnt-static > div > div > div:nth-child(1){
+        font-size : 12px;
+        width   : 124px;
+        vertical-align : top;
+      }
+      .mn-cnt-static > div > div > div > h4{
+        color     : #323333;
+        width     : auto;
+        height    : 28px;
+      }
+      .mn-cnt-static > div > div > div:nth-child(2){
+        width  : 61px;
+        height : 47px;
+      }
+      .mn-cnt-static > div > div:nth-child(1) > div:nth-child(1){
+        border-left : 3px solid #44b29e;
+      }
+      .mn-cnt-static > div > div:nth-child(1) > div:nth-child(2){
+        background : #44b29e;
+      }
+      .mn-cnt-static > div > div:nth-child(2) > div:nth-child(1){
+        border-left : 3px solid #388ac1;
+      }
+      .mn-cnt-static > div > div:nth-child(2) > div:nth-child(2){
+        background : #388ac1;
+      }
+      .mn-cnt-static > div > div:nth-child(3) > div:nth-child(1){
+        border-left : 3px solid #d04a36;
+      }
+      .mn-cnt-static > div > div:nth-child(3) > div:nth-child(2){
+        background : #d04a36;
+      }
+      .mn-cnt-static > div > div:nth-child(4) > div:nth-child(1){
+        border-left : 3px solid #e2cd46;
+      }
+      .mn-cnt-static > div > div:nth-child(4) > div:nth-child(2){
+        background : #e2cd46;
+      }
+      .mn-cnt-fistpro, .mn-cnt-fistdet, .mn-cnt-cand, .mn-cnt-rank{
+        float : left;
+        margin-top : 13px;
+        border-radius : 5px;
+        border        : 1px solid #d3d4d8;
+        background    : #fff;
+      }
+      .mn-cnt-fistpro{
+        width         : 532px;
+        margin-right  : 8px;
+      }
+      .mn-cnt-proHead{
+        width      : 100%;
+        height     : 40px;
+        line-height: 40px;
+        padding-left : 22px;
+        background : #f4f5f7;
+      }
+      .mn-cnt-fistpro > div{
+        padding : 40px 20px 20px 23px;
+        position : relative;
+        height   : 315px;
+      }
+      .mn-cnt-fistpro > div li{
+        padding  : 28px 48px 35px 36px;
+        border   : 1px solid #d3d4d8;
+        background : #fff;
+        position : absolute;
+        top      : 40px;
+        left     : 20px;
+      }
+      .mn-cnt-fistpro > div table{
+        border-collapse: collapse;
+        text-align  : center;
+      }
+      .mn-cnt-fistpro > div  th{
+        width  : 85px;
+        height : 28px;
+        line-height : 28px;
+        background : #ededf0;
+        margin-right  : 4px;
+        border-bottom : 1px solid #d3d4d8;
+        position   : absolute;
+        top  : -28px;
+        left : -1px;
+      }
+      .mn-cnt-fistpro > div li:nth-child(2)  th{
+        left : 88px;
+      }
+      .mn-cnt-fistpro > div li:nth-child(3)  th{
+        left : 177px;
+      }
+      .mn-cnt-fistpro > div li:nth-child(4)  th{
+        left : 266px;
+      }
+      .mn-cnt-fistpro > div body{
+
+      }
+      .mn-cnt-fistpro > div  th:hover{
+        background : #fff;
+        border     : 1px solid #d3d4d8;
+        border-bottom : none;
+      }
+      .mn-cnt-fistpro > div  td{
+        width  : 99px;
+        height : 28px;
+        border : 1px solid #d3d4d8;
+
+      }
+      .mn-cnt-fistdet{
+        width  : 352px;
+        height : 357px;
+      }
+      .mn-cnt-fistdet > div{
+        padding-top : 12px;
+        padding-left: 35px;
+      }
+      .mn-cnt-fistdet > div > div {
+        padding-left : 15px;
+        border-bottom : 1px solid #d3d4d8;
+      }
+      .mn-cnt-fistdet > div > div:nth-child(1) {
+        width        : 267px;
+      }
+      .mn-cnt-fistdet > div > div div:nth-child(1){
+        height : 20px;
+        line-height : 20px;
+      }
+      .mn-cnt-fistdet > div > div div:nth-child(2){
+        height : 25px;
+        line-height : 25px;
+        color : #535353;
+      }
+      .mn-cnt-fistdet > div > div:nth-child(2), .mn-cnt-fistdet > div > div:nth-child(3){
+        float : left;
+      }
+      .mn-cnt-fistdet > div > div:nth-child(2){
+        width        : 95px;
+        height       : 42px;
+        border-right : 1px solid #d3d4d8;
+      }
+      .mn-cnt-fistdet > div > div:nth-child(3){
+        width        : 220px;
+        height       : 42px;
+      }
+      .mn-cnt-fistdet > div > div:nth-child(4){
+        margin-top : 42px;
+        height  : 145px;
+      }
+      .mn-cnt-fistdet > div > div:nth-child(5){
+        height : 36px;
+        line-height : 36px;
+        padding-left : 4px;
+        border       : none;
+      }
+      .mn-cnt-fistdet > div > div:nth-child(5) > input:nth-child(1){
+        width : 14px;
+        height : 14px;
+        position : relative;
+        top : 3px;
+      }
+      .mn-cnt-fistdet > div > div:nth-child(5) > input:nth-child(3){
+        width  : 50px;
+        height : 25px;
+        float  : right;
+        margin : 5px 36px auto auto;
+        background : #388ac1;
+        color  : #fff;
+        cursor : pointer;
+      }
+      .mn-cnt-cand{
+        width  : 352px;
+        height : 357px;
+        margin-right : 8px;
+      }
+      .mn-cnt-cand > div{
+        padding-left : 20px;
+        padding-right: 20px;
+      }
+      .mn-cnt-cand > div > div{
+        width       : 310px;
+        height      : 41px;
+        line-height : 41px;
+        padding-left  : 2px;
+        padding-right : 2px;
+      }
+      .mn-cnt-cand > div > div > span{
+        color       : #535353;
+        height      : 22px;
+        line-height : 22px;
+        text-align  : center;
+        border : 1px solid #cbcbcb;
+        display : inline-block;
+        margin-right  : 6px;
+        padding-right : 19px;
+        box-sizing    : border-box;
+        cursor        : pointer;
+        background    : url('./img/mn-cnt-cand.png') no-repeat right 9px top 50%;
+      }
+      .mn-cnt-cand > div > div > span:nth-child(1){
+        width   : 64px;
+      }
+      .mn-cnt-cand > div > div > span:nth-child(2){
+        width   : 85px;
+        background-position : right 20px top 50%;
+      }
+      .mn-cnt-cand > div > div > span:nth-child(3){
+        width   : 75px;
+      }
+      .mn-cnt-cand > div > div > span:nth-child(4){
+        width        : 64px;
+        margin-right : 0;
+        padding-right : 0;
+      }
+      .mn-cnt-cand > div > table{
+        color    : #323333;
+        border-collapse : collapse;
+      }
+      .mn-cnt-cand > div > table  tr:nth-child(1){
+        border-top    : 1px solid #e1e1e1;
+        border-bottom : 1px solid #e1e1e1;
+        margin-bottom : 10px;
+      }
+      .mn-cnt-cand > div > table  tr:nth-child(2){
+        padding-top : 10px;
+      }
+      .mn-cnt-cand > div > table  th{
+        width : 44px;
+        height: 32px;
+      }
+      .mn-cnt-cand > div > table  td{
+        text-align : center;
+        width      : 42px;
+        height     : 42px;
+        margin     : 2px;
+      }
+      .mn-cnt-cand > div > table  tr:nth-child(2) td:nth-child(5) > span:nth-child(3),
+      .mn-cnt-cand > div > table  tr:nth-child(3) td:nth-child(2) > span:nth-child(3){
+        color : #c9161d;
+      }
+      .mn-cnt-cand > div > table  tr td:nth-child(6) > span:nth-child(1),
+      .mn-cnt-cand > div > table  tr td:nth-child(7) > span:nth-child(1){
+        color : #c9161d;
+      }
+      .mn-cnt-rank{
+        width  : 532px;
+        height : 357px;
+        border-radius : 8px;
+      }
+      .mn-cnt-rank > div{
+        padding-top  : 18px;
+        padding-left : 40px;
+      }
+      .mn-cnt-rank > div > table{
+        color     : #231815;
+        border-collapse : collapse;
+        border  : 1px solid #e1e1e1;
+      }
+      .mn-cnt-rank > div > table th, .mn-cnt-rank > div > table td{
+        border     : 1px solid #e1e1e1;
+        text-align : center;
+        display    : inline-block;
+        vertical-align : top;
+        box-sizing     : border-box;
+      }
+      .mn-cnt-rank > div > table th{
+        height : 28px;
+        line-height : 28px;
+      }
+      .mn-cnt-rank > div > table td{
+        height : 25px;
+        line-height : 25px;
+      }
+      .mn-cnt-rank  table th:nth-child(1),.mn-cnt-rank  table td:nth-child(1){
+        width  : 67px;
+      }
+      .mn-cnt-rank  table th:nth-child(2), .mn-cnt-rank  table td:nth-child(2){
+        width  : 91px;
+      }
+      .mn-cnt-rank  table th:nth-child(3),.mn-cnt-rank  table td:nth-child(3){
+        width  : 298px;
+        text-align : left;
+        padding-left : 34px;
+        position  : relative;
+      }
+
+      .mn-cnt-rank  table tr:nth-child(2){
+        background : #f4f6f7;
+      }
+      .mn-cnt-rank  table td  span{
+        display : inline-block;
+        height  : 4px;
+      }
+      .mn-cnt-rank  table td > span{
+        width   : 168px;
+        background : #dcdcdc;
+        position : absolute;
+        top : 50%;
+        left : 103px;
+      }
+      .mn-cnt-rank  table tr td > span > span{
+        background : #7ecaf0;
+        position : absolute;
+        top : 0;
+        left : 0;
+      }
+      .mn-cnt-rank  table tr:nth-child(2) td > span > span{
+        width : 142px;
+        background : #ec6e52;
+      }
+      .mn-cnt-rank  table tr:nth-child(3) td > span > span{
+        width : 122px;
+        background : #ee804f;
+      }
+      .mn-cnt-rank  table tr:nth-child(4) td > span > span{
+        width      : 105px;
+        background : #ee804f;
+      }
+      .mn-cnt-rank  table tr:nth-child(5) td > span > span{
+        width      : 98px;
+      }
+      .mn-cnt-rank  table tr:nth-child(6) td > span > span{
+        width      : 87px;
+      }
+      .mn-cnt-rank  table tr:nth-child(7) td > span > span{
+        width      : 81px;
+      }
+      .mn-cnt-rank  table tr:nth-child(8) td > span > span{
+        width      : 75px;
+      }
+      .mn-cnt-rank  table tr:nth-child(9) td > span > span{
+        width      : 65px;
+      }
+      .mn-cnt-rank  table tr:nth-child(10) td > span > span{
+        width      : 60px;
+      }
+      .mn-cnt-rank  table tr:nth-child(11) td > span > span{
+        width      : 55px;
+      }
+    </style>
+</head>
+<body>
+<div class="hd">
+  <div class="hd-wrap">
+    <div class="hd-icon">
+      <div></div>
+      <div></div>
+    </div>
+    <input id="hd-search" type="search" />
+    <label for="hd-search"></label>
+    <span>登录</span>
+  </div>
+</div>
+<div class="mn">
+<div class="mn-asd">
+  <div class="mn-asd-psninfo">
+    <div class="mn-psninfo-avtr">
+      <span class="mn-avtr-img"><img src="img/mn-avtr-img.png" /></span>
+      <span class="mn-avtr-name">ABC123</span>
+    </div>
+    <div class="mn-psninfo-dtl">
+      <div><div class="mn-psn-colnum">110</div>收藏</div>
+      <div><div class="mn-psn-fannum">313</div>粉丝</div>
+    </div>
+  </div>
+  <div class="mn-asd-list">
+      <ul>
+      <li >
+        <dl>
+          <dt class="mn-list-fir mn-asd-rep">个人报表</dt>
+          <dd>
+            <dl>
+              <dt class="nm-list-sec">文件一</dt>
+            </dl>
+          </dd>
+          <dd>
+            <dl>
+              <dt class="nm-list-sec">文件二</dt>
+              <dd class="nm-list-thi">文档一</dd>
+              <dd class="nm-list-thi">文档二</dd>
+            </dl>
+          </dd>
+        </dl>
+      </li>
+      <li>
+        <dl>
+          <dt class="mn-list-fir mn-asd-col">个人收藏</dt>
+        </dl>
+      </li>
+      <li>
+        <dl>
+          <dt class="mn-list-fir mn-asd-shar">我的分享</dt>
+        </dl>
+      </li>
+      <li>
+        <dl>
+          <dt class="mn-list-fir mn-asd-img">图库</dt>
+        </dl>
+      </li>
+      <li>
+        <dl>
+          <dt class="mn-list-fir mn-asd-grow">成长记录</dt>
+        </dl>
+      </li>
+      <li>
+        <dl>
+          <dt class="mn-list-fir mn-asd-acc">账户信息</dt>
+        </dl>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="mn-cnt">
+  <div class="mn-cnt-filetree">
+    <div class="mn-filetree-main">C站</div>
+    <div class="mn-filetree-router">/ 个人报表 / 文件一／<span class="mn-router-cur">文档一</span></div>
+  </div>
+  <div class="mn-cnt-wrap">
+    <div class="mn-cnt-bg"></div>
+    <div class="mn-cnt-sear clearfix">
+      <div class="mn-sear-item">
+        <div>查询项</div>
+        <div>第一项</div>
+      </div>
+      <div class="mn-sear-trade">
+        <div>买方<span>小A</span></div>
+        <div>卖方<span>小C</span></div>
+        <div class="mn-trade-img">
+          <span>换</span>
+        </div>
+      </div>
+      <div class="mn-sear-other">
+        <div class="mn-other-row1">
+          <div class="mn-row1-date">日期<span>2016-04-01</span></div>
+          <div class="mn-row1-time">总耗时<span>8 天</span></div>
+        </div>
+        <div class="mn-other-row2">
+          <div class="mn-row2-popu">人数<span>10人</span></div>
+          <div class="mn-row2-volu">成交量<span>10项</span></div>
+        </div>
+      </div>
+      <div class="mn-sear-btn">
+        搜索
+      </div>
+    </div>
+    <div class="mn-cnt-price">
+      <div class="mn-price-left"></div>
+      <div class="mn-price-month">
+        <div>
+          <div>10:00am</div>
+          <div>￥<span>1200</span></div>
+        </div>
+      </div>
+      <div class="mn-price-month">
+        <div>
+          <div>11:00am</div>
+          <div>￥<span>1300</span></div>
+        </div>
+      </div>
+      <div class="mn-price-month">
+        <div>
+          <div>12:am</div>
+          <div>￥<span>1400</span></div>
+        </div>
+      </div>
+      <div class="mn-price-month">
+        <div>
+          <div>01:am</div>
+          <div>￥<span>1500</span></div>
+        </div>
+      </div>
+      <div class="mn-price-month">
+        <div>
+          <div>02:am</div>
+          <div>￥<span>1600</span></div>
+        </div>
+      </div>
+      <div class="mn-price-month">
+        <div>
+          <div>03:am</div>
+          <div>￥<span>1700</span></div>
+        </div>
+      </div>
+      <div class="mn-price-righ"></div>
+      <div class="mn-price-hist">
+        历史查询
+      </div>
+    </div>
+    <div class="mn-cnt-static">
+      <h3>2016年4月份统计</h3>
+      <div>
+        <div>
+          <div>
+            <h4>133311</h4>
+            <span>成交量</span>
+          </div>
+          <div></div>
+        </div>
+        <div>
+          <div>
+            <h4>133311</h4>
+            <span>成交量</span>
+          </div>
+          <div></div>
+        </div>
+        <div>
+          <div>
+            <h4>133311</h4>
+            <span>成交量</span>
+          </div>
+          <div></div>
+        </div>
+        <div>
+          <div>
+            <h4>133311</h4>
+            <span>成交量</span>
+          </div>
+          <div></div>
+        </div>
+      </div>
+    </div>
+    <div class="mn-cnt-fistpro">
+      <h3 class="mn-cnt-proHead">第一组项目</h3>
+      <div>
+        <ul>
+          <li>
+            <table>
+              <tbody>
+                <tr><th>项目一</th></tr>
+                <tr><td>购买材料一</td><td>购买材料一</td><td>购买材料一</td><td>购买材料一</td></tr>
+                <tr><td>购买材料二</td><td>购买材料二</td><td>购买材料二</td><td>购买材料二</td></tr>
+                <tr><td>购买材料四</td><td>购买材料四</td><td>购买材料四</td><td>购买材料四</td></tr>
+                <tr><td>购买材料六</td><td>购买材料六</td><td>购买材料六</td><td>购买材料六</td></tr>
+                <tr><td>购买材料十三</td><td>购买材料十三</td><td>购买材料十三</td><td>购买材料十三</td></tr>
+                <tr><td>购买材料二十</td><td>购买材料二十</td><td>购买材料二十</td><td>购买材料二十</td></tr>
+              </tbody>
+            </table>
+          </li>
+          <li>
+            <table>
+              <tbody>
+              <tr><th>项目一</th></tr>
+              <tr><td>购买材料一</td><td>购买材料一</td><td>购买材料一</td><td>购买材料一</td></tr>
+              <tr><td>购买材料二</td><td>购买材料二</td><td>购买材料二</td><td>购买材料二</td></tr>
+              <tr><td>购买材料四</td><td>购买材料四</td><td>购买材料四</td><td>购买材料四</td></tr>
+              <tr><td>购买材料六</td><td>购买材料六</td><td>购买材料六</td><td>购买材料六</td></tr>
+              <tr><td>购买材料十三</td><td>购买材料十三</td><td>购买材料十三</td><td>购买材料十三</td></tr>
+              <tr><td>购买材料二十</td><td>购买材料二十</td><td>购买材料二十</td><td>购买材料二十</td></tr>
+              </tbody>
+            </table>
+          </li>
+          <li>
+            <table>
+              <tbody>
+              <tr><th>项目一</th></tr>
+              <tr><td>购买材料一</td><td>购买材料一</td><td>购买材料一</td><td>购买材料一</td></tr>
+              <tr><td>购买材料二</td><td>购买材料二</td><td>购买材料二</td><td>购买材料二</td></tr>
+              <tr><td>购买材料四</td><td>购买材料四</td><td>购买材料四</td><td>购买材料四</td></tr>
+              <tr><td>购买材料六</td><td>购买材料六</td><td>购买材料六</td><td>购买材料六</td></tr>
+              <tr><td>购买材料十三</td><td>购买材料十三</td><td>购买材料十三</td><td>购买材料十三</td></tr>
+              <tr><td>购买材料二十</td><td>购买材料二十</td><td>购买材料二十</td><td>购买材料二十</td></tr>
+              </tbody>
+            </table>
+          </li>
+          <li>
+            <table>
+              <tbody>
+              <tr><th>项目一</th></tr>
+              <tr><td>购买材料一</td><td>购买材料一</td><td>购买材料一</td><td>购买材料一</td></tr>
+              <tr><td>购买材料二</td><td>购买材料二</td><td>购买材料二</td><td>购买材料二</td></tr>
+              <tr><td>购买材料四</td><td>购买材料四</td><td>购买材料四</td><td>购买材料四</td></tr>
+              <tr><td>购买材料六</td><td>购买材料六</td><td>购买材料六</td><td>购买材料六</td></tr>
+              <tr><td>购买材料十三</td><td>购买材料十三</td><td>购买材料十三</td><td>购买材料十三</td></tr>
+              <tr><td>购买材料二十</td><td>购买材料二十</td><td>购买材料二十</td><td>购买材料二十</td></tr>
+              </tbody>
+            </table>
+          </li>
+          <li>
+            <table>
+              <tbody>
+              <tr><th>项目一</th></tr>
+              <tr><td>购买材料一</td><td>购买材料一</td><td>购买材料一</td><td>购买材料一</td></tr>
+              <tr><td>购买材料二</td><td>购买材料二</td><td>购买材料二</td><td>购买材料二</td></tr>
+              <tr><td>购买材料四</td><td>购买材料四</td><td>购买材料四</td><td>购买材料四</td></tr>
+              <tr><td>购买材料六</td><td>购买材料六</td><td>购买材料六</td><td>购买材料六</td></tr>
+              <tr><td>购买材料十三</td><td>购买材料十三</td><td>购买材料十三</td><td>购买材料十三</td></tr>
+              <tr><td>购买材料二十</td><td>购买材料二十</td><td>购买材料二十</td><td>购买材料二十</td></tr>
+              </tbody>
+            </table>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="mn-cnt-fistdet">
+      <h3 class="mn-cnt-proHead">第一组项目</h3>
+      <div >
+        <div>
+          <div>标题</div>
+          <div>项目报表三</div>
+        </div>
+        <div>
+          <div>价格</div>
+          <div>￥158</div>
+        </div>
+        <div>
+          <div>负责人</div>
+          <div>小A</div>
+        </div>
+        <div>
+          <div>详细描述</div>
+          <div>该项目目前负责人是......</div>
+        </div>
+        <div>
+          <input id="obeyRule" type="checkbox" name="obeyRule">
+          <label for="obeyRule">遵守保密协议</label>
+          <input type="button" value="搜索" />
+        </div>
+      </div>
+    </div>
+    <div class="mn-cnt-cand">
+      <h3 class="mn-cnt-proHead">日历</h3>
+      <div>
+        <div>
+          <span>2016年</span><span>4月</span><span>标注日期</span><span>返回今天</span>
+        </div>
+        <table>
+          <tbody>
+          <tr><th>一</th><th>二</th><th>三</th><th>四</th><th>五</th><th>六</th><th>日</th></tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><span>1</span><br /><span>愚人节</span></td>
+            <td><span>2</span><br /><span>甘五</span></td>
+            <td><span>3</span><br /><span>甘六</span></td>
+          </tr>
+          <tr>
+            <td><span>4</span><br /><span>甘七</span></td>
+            <td><span>5</span><br /><span>清明</span></td>
+            <td><span>6</span><br /><span>甘九</span></td>
+            <td><span>7</span><br /><span>三月</span></td>
+            <td><span>8</span><br /><span>初二</span></td>
+            <td><span>9</span><br /><span>初三</span></td>
+            <td><span>10</span><br /><span>初四</span></td>
+          </tr>
+          <tr>
+            <td><span>11</span><br /><span>初五</span></td>
+            <td><span>12</span><br /><span>初六</span></td>
+            <td><span>13</span><br /><span>初七</span></td>
+            <td><span>14</span><br /><span>初八</span></td>
+            <td><span>15</span><br /><span>初九</span></td>
+            <td><span>16</span><br /><span>初十</span></td>
+            <td><span>17</span><br /><span>十一</span></td>
+          </tr>
+          <tr>
+            <td><span>18</span><br /><span>十二</span></td>
+            <td><span>19</span><br /><span>十三</span></td>
+            <td><span>20</span></spna><br /><span>十四</span></td>
+            <td><span>21</span><br /><span>十五</span></td>
+            <td><span>22</span><br /><span>十六</span></td>
+            <td><span>23</span><br /><span>十七</span></td>
+            <td><span>24</span><br /><span>十八</span></td>
+          </tr>
+          <tr>
+            <td><span>25</span><br /><span>十九</span></td>
+            <td><span>26</span><br /><span>甘十</span></td>
+            <td><span>27</span><br /><span>甘一</span></td>
+            <td><span>28</span><br /><span>甘一</span></td>
+            <td><span>29</span><br /><span>甘二</span></td>
+            <td><span>30</span><br /><span>甘三</span></td>
+            <td></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="mn-cnt-rank">
+      <h3 class="mn-cnt-proHead">汽车行业品牌榜</h3>
+      <div>
+        <table>
+          <tbody>
+            <tr><th>排名</th><th>名牌</th><th>搜索指数</th></tr>
+            <tr><td>1</td><td>大众</td><td>48912001<span><span></span></span></td></tr>
+            <tr><td>2</td><td>丰田</td><td>29307333<span><span></span></span></td></tr>
+            <tr><td>3</td><td>奥迪</td><td>23139070<span><span></span></span></td></tr>
+            <tr><td>4</td><td>本田</td><td>22885564<span><span></span></span></td></tr>
+            <tr><td>5</td><td>福特</td><td>22324792<span><span></span></span></td></tr>
+            <tr><td>6</td><td>宝马</td><td>21444077<span><span></span></span></td></tr>
+            <tr><td>7</td><td>现代</td><td>20114969<span><span></span></span></td></tr>
+            <tr><td>8</td><td>起亚</td><td>19251860<span><span></span></span></td></tr>
+            <tr><td>9</td><td>奔驰</td><td>19172837<span><span></span></span></td></tr>
+            <tr><td>10</td><td>别克</td><td>18544027<span><span></span></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</body>
+</html>

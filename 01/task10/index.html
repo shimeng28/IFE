@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flex 布局</title>
+    <style>
+      body, div {
+        padding : 20px;
+        margin  : 0;
+      }
+      body{
+        display         : flex;
+        flex-direction  : row;
+        flex-wrap       : nowrap;
+        justify-content : space-between;
+        align-items     : center;
+      }
+      .flex-items{
+        width  : 150px;
+        border : 1px solid #f00;
+      }
+      .flex-items:last-of-type{
+        border-color: #0f0;
+      }
+      .flex-items:nth-of-type(1){
+        height : 120px;
+      }
+      .flex-items:nth-of-type(2){
+        height : 100px;
+      }
+      .flex-items:nth-of-type(3){
+        height : 40px;
+      }
+      .flex-items:nth-of-type(4){
+        height : 200px;
+      }
+      @media screen and (max-width:640px){
+        body{
+          flex-wrap : wrap;
+          align-items : flex-start;
+        }
+        .flex-items:last-of-type{
+          order : -1;
+        }
+      }  
+    </style>
+</head>
+<body>
+ <div class="flex-items"></div>
+ <div class="flex-items"></div>
+ <div class="flex-items"></div>
+ <div class="flex-items"></div>
+</body>
+</html>

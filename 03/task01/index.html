@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+<head>
+<title>表单一</title>
+<meta charset="UTF-8" />
+<style>
+	div.wrapper{
+		position:relative;
+	}
+	label{
+		font:bolder 30px  "SimSun";
+		margin-right:20px;
+	}
+	input{
+		width:200px;
+		height:30px;
+		font-size:16px;
+		margin:0 20px 40px 0;
+		border-radius:3px 3px;
+		outline:none;
+		border: 3px solid #666;
+	}
+	button{
+		width:80px;
+		height:40px;
+		background-color:rgb(0,144,255);
+		border-radius:2px;
+		border:1px solid rgb(0,144,255);
+	}
+	span.remind{
+		position:absolute;
+		top:42px;
+		left:80px;
+	}
+</style>
+</head>
+<body>
+	<div class="wrapper">
+	<label for="char_4_16">名称</label><input id="char_4_16" value="">
+	<button class="char_valide">验证</button>
+	<span class="remind">必填，长度为4~16个字符</span>
+	</div>
+
+	<div class="wrapper">
+	<label for="your_name">名称</label><input id="your_name" value="">
+	<button class="char_valide">验证</button>
+	<span class="remind">姓名不能为空</span>
+	</div>
+	
+	<div class="wrapper">
+	<label for="your_address">名称</label><input id="your_address" value="">
+	<button class="char_valide">验证</button>
+	<span class="remind">名字格式正确</span>
+	</div>
+
+	<script>
+	var valide =(function(){
+		var valide      = document.getElementsByClassName("char_valide");
+		//验证按钮 类数组
+		
+		var remind       = document.getElementsByClassName("remind");
+		//输入框下提醒内容
+		valide[0].onclick = function(){
+			function getStrCount(obj){   //获取输入字符长度
+				var value = obj.value;
+				var count = 0;
+				value.split("").forEach(function(index){
+					if(index.charCodeAt()<0xff)  count ++;  
+					//如果不是中文字符，长度加1
+					else count += 2;
+					//是中文字符长度加2
+				}); 
+				return {
+					"count" : count,
+					"value" : value
+				};//返回一个对象
+			}
+			var charInput  = document.getElementById("char_4_16");  //输入框
+			var char_input = getStrCount(charInput);  //输入框中内容信息 
+			var char_count = char_input.count; //字符长度
+			var char_value = char_input.value; //字符内容 没用到
+
+			if( char_count<=16 && char_count>=4 ){  //字符长度满足条件
+			  remind[0].innerHTML   = "输入正确";
+			  remind[0].style.color = "green"; 
+			} else {  //不满足条件
+			  remind[0].innerHTML   = "必填，长度为4~16个字符" ;
+			  remind[0].style.color = "red";
+			}
+		};
+		valide[1].onclick = function(){
+			var nameInput    = document.getElementById("your_name");
+			var value = nameInput.value;
+			if(!value){
+				nameInput.style.borderWidth = "2px";
+				nameInput.style.borderStyle = "solid";
+				nameInput.style.borderColor = "red";
+			} else{
+				nameInput.style.borderWidth = "2px";
+				nameInput.style.borderStyle = "solid";
+				nameInput.style.borderColor = "gray";
+			}
+		};
+		return true;
+	})();
+	</script>
+</body>
+</html>

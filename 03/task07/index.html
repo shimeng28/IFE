@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>7UI组件之列表排序</title>
+	<style>
+		*{
+			margin:0;
+			padding:0;
+		}
+		table.gradeStu{
+			font-size:20px;
+			border:1px solid black;
+			margin:30px 300px;
+			border-collapse:collapse;
+		}
+		table.gradeStu tr{
+			text-align: center;
+		}
+		table.gradeStu td,table.gradeStu th{
+			width:110px;
+			height:60px;
+			border:1px solid black;
+		}
+		table.gradeStu th{
+			font-weight : bold;
+			background-color:#333;
+			border: 1px solid #fff;
+			color:white;
+			position: relative;
+		}
+		div.upButt{
+			width:0;
+			height:0;
+			border-width: 10px;
+			border-style: solid;
+			border-color:#333 #333 #fff;
+			position:absolute;
+			top:3px;
+			right:5px;
+			cursor:pointer;
+		}
+		div.downButt{
+			width:0;
+			height:0;
+			border-width: 10px;
+			border-style: solid;
+			border-color:#fff #333 #333;
+			position:absolute;
+			bottom:3px;
+			right:5px;
+			cursor:pointer;
+		}
+	</style>
+</head>
+<body>
+<table class="gradeStu">
+	<tr>
+		<th >姓名</div></td>
+		<th >语文<div  class="downButt chinLess"></div><div class="upButt chinLess"></div></td>
+		<th >数学<div  class="downButt mathLess"></div><div class="upButt mathLess"></div></th>
+		<th >外语<div  class="downButt englLess"></div><div class="upButt englLess"></div></td>
+		<th >总分<div  class="downButt totalScore"></div><div class="upButt totalScore"></div></td>
+	</tr>
+	<tr class="stu"><td>小明</td><td>80</td><td>90</td><td>70</td><td>240</td></tr>
+	<tr class="stu"><td>小红</td><td>90</td><td>60</td><td>90</td><td>240</td></tr>
+	<tr class="stu"><td>小亮</td><td>60</td><td>100</td><td>70</td><td>230</td></tr>
+</table>
+<script>
+	var table_1 = document.querySelector(".gradeStu");
+	
+	table_1.onclick = function(event){
+		var event = event || window.event;
+		var target = event.target;
+		var currentTarget = event.currentTarget;
+		var sorted_tr = listSort(target);
+		var len       = sorted_tr.length;
+		for(var j=0; j<len; j++){
+			currentTarget.appendChild(sorted_tr[j]);
+		}
+
+		function listSort(target){
+			var classNameList = target.classList;
+			var thIdName = ["chinLess","mathLess","englLess","totalScore"];
+			var trObj = document.querySelectorAll(".stu");
+			var tr = Array.prototype.slice.call(trObj,0);
+			var len = tr.length;	
+			for(var clickIndex =0, clickLength=thIdName.length; clickIndex<clickLength; clickIndex++){
+				if(classNameList.contains(thIdName[clickIndex])){
+					sortClick(clickIndex+1);
+					break;
+				}
+			}
+			function sortClick(index){
+				if( classNameList.contains("downButt") ){
+				tr.sort(function(ele1,ele2){
+					var grade1 = Number(ele1.getElementsByTagName("td")[index].textContent);
+					var grade2 = Number(ele2.getElementsByTagName("td")[index].textContent);
+					return grade1 - grade2;});
+				} else {
+				tr.sort(function(ele1,ele2){
+					var grade1 = Number(ele1.getElementsByTagName("td")[index].textContent);
+					var grade2 = Number(ele2.getElementsByTagName("td")[index].textContent);
+					return grade2 - grade1;});
+				}
+			}
+			return tr;
+		}
+		
+		
+		
+
+	}
+</script>
+</body>
+</html>

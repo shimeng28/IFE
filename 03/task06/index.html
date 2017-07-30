@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>UI组件之浮出层</title>
+	<meta charset="UTF-8" />
+	<style>
+		*{
+			margin:0;
+			padding:0;
+			font-size:16px;
+		}
+		input{
+			width:100px;
+			height:50px;
+			margin:10px;
+		}
+		.float_wrap{
+			width:100%;
+			background-color: #ccc;
+			opacity:0.8;
+			filter:alpha(opacity=80);
+			display: none;
+			position:absolute;
+			top:0;
+			left:0;
+			z-index: 2;
+
+		}
+		.float_box{
+			width:50%;
+			background-color: #fff;
+			height:300px;
+			margin:20px 0;
+			position:fixed;
+			top:20px;
+			left:25%;
+			z-index: 3;
+
+		}
+		.float_header{
+			width:100%;
+			height:20%;
+			font-size:24px;
+			background-color:#666;
+		}
+		.float_button{
+			float:right;
+			margin:180px 20px 0;
+		}
+	</style>
+</head>
+<body>
+	<input type="button" value="弹出浮出层" class="popFloat">
+	<div class="float_wrap">
+		<div class="float_box">
+			<h2 class="float_header">这是一个浮出层</h2>
+			<div class="float_content">
+				<input type="button" value="确定" class="float_button" />
+				<input type="button" value="取消" class="float_button" />
+			</div>
+		</div>
+	</div>
+	
+	<script>
+		var pop_Float = document.getElementsByClassName("popFloat")[0];
+
+		var float_wrap = document.getElementsByClassName("float_wrap")[0];
+		var float_box = document.getElementsByClassName("float_box")[0];
+		var float_button = document.getElementsByClassName("float_button");
+		
+		for(var i=0, len=float_button.length; i<len; i++){
+			(function(i){
+				i = i;
+				addEventHandler(float_button[i],"click",floatClick);
+			}(i));
+		}
+		function floatClick(event){
+				float_wrap.style.display = "none";
+		}
+		addEventHandler(pop_Float,"click",popFloatHandler);
+		addEventHandler(float_wrap,"click",closeFloat);
+		function addEventHandler(ele,type,handler){
+			if(ele.addEventListener){
+				addEventHandler = function(ele,type,handler){
+					ele.addEventListener(type,handler,false);
+				};
+			} else {
+				addEventHandler = function(ele,type){
+					ele.attachEvent("on"+type,handler);
+				};
+			}
+			addEventHandler(ele,type,handler);			
+		}
+		function removeEventHandler(ele,type,handler){
+			if(ele.removeEventListener){
+				removeEventHandler = function(ele,type,handler){
+					ele.removeEventListener(type,handler,false);
+				};
+			} else {
+				removeEventHandler  = function(ele,type,handler){
+					ele.detachEvent("on"+type,handler);
+				};
+			}
+		}
+		function preventEvent(event){
+				event = event || window.event;
+				event.stopPropagation();
+				event.returnValue = false;
+		}
+		function popFloatHandler(event){
+			event = event || window.event;
+			var height = Math.max(document.body.clientHeight,document.body.scrollHeight);
+			float_wrap.style.height = height + "px";
+			float_wrap.style.display = "block";
+			addEventHandler(float_box,"click",preventEvent);
+			event.returnValue = false;
+			event.stopPropagation();
+		};
+		function closeFloat(event){
+			event = event || window.event;
+			var target = event.target;
+			if(target !== float_box){
+				float_wrap.style.display = "none";
+			}
+		}
+	</script>
+</body>
+</html>

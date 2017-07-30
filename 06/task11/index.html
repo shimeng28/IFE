@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,maximum-scale=1,initial-scale=1"/>
+  <title>简易Markdown编辑器</title>
+  <style>
+    body, div{
+      padding : 0;
+      margin  : 0;
+      box-sizing : border-box;
+    }
+    .clearfix::after{
+      display    : block;
+      content    : '';
+      height     : 0;
+      clear      : both;
+      overflow   : hidden;
+      visibility : hidden;
+    }
+    textarea{
+      padding    : 0;
+      outline    : none;
+      resize     : none;
+      box-sizing : border-box;
+    }
+    #markdown{
+      font-size : 20px;
+      width : 90%;
+      margin: 20px auto;
+    }
+    #markdown > div{
+      width         : 45%;
+      height        : 600px;
+      border        : 1px solid #03A9F4;
+      border-radius : 5px;
+      box-shadow    : 2px -2px 3px #6e8095;
+    }
+    .text-input{
+      float : left;
+    }
+    .text-input > textarea{
+      font-size : 20px;
+      width  : 100%;
+      height : 100%;
+      border : 1px solid #03A9F4;
+    }
+    .text-output{
+      float : right;
+      padding : 10px;
+      overflow: scroll;
+    }
+    .text-output code{
+      display: inline-block;
+      color : #fff;
+      background : #6e8095;
+      border     : 1px solid #6e8095;
+      padding    : 10px;
+    }
+    .text-output blockquote{
+      color   : #6e8095;
+      padding : 10px;
+    }
+  </style>
+</head>
+<body>
+  <div id="markdown" class="clearfix" >
+   <div class="text-input">
+     <textarea class="content-input"></textarea>
+   </div>
+   <div class="text-output"></div>
+  </div>
+<script>
+  var markdown = (function(){
+    //getInput => translate_tag => translate_strategy => translate_content => dispOutput
+    var configMap,          blockPatterns, getInput,
+        translate_strategy, translate_tag, translate_content,
+        dispOutput,         addEvent,      eventHandle,
+        init;
+
+    configMap = {
+      content      : null,
+      transTag     : null,
+      transContent : '',
+      contentInput : document.getElementsByClassName( 'content-input' )[0],
+      textOutput   : document.getElementsByClassName( 'text-output' )[0]
+    };
+
+    blockPatterns = [
+      { pattern : /^#\s+(.*)/,           name : 'h1'            },
+      { pattern : /^#{2}\s+(.*)/,        name : 'h2'            },
+      { pattern : /^#{3}\s+(.*)/,        name : 'h3'            },
+      { pattern : /^#{4}\s+(.*)/,        name : 'h4'            },
+      { pattern : /^#{5}\s+(.*)/,        name : 'h5'            },
+      { pattern : /^#{6}\s+(.*)/,        name : 'h6'            },
+      { pattern : /^<\s+(.*)/,           name : 'blockquote'    },
+      { pattern : /^\s*$/,               name : 'blank'         },
+      { pattern : /^!\[(.*)\]\((.*)\)$/, name : 'img'           },
+      { pattern : /^\[(.*)\]\((.*)\)$/,  name : 'link'          },
+      { pattern : /^[-|*]\s+(.*)/,       name : 'ul'            },
+      { pattern : /^[0-9]+\.\s+(.*)/,    name : 'ol'            },
+      { pattern : /^\*{3}\s*(.*)/,       name : 'hr'            },
+      { pattern : /(.*)/,                name : 'p'             }
+    ];
+
+    getInput  = function(){
+      configMap.content = configMap.contentInput.value.split('\n');
+    };
+
+    translate_strategy  = function( name, resultArr, matchContent, matchAddress ){
+      switch( name ){
+        case 'img'  :
+        case 'link' :
+          resultArr.push( { content : matchContent, address: matchAddress, type : name });
+        break;
+        case 'hr'   :
+          resultArr.push( { content : '',  type : name  } );
+        break;
+        case 'ul' :
+        case 'ol' :
+          if( resultArr.length > 0 && resultArr[ resultArr.length -1 ].type === name )
+            resultArr[ resultArr.length -1 ].content.push( matchContent );
+          else{
+            resultArr.push( { content : [ matchContent ], type : name   } );
+          }
+        break;
+        default :
+          resultArr.push( { content : matchContent, type : name } );
+        break;
+      }
+    };
+
+    translate_tag  = function() {
+      var content = configMap.content,
+          key, matchAddress,
+          result  = [], matchStr = '';
+      content.forEach(function ( cnt ){
+        for( key = 0; key <  blockPatterns.length; key++  ){
+          patternMap = blockPatterns[ key ];
+          if ( patternMap.pattern.test( cnt ) ) {
+            matchStr = RegExp.$1;
+            matchAddress = RegExp.$2 || '';
+            translate_strategy( patternMap.name , result, matchStr, matchAddress );
+            break;
+          }
+        }
+      });
+      configMap.transTag = result;
+    };
+
+    translate_content = function(){
+      var content = configMap.transTag,
+          result  = [], replaceStr;
+
+      replaceStr = function ( str ){
+          var startIndex, endIndex;
+          if( !str ) return '';
+          startIndex = str.indexOf( '`' );
+          endIndex   = str.indexOf( '`', startIndex + 1 );
+
+          if( startIndex === -1 || endIndex === -1 ){
+            return str.replace( /\*\*(.+?)\*\*/g, '<strong>'+ '$1' + '</string>' )
+                .replace( /\*(.+?)\*/g,     '<em>' + '$1' + '</em>'        );
+          }
+          else {
+            return replaceStr( 0, startIndex )
+                   + '<code>'
+                   + str.substring( startIndex+1, endIndex )
+                   + '</code>'
+                   + replaceStr( str.substring( endIndex + 1 ) );
+          }
+        };
+      for ( var cntMap of content ){
+        switch( cntMap.type ){
+          case 'blank' :
+          continue;
+          case 'pre' :
+            result.push( '<pre>' + cntMap.content + '</pre>' );
+          continue;
+          case 'img':
+            result.push( '<img src="' + cntMap.address + '" alt=' + cntMap.content + '/>' );
+          continue;
+          case 'link' :
+            result.push( '<a href="' + cntMap.address + '">' + cntMap.content + '</a>' );
+          continue;
+          case 'ul' :
+          case 'ol' :
+            var list = '';
+            cntMap.content.forEach( function( value ){
+              list += '<li>' + replaceStr( value ) + '</li>';
+            } );
+            result.push( '<' + cntMap.type + '>' + list + '</' + cntMap.type + '>' );
+          continue;
+          default   :
+            result.push( '<' + cntMap.type + '>' + replaceStr( cntMap.content ) + '</' + cntMap.type + '>' );
+        }
+      }
+      configMap.transContent = result.join('');
+
+    };
+
+    dispOutput = function(){
+      configMap.textOutput.innerHTML = configMap.transContent;
+    };
+
+    addEvent      = function( ele, type, fn ){
+      if( ele.addEventListener ){
+        addEvent = function( ele, type, fn ){
+          ele.addEventListener( type, fn, false );
+        }
+      }
+      else if( ele.attachEvent ){
+        addEvent = function( ele, type, fn ){
+          ele.attachEvent( type, fn );
+        }
+      }
+      else {
+        addEvent = function( ele, type, fn ){
+          ele[ 'on' + type ] = fn;
+        }
+      }
+      addEvent( ele, type, fn );
+    };
+    eventHandle   = function(){
+      getInput();
+      translate_tag();
+      translate_content();
+      dispOutput();
+    };
+
+    init   = function(){
+      addEvent( configMap.contentInput, 'keyup', eventHandle );
+    };
+
+    return init();
+  })();
+</script>
+</body>
+</html>

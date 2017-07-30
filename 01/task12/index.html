@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>学习CSS3的新特性</title>
+<style>
+  body, div{
+    padding : 0;
+    margin  : 0;
+    box-sizing : border-box;
+  }
+  body {
+    text-align : center;
+  }
+  table{
+    width     : 274px;
+    margin    : 0 auto;
+  }
+  th, td{
+    height     : 25px;
+    text-align : left;
+  }
+  tr:nth-child(2n+1){
+    background : #ccc;
+  }
+  tr{
+    color  : red;
+  }
+  tr:nth-child(n+5){
+    color  : #000;
+  }
+  tr:nth-child(1){
+      color      : #fff;
+      background : #000;
+  }
+  tr > th:nth-child(1){
+    width : 40px;
+  }
+  tr > th:nth-child(2){
+    width : 160px;
+  }
+  tr > th:nth-child(3){
+    width : 60px;
+  }
+  #transition{
+    width  : 50px;
+    margin-top : 50px;
+    height : 30px;
+    border : 2px solid #c3c3c3;
+    border-radius : 4px;
+    transition    : all 1s;
+  }
+    #transition:focus{
+      width  : 150px;
+      border : 2px solid #03A9F4;
+    }
+  #switchTagCon{
+    width : 400px;
+    height: 200px;
+    margin : 30px auto;
+    border : 1px solid #6e8095;
+    position : relative;
+    overflow : hidden;
+    font-size : 0;
+  }
+  #switchTagCon > a{
+    font-size : 16px;
+    display : inline-block;
+    position : absolute;
+    bottom : 0;
+    width : 50px;
+    height : 50px;
+    text-align : center;
+    line-height: 50px;
+    background-color : #c3c3c3;
+    opacity : 0.5;
+    text-decoration : none;
+    border : 1px solid #fff;
+    z-index : 3;
+  }
+  #switchTagCon > a:nth-of-type(1){
+    right : 100px;
+  }
+  #switchTagCon > a:nth-of-type(2){
+    right : 50px;
+  }
+  #switchTagCon > a:nth-of-type(3){
+    right : 0;
+  }
+  #switchTagCon > a:nth-of-type(1):hover ~ #switchTag{
+    transform : translateX( 0 );
+  }
+  #switchTagCon > a:nth-of-type(2):hover ~ #switchTag{
+    transform : translateX( -400px );
+  }
+  #switchTagCon > a:nth-of-type(3):hover ~ #switchTag{
+    transform : translateX( -800px );
+  }
+  #switchTag{
+    width : 1200px;
+    height : 200px;
+  }
+  #switchTag > div{
+    display: inline-block;
+    width : 400px;
+    height : 200px;
+    color : #d45d5c;
+  }
+  #tag1{
+    background-color : #03A9F4;
+  }
+  #tag2{
+    background-color : #11456b;
+  }
+  #tag3{
+    background-color : #c9161d;
+  }
+</style>
+</head>
+<body>
+  <table>
+    <tr><th>排名</th><th>网站</th><th>热度</th></tr>
+    <tr><td>1.</td><td>百度前端技术学院</td><td>13000</td></tr>
+    <tr><td>2.</td><td>百度前端技术学院</td><td>12000</td></tr>
+    <tr><td>3.</td><td>百度前端技术学院</td><td>11000</td></tr>
+    <tr><td>4.</td><td>百度前端技术学院</td><td>10000</td></tr>
+    <tr><td>5.</td><td>百度前端技术学院</td><td>9000</td></tr>
+    <tr><td>6.</td><td>百度前端技术学院</td><td>8000</td></tr>
+    <tr><td>7.</td><td>百度前端技术学院</td><td>7000</td></tr>
+    <tr><td>8.</td><td>百度前端技术学院</td><td>6000</td></tr>
+    <tr><td>9.</td><td>百度前端技术学院</td><td>5000</td></tr>
+    <tr><td>10.</td><td>百度前端技术学院</td><td>4000</td></tr>
+  </table>
+  <input type="text" id="transition">
+  <div id="switchTagCon">
+   <a href="#tag">1</a>
+   <a href="#tag">2</a>
+   <a href="#tag">3</a>
+   <div id="switchTag">
+     <div id="tag1"></div>
+     <div id="tag2"></div>
+     <div id="tag3"></div>
+   </div>
+  </div>
+</body>
+</html>

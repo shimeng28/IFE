@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>移动Web页面布局实践</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,
+ minimum-scale=1, user-scale=no" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<style>
+  html{
+    font-size   : 62.5%;
+  }
+  body, div,h1, h2, h3, ul, li{
+    font-family : "Helvetica Neue", Helvetica, STHeiTi, sans-serif;
+    margin      : 0;
+    padding     : 0;
+    box-sizing  : border-box;
+  }
+  ul{
+    list-style : none;
+  }
+  a, img{
+    -webkit-touch-callout : none;
+  }
+</style>
+<style>
+  .header > header  {
+    color       : #fff;
+    font-size   : 2.4rem;
+    height      : 5.7rem;
+    line-height : 5.7rem;
+    background  : #91d4da;
+    text-align  : center;
+    position    : relative;
+  }
+  .header > header > h1{
+    font-size   : 2.4rem;
+  }
+  .header > header > div{
+    font-size   : 2.4rem;
+    height      : 5.7rem;
+    line-height : 5.7rem;
+    position   : absolute;
+    top        : 0;
+    left       : 1.4rem;
+    padding-left: 3rem;
+    cursor      : pointer;
+  }
+  .header > header > div > img{
+    max-width  : 2.6rem;
+    width      : 2.6rem;
+    height     : 3.0rem;
+    max-height : 3.0rem;
+    position   : absolute;
+    top        : 1.4rem;
+    left       : 0;
+  }
+  .header > nav > ul {
+    font-size      : 2.4rem;
+    height         : 5.8rem;
+    display        : flex;
+    flex-direction : row;
+    flex-wrap      : nowrap;
+    align-items    : center;
+    justify-content: space-around;
+  }
+  .header > nav  li{
+    width      : 20%;
+    height     : 5.8rem;
+    line-height: 5.8rem;
+    text-align : center;
+    cursor     : pointer;
+  }
+    .header > nav  li:hover{
+      border-bottom : 0.4rem solid #91d4da;
+    }
+  .header > div{
+    height  : 27.4rem;
+  }  
+  .header > div > img{
+    max-width : 100%;
+    max-height: 27.4rem;
+    width     : 100%;
+    height    : 27.4rem;
+  }
+  main > header{
+    padding-left  : 1.5rem;
+    padding-right : 1.5rem;
+  }
+  main > header > div:nth-child(1){
+    height     : 14.6rem;
+    display    : flex;
+    flex-flow  : row nowrap;
+    justify-content : space-around;
+    align-items     : baseline;
+    border-bottom   : 0.3rem solid #dedede;
+  }
+  main > header > div:nth-child(1) > div{
+    width      : 20%;
+    height     : 14.6rem;
+    text-align : center;
+    padding-top : 2.0rem;
+  }
+  main > header > div:nth-child(1) > div > img{
+    max-width : 6.0rem;
+    max-height: 6.0rem;
+    width     : 6.0rem;
+    height    : 6.0rem; 
+  }
+  main > header > div:nth-child(1) > div > div{
+    font-size      : 2rem;
+    height      : 6.3rem;
+    line-height : 6.3rem;
+    text-align : center;
+  }
+  main > header > div:nth-child(2){
+    height         : 22.8rem;
+    padding-top    : 2.0rem;
+    padding-bottom : 2.0rem;  
+    display        : flex;
+    flex-flow      : row nowrap;
+    justify-content: space-around;
+  }
+  main > header > div:nth-child(2) > div{
+    width         : 33%;
+    height        : 18.9rem;
+    padding-top   : 1.1rem;
+    margin-bottom : 2.0rem;
+    text-align  : center;
+  }
+  main > header > div:nth-child(2) > div:nth-child(1),
+  main > header > div:nth-child(2) > div:nth-child(2){
+    border-right : 0.2rem solid #e5e5e5;
+  }
+  main > header > div:nth-child(2) > div > img{
+    width   : 6.3rem;
+    height  : 8.8rem;
+  }
+  main > header > div:nth-child(2) > div > hgroup{
+    display: flex;
+    flex-flow : column nowrap;
+    justify-content: space-between;
+  }
+  main > header > div:nth-child(2) > div  h2{
+    font-size   : 2.4rem; 
+  }
+  main > header > div:nth-child(2) > div  h3{
+    font-size   : 2rem;
+    color       : #595959;
+  }
+  main > .module{
+    height        : 34.7rem;
+    border-top    : 1.8rem solid #dedede;
+    padding-left  : 1.5rem;
+    padding-right : 1.5rem;
+  }
+  main > .module > h2{
+    font-size   : 2.4rem;
+    height      : 6.0rem;
+    line-height : 6.0rem;
+    border-bottom : 0.2rem solid #dedede;
+  }
+  main > .module > div{
+    padding-top : 1.8rem; 
+  }
+  main > .module > div > div{
+    display : flex;
+    flex-flow : row nowrap;
+    justify-content : space-between;
+    margin-bottom   : 1.2rem;
+  }
+  main > .module > div > div > div{
+    width  : 40%;
+    height : 40%;
+  }
+  main > .module > div > div > div > img,
+  main > .artiList > div:nth-child(3) > div > div > img{
+    width  : 100%;
+    max-width : 100%;
+    height    : 11.4rem;
+    max-height: 11.4rem;
+  }
+  main > .module > div > div > .arti{
+    width        : 15.8rem;
+    margin-left  : 2rem;
+    margin-right : 2rem;
+  }
+  main > .module > div > div > .arti:nth-child(3){
+    margin-right : 0;
+  }
+  main > .module > div > div > .arti > div{
+    font-size   : 1.8rem;
+    height      : 5.0rem;
+    line-height : 5.0rem;
+    margin-bottom : 1.4rem;
+    background-color : #dedede;
+    text-align    : center;
+  }
+  main > .artiList{
+    border-top  : 1.8rem solid #dedede;
+  } 
+  main > .artiList > div{
+    margin : 1.0rem auto auto 1rem;
+    width  : 85%;
+    height : 12.4rem;
+    display : flex;
+    flex-flow : row nowrap;
+    justify-content : flex-start;
+    border-bottom   : 0.2rem solid #dedede;
+  }
+  main > .artiList > div > div:first-child{
+    width  : 14.0rem;
+    height : 10.0rem;
+    margin-right : 4%;
+  }
+  main > .artiList > div > div > img{
+    width      : 14.0rem;
+    height     : 10.0rem;
+    max-width  : 14.0rem;
+    max-height : 14.0rem;
+  }
+  main > .artiList > div > div:nth-child(2){
+    width     : 60%;
+  }
+  main > .artiList > div > div:nth-child(2) > h3{
+    color     : #656565;
+    font-size : 2rem;
+    height    : 7.8rem;
+  }
+  main > .artiList > div > div:nth-child(2) > div{
+    width     : 100%;
+    font-size : 1.8rem;
+    color     : #c3c3c3;
+  }
+  main > .artiList > div > div:nth-child(2) > div > span{
+    margin-right : 2%;
+  }
+  main > .artiList > div:nth-child(3){
+    display: block;
+    height : 19.3rem;
+    border-bottom : none;
+  }
+  main > .artiList > div:nth-child(3) > h3{
+    width     : 100%;
+    color     : #656565;
+    font-size : 1.8rem;
+    height : 4.8rem;
+    line-height : 4.8rem;
+  }
+  main > .artiList > div:nth-child(3) > div:nth-child(2){
+    display   : flex;
+    flex-flow : row nowrap;
+    justify-content : space-around;
+    width     : 100%;
+  }
+   main > .artiList > div:nth-child(3) > div:nth-child(2) > div{
+    width : 33%;
+   }
+  main > .artiList > div:nth-child(3) > div:nth-child(3){
+    width     : 100%;
+    font-size : 1.8rem;
+    color     : #c3c3c3;
+  }
+  main > .artiList > div:nth-child(3) > div:nth-child(3) > span{
+    margin-right : 2%;
+  }
+  footer{
+    width : 100%;
+    height: 6.6rem;
+    background : #f8f8f8;
+  }
+  @media screen and (min-width:768px){
+    body{
+      width : 768px;
+      margin: 0 auto;
+    }  
+  }
+  @media screen and (max-width:768px){
+    body{
+      width : 100%;
+    }
+  }
+</style>
+</head>
+<body>
+ <header class="header">
+  <header>
+    <h1>这是标题</h1>
+    <div><img src="imgs/return_icon.png" />返回</div>
+  </header>    
+  <nav>
+    <ul>
+      <li>导航</li>
+      <li>导航</li>
+      <li>导航</li>
+      <li>导航</li>
+      <li>导航</li>
+    </ul>
+  </nav>
+  <div><img src="imgs/banner.png" /></div>
+ </header>  
+ <main>
+   <header>
+     <div>
+       <div><img src="imgs/flag.png"/><div>标签</div></div>
+       <div><img src="imgs/flag.png"/><div>标签</div></div>
+       <div><img src="imgs/flag.png"/><div>标签</div></div>
+       <div><img src="imgs/flag.png"/><div>标签</div></div>
+       <div><img src="imgs/flag.png"/><div>标签</div></div>
+     </div>
+     <div>
+       <div>
+         <img src="imgs/division.png" alt="分栏一" />
+         <hgroup>
+           <h2>分栏一</h2>
+           <h3>分栏小标题</h3>
+         </hgroup>
+       </div>
+       <div>
+          <img src="imgs/division.png" alt="分栏二" />
+          <hgroup>
+            <h2>分栏二</h2>
+            <h3>分栏小标题</h3>
+          </hgroup>
+       </div>
+       <div>
+         <img src="imgs/division.png" alt="分栏三" />
+         <hgroup>
+           <h2>分栏三</h2>
+           <h3>分栏小标题</h3>
+         </hgroup>
+       </div>
+     </div>
+   </header>
+   <article class='module'>
+     <h2>模块一</h2>
+     <div>
+       <div>
+         <div><img src="imgs/article_icon.png" alt="这是文案" /></div>
+         <div class="arti">
+           <div>这是文案</div>
+           <div>这是文案</div>
+         </div>
+         <div class="arti">
+           <div>这是文案</div>
+           <div>这是文案</div>
+         </div>
+       </div>
+       <div>
+         <div><img src="imgs/article_icon.png" alt="这是文案" /></div>
+         <div class="arti">
+           <div>这是文案</div>
+           <div>这是文案</div>
+         </div>
+         <div class="arti">
+           <div>这是文案</div>
+           <div>这是文案</div>
+         </div>
+       </div>
+     </div>
+   </article>
+   <article class='module'>
+     <h2>模块二</h2>
+     <div>
+       <div>
+         <div><img src="imgs/article_icon.png" alt="这是文案" /></div>
+         <div class="arti">
+           <div>这是文案</div>
+           <div>这是文案</div>
+         </div>
+         <div class="arti">
+           <div>这是文案</div>
+           <div>这是文案</div>
+         </div>
+       </div>
+       <div>
+         <div><img src="imgs/article_icon.png" alt="这是文案" /></div>
+         <div class="arti">
+           <div>这是文案</div>
+           <div>这是文案</div>
+         </div>
+         <div class="arti">
+           <div>这是文案</div>
+           <div>这是文案</div>
+         </div>
+       </div>
+     </div>
+   </article>
+   <article class="artiList">
+     <div>
+       <div>
+         <img src="imgs/artilist_head.png" />
+       </div>
+       <div>
+         <h3>这是文章标题字号是22的文章标题</h3>
+         <div><span>文章来源</span><span>6分钟前</span></div>
+       </div>
+     </div>
+     <div>
+       <div>
+         <img src="imgs/artilist_head.png" />
+       </div>
+       <div>
+         <h3>这是另一个文章标题</h3>
+         <div><span>文章来源</span><span>7分钟前</span></div>
+       </div>
+     </div>
+     <div>
+       <h3>这是文章标题字号是22的文章标题</h3>
+       <div>
+         <div><img src="imgs/artilist_head.png" /></div>
+         <div><img src="imgs/artilist_head.png" /></div>
+         <div><img src="imgs/artilist_head.png" /></div>
+       </div>
+       <div>
+         <span>文章来源</span><span>7分钟前</span>
+       </div>
+     </div>
+   </article>
+ </main>
+ <footer></footer>
+</body>
+</html>

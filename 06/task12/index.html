@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,maximum-scale=1,initial-scale=1"/>
+  <title>CSS3饼状loading效果</title>
+  <style>
+    body, div{
+      padding : 0;
+      margin  : 0;
+    }
+    #loading{
+      width : 100px;
+      height : 100px;
+      margin : 30px auto;
+      border : 1px solid #c9161d;
+      border-radius : 100px;
+      border-left-color : transparent;
+
+      font-size : 0;
+      position : relative;
+
+      animation : bordercolor 1s linear infinite;
+    }
+    #loading > span{
+      display : inline-block;
+      width : 80px;
+      height : 40px;
+      border-top-left-radius : 40px;
+      border-top-right-radius : 40px;
+      position : absolute;
+      left     : 50%;
+      top      : 50%;
+
+      margin : -40px auto auto -40px;
+    }
+    #loading > .bgcircle{
+      width : 0;
+      height : 0;
+      border-width : 40px;
+      border-style : solid;
+      border-radius : 40px;
+      border-left-color   : #cc8091;
+      border-top-color    : #cc8091;
+      border-right-color  : #c9161d;
+      border-bottom-color : #c9161d;
+
+      transform : rotate( -135deg );
+    }
+    #loading > .littlered{
+      transform-origin : 50% 100%;
+      background-color    : #c9161d;
+      animation : little 1s linear  infinite;
+    }
+    #loading > .darkred{
+      transform-origin : 50% 100%;
+      background-color : #cc8091;
+      animation           : dark 1s linear  infinite;
+    }
+    @keyframes  bordercolor {
+      0%   { transform : rotate( 0deg ); }
+      100% { transform : rotate( 360deg); }
+    }
+    @keyframes  dark {
+      0%    { transform : rotate( 0deg );              }
+      25%   { transform : rotate( 180deg);             }
+      50%   { transform : rotate( 180deg );            }
+      75%   { transform : rotate( 360deg );            }
+      100%  { transform : rotate( 360deg);             }
+    }
+    @keyframes  little {
+      0%      { transform : rotate( 0deg );   }
+      25%     { transform : rotate( 0deg );    }
+      25.001% { transform : rotate( 0deg );    z-index : 2; }
+      50%     { transform : rotate( 180deg );   }
+      75%     { transform : rotate( 180deg );   }
+      75.001% { transform : rotate( 180deg );  z-index : 1;  }
+      100%    { transform : rotate( 360deg);   }
+    }
+  </style>
+</head>
+<body>
+<!--
+bgcircle 作为一个底层圆，分为两半不同的颜色
+littlered 和 darkred 均为半圆， 颜色各不相同
+刚开始 darkred , littlered均在bgcircle其中一半的上面， 另一半的颜色和darkred的颜色相同
+0-25% dark旋转180度，littlered暂时不动
+25-50% littlered旋转180度，并且设置z-index使其在最上面 dark暂时不动
+50-75% dark旋转180度，littlered暂时不动
+75-100% littlered旋转180度，并且设置z-index=1使其在下面 dark暂时不动
+
+-->
+<div id="loading">
+  <span class="bgcircle"></span>
+  <span class="littlered"></span>
+  <span class="darkred"></span>
+</div>
+
+</body>
+</html>

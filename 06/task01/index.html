@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,maximum-scale=1,initial-scale=1"/>
+<title>有趣的鼠标悬浮模糊效果</title>
+<style>
+  body, div{
+    margin     : 0;
+    padding    : 0;
+    box-sizing : border-box;
+  }
+  .background{
+    width   : 400px;
+    height  : 200px;
+    margin  : 10px auto;
+    background          : url("./img/bg_1.jpg") no-repeat 0 0;
+  }
+  .background::before{
+    content : " ";
+    display : table-cell;
+  }
+  .mask{
+    width   : 300px;
+    height  : 180px;
+    display : flex;
+    align-items : center;
+    justify-content  : center;
+    margin-left : 50px;
+    margin-top  : 10px;
+    transition  : border-width  linear;
+  }
+  .mask:hover{
+    border : 2px solid #fff;
+  }
+
+  .mask > a{
+    text-align      : center;
+    text-decoration : none;
+    opacity  : 0;
+    transition : opacity 1s linear;
+    background-image : -webkit-linear-gradient(left,yellow 0%,green 25%,red 50%,blue 75%,yellow 100%);
+    -webkit-background-clip : text;
+    -webkit-text-fill-color : transparent;
+    background-size : 200% 100%;
+  }
+  .mask > a:hover{
+    opacity : 1;
+    animation : gradient1 2s linear infinite;
+  }
+  @keyframes gradient1{
+    from{ background-position : 0 0; }
+    to  { background-position : -100% 0; }
+  }
+</style>
+</head>
+<body>
+<!--思路-->
+<!--
+背景图片放在外部div中
+模糊效果在内部div中
+
+内部div的background-image设置为css渐变
+并将背景图片高度设置为内部div长度的两倍， 高度一样
+高度设置为内部div长度的两倍为了显示动画
+-->
+  <div class="background">
+    <div class="mask">
+      <a href="http://ife.baidu.com/">
+        欢迎参加百度前端技术学院
+        <br />
+        点击报名
+      </a>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,maximum-scale=1,initial-scale=1"/>
+  <title>封装DOM动画类库（一）</title>
+  <style>
+    body, div{
+        padding : 0;
+        margin : 0;
+    }
+    body{
+      position : relative;
+    }
+    #test{
+        width : 100px;
+        height : 100px;
+        background: red;
+        position : absolute;
+        top : 0;
+        left : 0;
+    }
+    button{
+      width  : 80px;
+      height : 50px;
+      background-color : #03A9F4;
+      position : absolute;
+    }
+    #begin{
+      top : 50px;
+      right : 350px;
+    }
+    #paused{
+      top : 50px;
+      right : 250px;
+    }
+    #continue{
+      top : 150px;
+      right : 300px;
+    }
+  </style>
+</head>
+<body>
+<div id="test"></div>
+
+<button id="beginBtn"    >动画开始</button>
+<button id="pausedBtn"   >动画暂停</button>
+<button id="continueBtn" >动画继续</button>
+
+<script src="index.js"></script>
+<script>
+  var test = document.getElementById( 'test' );
+  var aniExecute = {
+    beginBtn    : function(){
+      var beginTag = false;
+      if( !beginTag ){  //点击开始动画按钮只能开启动画一次
+        beginTag = true;
+        Animation( test ).animation([ 'left', 'top', 'height' ],
+          [
+            {
+              endProperty : 100, duration : 300, easing : 'linear',
+              startFn : function(){ alert( '动画开始'); },
+              endFn   : function(){ alert( '动画结束'); }
+            },
+            { endProperty : 100, duration : 300, easing : 'linear' },
+            { endProperty : 0,   duration : 300, easing : 'easeIn' }
+          ]
+        );
+      }
+
+    },
+    pausedBtn   : function(){
+      Animation( test ).stop();
+    },
+    continueBtn : function(){
+      Animation( test ).continue();
+    }
+  };
+  document.body.addEventListener( 'click', function( event ){
+    var target = event.target;
+    aniExecute[target.id]();
+  }, false );
+
+</script>
+</body>
+</html>

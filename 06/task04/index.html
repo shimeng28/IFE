@@ -1,0 +1,116 @@
+<!doctype html>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>动态数据绑定三</title>
+</head>
+<body>
+<script type="text/javascript">
+function Observer(data,path){
+  this.data = data;
+  path = path || null;
+  this.walk(this.data, data,path);  //将对象中防止数据的地址传入， 数据， 路径
+  this.eventBus = new Event();
+}
+Observer.prototype.walk = function(basePath, data, path){
+  var val,tempPath,havePath;
+  for(var key in data){   //深度复制
+	if(data.hasOwnProperty(key)){  //对象自有属性
+	  val = data[key];
+	  if(typeof val === "object"){
+		this.walk(basePath[key], val,key);
+		//深层对象将其内属性设置为 ex: app1.data.grade.class
+		//不通过new Observer， 因为会造成内部对象和外部对象作用域不同，从而造成事件队列不同
+		return;
+	  }
+	  if(!path) ;  //如果没有初始路径,略过
+	  else {          //有基路径， 将其保存，使用过后在后面恢复
+		havePath = true;
+		tempPath = path;
+		path += "." + key;
+	  }
+	  this.convert(basePath, key, val, path);
+	  if(havePath) path = tempPath;  //恢复原有基路径
+	}
+  }
+};
+Observer.prototype.convert = function(basePath, key, val, path){
+  var that  = this;
+  Object.defineProperty(basePath, key, {
+	enumerable : true,
+	configurable : true,
+	get : function(){
+	  console.log("你访问了"+ key);
+	  return val;
+	},
+	set : function(newValue){
+	  var ev = that.eventBus.emit(key, newValue);
+        if(!ev) console.log("你设置了"+key+", "+"它的新值为" + newValue);
+
+        if(path){   //事件向上传播
+		  path = path.split(".");
+		  path.pop();
+		  while(path.length){
+			var type = path.pop();
+			that.eventBus.emit(type);
+		  }
+        }
+        val = newValue;
+        if(typeof newValue === "object") that.walk(basePath[key], newValue, key);
+
+	}
+});
+};
+Observer.prototype.$watch = function(type, fn){
+	if(!this.eventBus.events[type]) this.eventBus.events[type] = [];
+	this.eventBus.events[type].push(fn);
+};
+
+function Event(){  //事件构造函数
+	this.events = {};
+}
+Event.prototype = {
+	on : function(type , fn){
+		if(!this.events[type]) this.events[type] = [];
+		this.events[type].push(fn);
+	},
+	off : function(type, fn){
+		this.events[type].forEach(function(fn0, index){
+			if(fn0 === fn){
+				this.splice(index, 1);
+			}
+		});
+	},
+	emit : function(type, argu){
+		if(this.events[type] && this.events[type].length){
+			this.events[type].forEach(function(fn){
+				fn(argu);
+			});
+			this.events[type].length = 0;
+			return true;
+		}
+		return false;
+	}
+};
+Event.prototype.constructor = Event;  //重新将原型指向原构造函数
+
+var data1 = {
+	name : "xiaoming",
+	age  : 30,
+	contract : {
+		tel : 100,
+		phoneNum : 3
+	}
+};
+var app1 = new Observer(data1);
+app1.$watch("age", function(age){
+	console.log("我现在年龄是" + age);
+});
+app1.$watch("contract", function(argu){
+	console.log("我的年级信息发生了变化，可能是我的成绩变了， 也可能是我的班级变了");
+});
+app1.data.age = 100;
+app1.data.contract.tel = 30;
+</script>
+</body>
+</html>

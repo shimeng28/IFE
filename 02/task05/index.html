@@ -1,0 +1,228 @@
+<!doctype html>
+<html>
+<head>
+	<title></title>
+	<meta charset="UTF-8" />
+	<style>
+		body , div{
+	      margin : 0;
+	      padding: 0;
+		}
+		input#input_num{
+			width:200px;
+			height:40px;
+		}
+		input[type="button"]{
+			width:80px;
+			height:40px;
+			margin:5px;
+		}
+		input#right_into{
+			margin-right:40px;
+		}
+		div#container{
+			margin:50px 0;
+			height:120px;
+			font-size : 0;
+		}
+		div#container div{
+			width:30px;
+			font-size : 20px;
+			background-color:red;
+			display: inline-block;
+			margin:0 15px;
+		}
+	</style>
+</head>
+<body>
+	<div>
+		<input type="text" id="input_num" placeholder="请输入数字" />
+		<input type="button" value="左侧入" id="left_into"  />
+		<input type="button" value="右侧入" id="right_into" />
+
+		<input type="button" value="左侧出" id="left_out"  />
+		<input type="button" value="右侧出" id="right_out" />
+		<input type="button" value="排序" id="sort" />
+		<div id="container">
+		</div>
+	</div>
+	<script>
+	var insertAndSort = (function(){
+	  var configMap;
+      //用到的DOM元素
+	  configMap = {
+	  };
+      function set_configMap(){
+            configMap.input_num  = document.getElementById("input_num");
+            configMap.contain    = document.getElementById("container");
+            configMap.left_into  = document.getElementById("left_into");
+            configMap.right_into = document.getElementById("right_into");
+            configMap.left_out   = document.getElementById("left_out");
+            configMap.right_out  = document.getElementById("right_out");
+            configMap.sortInput  = document.getElementById("sort");
+        }
+
+	  function checkInput(num){
+	    if( isNaN(num) ) return false;
+        if( num>100 ) return false;
+        if( num<10 )  return false;
+        if( configMap.contain.children.length>60 ){
+          alert("已经添加60个了");
+          return false;
+		}
+		return true;
+	  }
+	  function createNode(){
+        var num = parseInt(configMap.input_num.value),
+			newDiv, checked;
+
+        checked = checkInput( num );
+        if( !checked ) return false;
+        newDiv = document.createElement("div");
+        newDiv.style.height = num + 'px';
+        return newDiv;
+	  }
+
+	  function addEvent(ele, type, handler, flag){
+	    if( ele.addEventListener ){
+	      addEvent = function (ele, type, handler) {
+            ele.addEventListener(type, handler, false);
+          };
+		}
+		else if( ele.attachEvent ){
+	      addEvent = function (ele, type, handler) {
+            ele.attachEvent(type, handler);
+          }
+		}
+		else {
+		  addEvent = function (ele, type, handler) {
+		    ele['on' + type] = handler;
+          };
+		}
+		addEvent( ele, type, handler );
+	  }
+	  function removeEvent( ele, type, handler){
+	    if( ele.removeEventListener ){
+          removeEvent = function (){
+            ele.removeEventListener(type, handler);
+		  };
+		}
+		else if( ele.detachEvent ){
+	      removeEvent = function (){
+	        ele.detachEvent( type, handler );
+		  }
+		}
+		else {
+		  removeEvent = function (){
+		    ele['on' + type] = null;
+		  };
+		}
+		removeEvent( ele, type, handler );
+	  }
+
+	  function leftIntoHandler () {
+	    var newDiv = createNode();
+	    if( !newDiv ){ return false; }
+        configMap.contain.insertBefore( newDiv, configMap.contain.firstElementChild);
+      }
+	  function rightIntoHandler (){
+        var newDiv = createNode();
+        if( !newDiv ){ return false; }
+        configMap.contain.appendChild( newDiv, createNode() );
+	  }
+	  function leftOutHandler(){
+		if(configMap.contain.firstChild){
+		  input_num.value = parseInt( configMap.contain.firstElementChild.style.height );
+		  configMap.contain.removeChild( configMap.contain.style.firstChild );
+		  alert(input_num.value);
+		}
+	  }
+      function rightOutHandler(){
+	    if(configMap.contain.lastChild){
+		  input_num.value = parseInt( configMap.contain.lastElementChild.height );
+		  configMap.contain.removeChild(configMap.contain.lastChild);
+		  alert(input_num.value);
+	    }
+      }
+
+      //排序算法
+      function sort(){
+        var height, preHeight,
+			nextSibling, i, containArr,
+			contain    = configMap.contain,
+            containArr = Array.prototype.slice.call( contain.children, 0),
+			length     = contain.children.length;
+
+        for( i=0; i<length; i++ ) {
+          child = containArr[i];
+          while ( child.previousElementSibling ) {
+            preSibling = child.previousElementSibling;
+            height     = parseInt( child.style.height );
+            preHeight  = parseInt( preSibling.style.height );
+            if (preHeight > height) {
+              contain.insertBefore( child,  preSibling );
+              child = child;
+            }
+            else {
+              child = child.previousElementSibling;
+			}
+          }
+        }
+        removeEvent(configMap.sortInput, 'click', sort);
+        addEvent( configMap.sortInput, 'click', sortNext );
+	  }
+	  function sortNext(){
+        var contain    = configMap.contain,
+			lastchild  = contain.lastElementChild,
+            height     = parseInt( lastchild.style.height ),
+
+			lastPre    = lastchild.previousElementSibling,
+            preHeight  = parseInt( lastPre.style.height ),
+
+			firstchild = contain.firstElementChild,
+			firstHeight= parseInt( firstchild.style.height ),
+
+			nextfirst  = firstchild.nextElementSibling,
+			nextHeight = parseInt( nextfirst.style.height );
+
+        if( height < preHeight ){
+          while( height < preHeight ) {
+            if( lastPre.previousElementSibling ){
+              lastPre = lastPre.previousElementSibling;
+              preHeight = parseInt( lastPre.style.height );
+			}
+			else break;
+          }
+          contain.insertBefore( lastchild, lastPre.nextElementSibling );
+          return true;
+		}
+
+		if( firstHeight > nextHeight ){
+          while( firstHeight > nextHeight ){
+            if( nextfirst.nextElementSibling ){
+              nextfirst  = nextfirst.nextElementSibling;
+              nextHeight = nextfirst.style.height;
+			}
+			else break;
+		  }
+		  contain.insertBefore( firstchild, nextfirst );
+		}
+	  }
+
+
+	  function init(){
+	    set_configMap();
+        addEvent( configMap.left_into, 'click', leftIntoHandler );
+        addEvent( configMap.right_into, 'click', rightIntoHandler );
+        addEvent( configMap.left_out, 'click', leftOutHandler );
+        addEvent( configMap.right_out, 'click', rightOutHandler );
+        addEvent( configMap.sortInput, 'click', sort );
+        return true;
+	  }
+
+	  return init();
+	})();
+
+	</script>
+</body>
+</html>

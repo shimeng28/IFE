@@ -1,0 +1,215 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<style>
+textarea{
+  width:200px;
+  height:200px;
+  font-size:24px;
+}
+input#input_num{
+  width:200px;
+  height:40px;
+}
+input[type="button"]{
+  width:80px;
+  height:40px;
+  margin:5px;
+}
+input[type="text"]{
+  height:40px;
+  outline:none;
+}
+input#right_into{
+  margin-right:40px;
+}
+
+div#container div{
+  min-width:100px;
+  height:100px;
+  line-height:100px;
+  font-size:30px;
+  text-align:center;
+  background-color:red;
+  float:left;
+  margin:30px 10px;
+  color:blue;
+}
+div#container div b{
+  color:black;
+  font-size:100px;
+}
+</style>
+</head>
+<body>
+<div>
+  <textarea id="input_num" ></textarea>
+  <input type="button" value="左侧入" id="left_into"  />
+  <input type="button" value="右侧入" id="right_into" />
+
+  <input type="button" value="左侧出" id="left_out"  />
+  <input type="button" value="右侧出" id="right_out" />
+
+  <input type="text" placeholder="输入查询的值" id="query_val" />
+  <input type="button" id="query_cli" value="查询" />
+  <div id="container">
+  </div>
+</div>
+<script>
+var taskSix = (function(){
+  var configMap, set_configMap, init, addEvent,
+	  getData, leftIntoHandler, rightIntoHandler,
+	  leftOutHandler, rightOutHandler, query, checkBTag;
+
+  configMap = {
+  };
+  set_configMap = function(){
+	configMap.input_num  = document.getElementById("input_num");
+	configMap.contain    = document.getElementById("container");
+	configMap.left_into  = document.getElementById("left_into");
+	configMap.right_into = document.getElementById("right_into");
+	configMap.left_out   = document.getElementById("left_out");
+	configMap.right_out  = document.getElementById("right_out");
+	configMap.query_val  = document.getElementById("query_val");
+	configMap.query_cli  = document.getElementById("query_cli");
+  };
+  addEvent      = function(ele, type, handler){
+	if( ele.addEventListener ){
+	  addEvent = function (ele, type, handler) {
+		  ele.addEventListener(type, handler, false);
+	  };
+	}
+	else if( ele.attachEvent ){
+	  addEvent = function (ele, type, handler) {
+		  ele.attachEvent(type, handler);
+	  }
+	}
+	else {
+	  addEvent = function (ele, type, handler) {
+		  ele['on' + type] = handler;
+	  };
+	}
+	addEvent( ele, type, handler );
+  };
+	//进队和出队跟任务四的一样，主要添加了读取textarea时先将所有非数组，
+	//非字母，非中文的字符用空格替换，同时将最后一个标点代表的空格删除，
+	//然后在通过空格将字符串分片成数组，最后依次添加到队列
+  getData          = function(){
+	var textarea_va, arrContent, i;  //\u4e00-\u9fa5是基本汉字的Unicode码范围
+	textarea_va= input_num.value.replace(/[^0-9a-zA-z\u4e00-\u9fa5]/g,",").trimRight();
+	if( !textarea_va ){  return false; }
+	arrContent = textarea_va.split(",").reverse();
+	for( i=arrContent.length; i>=0; i-- ){
+	  if( !arrContent[i] ){
+	    arrContent.splice(i, 1);
+	  }
+	}
+	return arrContent;
+  };
+  leftIntoHandler  = function(){
+	var contain, arrContent;
+
+	arrContent = getData();
+	if( !arrContent ) return false;
+	contain    = configMap.contain;
+	for(var i=0; i<arrContent.length; i++){
+	  (function(txt){
+		var newDiv = document.createElement("div");
+		newDiv.textContent = txt;
+		if(contain.firstChild) return contain.insertBefore(newDiv,contain.firstChild);
+		else return contain.appendChild(newDiv);
+	  })(arrContent[i]);
+	}
+  };
+  rightIntoHandler = function(){
+	var contain, arrContent;
+
+	arrContent = getData();
+	if( !arrContent ) return false;
+	contain    = configMap.contain;
+	for(var i=0; i<arrContent.length; i++){
+	  (function(txt){
+		var newDiv = document.createElement("div");
+		newDiv.textContent = txt;
+		return contain.appendChild(newDiv);
+	  })(arrContent[i]);
+	}
+	};
+  leftOutHandler   = function(){
+	if(contain.firstChild){
+	  input_num.value = contain.firstElementChild.textContent;
+	  contain.removeChild(contain.firstChild);
+	  alert(input_num.value);
+	}
+  };
+  rightOutHandler  = function (){
+	if(contain.lastChild){
+	  input_num.value = contain.lastElementChild.textContent;
+	  contain.removeChild(contain.lastElementChild);
+	  alert(input_num.value);
+	}
+   };
+  checkBTag = function(){
+	var bArr = configMap.contain.getElementsByTagName("b");
+	if(bArr.length > 0){
+	  var bNum = 0;
+	  while(bArr.length){
+		var parentNode = bArr[bNum].parentNode;
+		var value = parentNode.textContent;
+		parentNode.removeChild(bArr[bNum]);
+		//因为parentNode是实时的类数组，因此length每次会减去一，
+		// 一旦length为0，即b标签删除完毕
+		parentNode.textContent = value;
+	  }
+	}
+  };
+  query =  function(){
+    var contain = configMap.contain;
+	checkBTag();
+	var key = configMap.query_val.value;  //查询的值
+	if(!contain.firstElementChild || !key) return; //若此时没有插入子元素，或则没有查询的值，直接返回函数
+	for(var ele1 = contain.firstElementChild; ele1 !== null; ele1 = ele1.nextElementSibling){  //从包含父元素的第一个子元素一直循环
+	  (function find(ele1){
+		var value = ele1.textContent;
+		var index = value.indexOf(key); //是否有要查询到字符
+		if(index === -1) return;  //若没有，返回
+		var repla_str = "";  //有，设置替换的字符串
+		repla_str = value.substring(0,index) + "<b>" + value.substr(index,key.length) + "</b>"; //将文本中要查询的字符串之前的所有字符传给repla_str,并把查询到的字符加个b标签
+		while(index !== -1){
+		  var lastIndex = index+key.length; //上一次查询到的字符的后一位
+		  index = value.substring(lastIndex).indexOf(key);
+		  if(index === -1){
+			repla_str += value.substring(lastIndex);//若上次已经是最后一组匹配的了，将后面所有的字符传给repla_str
+			break; //返回
+		  }
+		  else{
+			repla_str += value.substring(lastIndex,lastIndex+index) + "<b>" + value.substr(lastIndex+index,key.length) + "</b>";//否则继续往后查询，并添加
+		  }
+		}
+		ele1.innerHTML = repla_str;
+	}(ele1));
+	}
+	return true;
+	};
+
+  init  = function (){
+	set_configMap();
+
+	addEvent( configMap.left_into,  "click", leftIntoHandler,  false );
+	addEvent( configMap.right_into, "click", rightIntoHandler, false );
+	addEvent( configMap.left_out,   "click", leftOutHandler,   false );
+	addEvent( configMap.right_out,  "click", rightOutHandler,  false );
+	addEvent( configMap.query_cli,  "click", query,            false );
+
+	return true;
+  };
+
+  return init();
+})();
+
+
+
+</script>
+</body>
+</html>
