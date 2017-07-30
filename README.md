@@ -9,4 +9,4 @@
 今年除了前端技术，还特别增设了iOS及Android移动端开发的学习任务内容，提供给有兴趣在移动端开发的同学。我们还专门开设了数据可视化、WebGL的班级，让大家能够参与到最新潮、炫酷的技术学习中来，体会通过技术创造美好的幸福体验。
 </p>
 
-<a href='https://shimeng28.github.io/IFE/index.html' >项目目录地址</a>
+<a href='https://shimeng28.github.io/IFE/01/index.html' >项目目录地址</a>
