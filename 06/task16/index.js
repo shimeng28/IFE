@@ -178,6 +178,7 @@ var musicPlay = (function(){
 		  this.remove( ele, name );
 		}
 	};
+	//转换时间
 	transformTime = function( num){
 		var time = [];
 		time.push( parseInt( num/60000 ) ); //minute
