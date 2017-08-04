@@ -2,7 +2,6 @@
 // 整个色彩选择器可以分为三个变量  颜色（0-360）和亮度（0-1.0)
 // 总结 ：颜色没有表示完全
 
-
 var colorPicker = (function( window, document ){
 	var configMap,    colorConvert,       panelGradient,  getBandPointColor,
 		  getStyle,     CanvasFactory,      panelClick,     bandClick,
@@ -275,7 +274,7 @@ var colorPicker = (function( window, document ){
 		infoEleMap.hslResult.innerHTML = 'hsl(' + hslColor.join(', ') + ')';
 	};
 	
-	
+	//输入框 输入内容处理
 	inputChose = {
 		rgbArr : [],
 		hslArr : [],
@@ -322,6 +321,7 @@ var colorPicker = (function( window, document ){
 		panelCanvas.setPointCoord( 'left',   panelCanvas.limitMap.left + hslColor[2]*500 );
 		
 	};
+	//改变颜色
 	updateColor = function( type, addNum ){
 		var checkResult, maxNum, category;
 		if( 'rgb'.indexOf(type) > -1 ){
@@ -392,6 +392,7 @@ var colorPicker = (function( window, document ){
 				return;
 		}
 	};
+	//输入框输入参数改变颜色
 	changeColorByInput = function(){
 		var type, target;
 		event = event || window.event;
