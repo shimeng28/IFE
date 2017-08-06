@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>百度前端技术学院项目列表</title>
   <style>
-    body, div, h1, h2,h3, span{
+    body, div, h1, h2,h3, span, button{
       margin  : 0;
       padding : 0;
       -webkit-box-sizing : border-box;
@@ -19,14 +19,17 @@
     #IFEProject{
       font-family : SimSun, "Helvetica Neue",Helvetica,Arial,sans-serif;
       width       : 350px;
-      text-align  : center;
       margin      : 20px auto;
+      background-color : #adadad;
     }
-
+    #IFEProject > label{
+      background-color : #83868d;
+    }
     #IFEProject > label, #IFEProject > div > label{
       display     : block;
       line-height : 30px;
       font-size   : 24px;
+      margin-bottom : 10px;
     }
     #IFEProject > input, #IFEProject > div > input{
       display : none;
@@ -37,117 +40,446 @@
     #IFEProject > input:checked + div, #IFEProject > div > input:checked + div {
       display : block;
     }
-
     #IFEProject > div > label{
       font-size   : 20px;
       text-align  : left;
     }
 
-    .key_word{
-      height      : 30px;
-      line-height : 30px;
-      font-size   : 0;
-      text-align  : center;
+    #IFEProject > div > input + div{
+      border : 3px solid #83868d;
+      padding : 10px;
     }
-    .key_word > span{
-      color          : #fff;
-      font-size      : 16px;
-      display        : inline-block;
-      vertical-align : top;
-      padding        : 4px;
-      margin-right   : 10px;
-      background-color      : #8c8e93;
-      -webkit-border-radius : 8px;
-      -moz-border-radius    : 8px;
-      border-radius         : 8px;
+    .item_address{
+      margin-left : 50px;
     }
-    .key_word > span:hover{
-      background-color : #3c3f41;
+    .item_address > button{
+      background-color : #8c8e93;
+      margin : 0 20px;
+      padding : 10px;
+      border-width  : 0;
+      border-radius : 15px;
     }
-    .desc {
-      font-size   : 16px;
-      line-height : 20px;
-      text-align  : left;
-      text-indent : 20px;
-      margin-top  : 10px;
-    }
-    .projectItem > div:last-child{
-      overflow      : hidden;
-      padding-left  : 20px;
-      padding-right : 20px;
-    }
-    .projectItem > div:last-child > button{
+    .item_address  a{
+      font-size : 14px;
       color     : #fff;
-      font-size : 16px;
-      float     : left;
-      width     : 80px;
-      height    : 40px;
-      background-color : #03A9F4;
-      -webkit-border-radius: 5px;
-      -moz-border-radius: 5px;
-      border-radius: 5px;
-    }
-    .projectItem > div:last-child > button:nth-child(2){
-      float : right;
+      height : 20px;
+      line-height: 20px;
     }
     button[disabled]:hover, button[disabled]:hover > a{
       cursor : no-drop;
+    }
+
+
+    .desc {
+      font-size   : 14px;
+      line-height : 20px;
+      text-indent : 2em;
+      margin-top  : 10px;
     }
   </style>
 </head>
 <body>
 <div id="IFEProject">
-  <label for="01">小薇学院</label><input id="01" type="radio" name="IFE" />
-  <div></div>
-
-  <label for="02">斌斌学院</label><input id="02" type="radio" name="IFE" />
-  <div></div>
-
-  <label for="03">耀耀学院</label><input id="03" type="radio" name="IFE" />
-  <div></div>
-
-  <label for="04">百度糯米前端技术学院</label><input id="04" type="radio" name="IFE" />
-  <div></div>
-
-  <label for="05">商业平台学院</label><input id="05" type="radio" name="IFE" />
-  <div></div>
 
 </div>
+<script>
+var createProject = (function(){
+	var projectList, autoCompleteProject;
+	projectList = [
+		{
+			name :'小薇学院',
+			info : [
+				{
+					headerName  : '任务一：零基础HTML编码',
+					description : '参考示例图,完成一个HTML页面代码编写'
+					+ '(不写CSS，不需要关注样式，只关注文档结构)'
+				},
+				{
+					headerName  : '任务二：零基础HTML及CSS编码（一）',
+					keyWords    : ['HTML', 'css'],
+	        description : '掌握常用HTML标签的含义、用法,能够基于设计稿来合理规划HTML文档结构<br />'
+					              + '理解语义化，合理地使用HTML标签来构建页面'
+				},
+				{
+					headerName  : '任务三：三栏式布局',
+					keyWords    : ['HTML', 'css'],
+	        description : '掌握HTML/CSS布局的概念，掌握盒模型的概念,<br/>' +
+					'掌握position与float的概念以及在布局时的用法'
+				},
+				{
+					headerName  : '任务四：定位和居中问题',
+					keyWords    : ['HTML', 'css'],
+	        description : '实践HTML/CSS布局方式, 深入了解position等CSS属性'
+				},
+				{
+					headerName  : '任务五：零基础HTML及CSS编码（二）',
+					keyWords    : ['HTML', 'css'],
+	        description : '基于第一个任务“零基础HTML编码”的代码，参考 示例图（点击查看），'
+					+ '在步骤一的代码基础上增加CSS样式代码的编写'
+					+ '头部和底部的黑色区域始终是100%宽'
+					+ '页面右侧部分为固定宽度，左侧保持与浏览器窗口变化同步自适应变化'
+					+ '左侧的各个模块里面的内容宽度跟随左侧整体宽度同步自适应变化'
+					+ '10张图片需要永远都完整展现，所以会随着宽度变窄，'
+					+ '从两行变成三行甚至更多，也有可能随着宽度变宽，变成一行'
+				},
+				{
+					headerName  : '任务六：通过HTML及CSS模拟报纸排版',
+					keyWords    : ['HTML', 'css'],
+	        description : '参考 PDS设计稿（点击下载），实现页面开发，'
+					+ '要求实现效果与 样例（点击查看） 基本一致页面中的各字体大小，'
+					+ '内外边距等可参看 标注图（点击查看）页面宽度固定（定宽）'
+				},
+				{
+					headerName  : '任务七：实现常见的技术产品官网的页面架构及样式布局',
+					keyWords    : ['HTML', 'css'],
+	        description : '设计稿是有一定宽度的，这个宽度为页面的最小宽度，也就是说，'
+					+ '当浏览器窗口宽度小于设计稿宽度时，允许出现横向滚动条，页面'
+					+ '内容宽度保持不变，但是当浏览器窗口宽度大于设计稿宽度时，页面'
+					+ '部分内容的宽度应该保持和浏览器窗口宽度一致，具体哪些部分题目不'
+					+ '做具体指明，看看大家的判断如何'
+				},
+				{
+					headerName  : '任务八：响应式网格（栅格化）布局',
+					keyWords    : ['HTML', 'css'],
+	        description : '需要实现如 效果图 所示，调整浏览器宽度查看响应式效果，'
+					+ '效果图中的红色的文字是说明，不需要写在 HTML 中。'
+				},
+				{
+					headerName  : '任务九：使用HTML/CSS实现一个复杂页面',
+					keyWords    : ['HTML', 'css'],
+	        description : '整个页面内容宽度固定，但头部的蓝色导航和浏览器宽度保持一致'
+				},
+				{
+					headerName  : '任务十：Flexbox 布局练习',
+					keyWords    : ['HTML', 'css'],
+	        description : '学习如何flex进行布局，学习如何根据屏幕宽度调整布局策略'
+					+ ',屏幕宽度小于 640px 时，调整 Flexbox 的属性以实现第四个元素移动到最前面的效果，'
+					+ '而不要改动第一个元素的边框颜色与高度实现效果图'
+				},
+				{
+					headerName  : '任务十一：移动Web页面布局实践',
+					keyWords    : ['HTML', 'css'],
+	        description : '实现的页面和设计图在iOS Safari，微信，Android浏览器中均基本一致,'
+					+ 'HTML 及 CSS 代码结构清晰、规范尝试在适合的地方使用CSS 3中的flex布局'
+				},
+				{
+					headerName  : '任务十二：学习CSS 3的新特性',
+					keyWords    : ['HTML', 'css'],
+	        description : '实现 示例图（点击查看） 中的几个例子'
+				}
 
-  <script>
-    var dataMap = [
-      {
-      	header : '任务一：零基础HTML编码',
-        keyWords : [],
-        desc     : '基于第一个任务“零基础HTML编码”的代码，' +
-                   '在步骤一的代码基础上增加CSS样式代码的编写',
-        previewHref : '',
-        sourceHref  : ''
-      },
-      {}
-    ];
-    var translate = function( dataMap, index ){
-    	var template = '' +
-        '<label for="0101">${header}</label>' +
-        '<input id="0101" type="radio" name="item' + index + '" />' +
-        '<div class="projectItem">' +
-		    '    <div class="key_word">' +
-		    '      <span>${keywords}</span>' +
-		    '    </div>' +
-		    '    <div class="desc">' +
-		    '      ${desc}' +
-		    '    </div>' +
-		    '    <div>' +
-		    '      <button><a href="${previewHref}">预览</a></button>' +
-		    '      <button><a href="${sourceHref}">源码</a></button>' +
-		    '    </div>' +
-		    '  </div>';
+			]
+		},
+		{
+			name :'斌斌学院',
+			info : [
+				{
+					headerName  : '任务一：零基础JavaScript编码（一）',
+					description : '本任务完成的功能为：<br/>用户可以在输入框中输入任何内容，点击“确认填写”按钮后，'
+					+'用户输入的内容会显示在“您输入的值是”文字的右边'
+				},
+				{
+					headerName  : '任务二：零基础JavaScript编码（二）',
+	        description : '参考以下示例代码，页面加载后，将提供的空气质量数据数组，按照某种逻辑'
+					+ '（比如空气质量大于60）进行过滤筛选，最后将符合条件的数据按照一定的'
+					+ '格式要求显示在网页上'
+				},
+				{
+					headerName  : '任务三：零基础JavaScript编码（三）',
+					description : '参考以下示例代码，读取页面上已有的source列表，从中提取出城市以及'
+					+ '对应的空气质量将数据按照某种顺序排序后，在resort列表中按照顺序显示出来'
+				},
+				{
+					headerName  : '任务四：基础JavaScript练习（一）',
+					description : '如图，模拟一个队列，队列的每个元素是一个数字，初始队列为空,'
+					+ '有一个input输入框，以及4个操作按钮点击"左侧入"，将input'
+					+ '中输入的数字从左侧插入队列中;'
+					+ '点击"右侧入"，将input中输入的数字从右侧插入队列中;'
+					+ '点击"左侧出"，读取并删除队列左侧第一个元素，并弹窗显示元素中数值;'
+					+ '点击"右侧出"，读取并删除队列又侧第一个元素，并弹窗显示元素中数值;'
+					+ '点击队列中任何一个元素，则该元素会被从队列中删除'
+				},
+				{
+					headerName  : '任务五：基础JavaScript练习（二）',
+					description : '基于上一任务限制输入的数字在10-100'
+					+ '队列元素数量最多限制为60个，当超过60个时，添加元素时alert出提示'
+					+ '队列展现方式变化如图，直接用高度表示数字大小实现一个简单的排序功'
+					+ '能，如冒泡排序（不限制具体算法），用可视化的方法表达出来，参考见下方参考资料'
+				},
+				{
+					headerName  : '任务六：基础JavaScript练习（三）',
+					description : '基于任务四进行升级将新元素输入框从input改为textarea'
+					+ '允许一次批量输入多个内容，格式可以为数字、中文、英'
+					+ '文等，可以通过用回车，逗号（全角半角均可），顿号，空格（全角半角、Tab等均可）' +
+					+ '等符号作为不同内容的间隔增加一个查询文本输入框，和一个查询按钮，'
+					+ '当点击查询时，将查询词在各个元素内容中做模糊匹配，将匹配到的内容进行特殊标识，如文字颜色等。举例，内容中有abcd，查询词为ab或bc，则该内容需要标识'
+				},
+				{
+					headerName  : '任务七：JavaScript和树（一）',
+					description : '在页面中展现一颗二叉树的结构提供一个按钮，显示开始遍历，点击后，'
+					+'以动画的形式呈现遍历的过程二叉树的遍历算法和方式自定，前序中序后序'
+					+'皆可，但推荐可以提供多种算法的展示（增加多个按钮，每个按钮对应不同的算法）'
+					+'当前被遍历到的节点做一个特殊显示（比如不同的颜色）每隔一段时间（500ms，'
+					+'1s等时间自定）再遍历下一个节点'
+				},
+				{
+					headerName  : '任务八：JavaScript和树（二）',
+					description : '基于任务七，参考示例图，将二叉树变成了多叉树，并且每一个节点中带有内容'
+					+ '增加一个输入框及一个“查询”按钮，点击按钮时，开始在树中以动画形式查找节点内容'
+					+ '和输入框中内容一致的节点，找到后以特殊样式显示该节点，找不到的话给出找不到的'
+					+ '提示。查询过程中的展示过程和遍历过程保持一致'
+				},
+				{
+					headerName  : '任务九：JavaScript和树（三）',
+					description : '基于任务九，添加节点的选择、增加与删除的功能点击某个节点元素，'
+					+'则该节点元素呈现一个特殊被选中的样式增加一个删除按钮，当选中某个'
+					+'节点元素后，点击删除按钮，则将该节点及其所有子节点删除掉'
+					+'增加一个输入框及一个“添加”按钮当选中某个节点元素后，点击增加按钮，'
+					+'则在该节点下增加一个子节点，节点内容为输入框中内容，插入在其子节点的最后一个位置'
+				}
 
-    	var re = /\${(.+}/g;
+			]
+		},
+		{
+			name : '耀耀学院',
+			info : [
+				{
+					headerName  : '任务一：表单（一）单个表单项的检验',
+	        description : '如示例图中所示，在页面中实现一个输入框与按钮，'
+					+ '要求点击验证按钮后，对输入框中内容进行格式校验，'
+					+ '并在其下方显示校验结果'
+				},
+				{
+					headerName  : '任务二：表单（二）多个表单项的动态校验',
+	        description : '如示例图中所示，基于上一个任务，在页面中添加多个表单'
+					+ '表单获得焦点时，下方显示表单填写规则'
+					+ '表单失去焦点时校验表单内容'
+				},
+				{
+					headerName  : '任务三：表单（三）联动',
+	        description : '如示例图中所示，在页面中完成两个单选框，'
+					+'切换单选框的不同选项时下方显示的表单随之切换。'
+				},
+				{
+					headerName  : '任务四：听指令的小方块（一）',
+					description : '如图，实现一个类似棋盘的格子空间，每个格子用两个数字可以定位，'
+					+ '一个红正方形的DOM在这个空间内，正方形中的蓝色边表示这是他的正面，' +
+					+ '有一个input输入框'
+				},
+				{
+					headerName  : '任务五：听指令的小方块（二）',
+					description : '对于正方形的移动增加相应动画，包括移动和旋转'
+					+ '每个指令的执行时间是1s（可以自己调整）'
+				},
+				{
+					headerName  : '任务六：UI组件之浮出层',
+	        description : '参考如下设计图，实现一个浮出层的UI组件实现'
+				},
+				{
+					headerName  : '任务七：UI组件之排序表格',
+	        description : '参考下方设计图，实现一个支持列排序的表格组件'
+				}
+			]
+		},
+		{
+			name : '商业平台学院',
+			info : [
+				{
+					headerName  : 'UI组件之色彩选择器',
+	        description : '如下示例图中所示，参考并实现一个色彩选择器：'
+					+'以通过点击左侧色彩区域选择色彩，在右侧的输入框中会显示对应的色值,'
+					+'包括RGB和HSL值'
+				}
+			]
+		},
+		{
+			name : 'ECharts & WebVR学院',
+			info : []
+		},
+		{
+			name : '百度糯米前端技术学院',
+			info : [
+				{
+					headerName  : '有趣的鼠标悬浮模糊效果',
+	        description : '实现图示效果（点击查看）,实现文字的流光渐变动画'
+					+ '背景图需要进行模糊处理实现按钮边框的从中间到两边扩展开'
+				},
+				{
+					headerName  : '动态数据绑定（一）',
+	        description : '传入参数只考虑对象，不考虑数组。new Observer返回一个对象，'
+					+ '其 data 属性要能够访问到传递进去的对象。通过 data 访问属'
+					+ '性和设置属性的时候，均能打印出右侧对应的信息。'
+				},
+				{
+					headerName  : '动态数据绑定（二）',
+	        description : '在实践中使用递归思想,了解设计模式中的“发布-订阅模式'
+				},
+				{
+					headerName  : '动态数据绑定（三）',
+	        description : '这是“动态数据绑定”的第三题。在第二题的基础上，我们再多考虑一个问题：'
+					+'"深层次数据变化如何逐层往上传播"。'
+				},
+				{
+					headerName  : '动态数据绑定（四）',
+	        description : '这是“动态数据绑定”的第四题。有了前面的充分准备，相信你能搞定这一题。'
+					+ '请实现如下的这样一个 Vue，传入参数是一个 Selector 和一个数据对象，'
+					+ '程序需要将 HTML 模板片段渲染成正确的模样。 这就是一次性的静态数据绑定。'
+				},
+				{
+					headerName  : '自定义checkbox， radio样式',
+	        description : '尝试背景图和伪元素两种不同方式实现，对比两种方式各自的优缺点。'
+					+'注意测试不同情况，尤其是极端情况下的效果。'
+				},
+				{
+					headerName  : '动态数据绑定（五）',
+	        description : '这是“动态数据绑定”的最后一题了，希望你能坚持到最后。在第四题的基础'
+					+'上，我们考虑如何做到："当数据发生改变时，重新渲染 DOM。" 此目标又可以分为两层难度。'
+					+'相对简单的目标：数据任意部分发生了变化，都重新渲染 DOM。'
+					+'相对困难的目标：数据的某一部分发生了变动，只重新渲染对应这部分数据的 DOM。'
+				},
+				{
+					headerName  : '自定义网页右键菜单',
+          description : '实现鼠标右击时，出现自定义菜单。点击非自定义菜单区域时，隐藏自定义菜单。'
+					+'参考样例（点击查看），实现页面开发，要求实现效果基本一致。'
+					+'点击自定义菜单条目时，弹出菜单条目名称。'
+				},
+				{
+					headerName  : '使用CSS实现折叠面板',
+	        description : '当其中一个面对折叠时，其他面板需要隐藏'
+					+'只能使用HTML，CSS，不允许使用JavaScrip'
+				},
+				{
+					headerName  : '正则表达式之入门',
+          description : '编写一个判断给定数字是否为手机号码的正则表达式，测试用例参照但不限于：'
+					+ '编写一个判断输入的字符串是否有相邻重复单词的正则表达式，测试用例可以参考但不限于：'
+				},
+				{
+					headerName  : '正则表达式之简易markdown文件解析器',
+          description : '可以解析标题,可以解析列表,包含有序和无序列表可以解析引用和代码块'
+				},
+				{
+					headerName  : 'CSS3饼状loading效果',
+	        description : '需要使用HTML和CSS实现半圆和四分之三圆环longding动画页面上下左右剧中所有的动画元素采用HTML和CSS实现'
+				},{
+					headerName  : 'CSS3实现3D 轮播图',
+          description : '实现图示效果（点击查看）'
+				},
+				{
+					headerName  : '封装DOM动画类库(一)',
+	        description : '动画库API（接口文档）设计参考velocity.js，参考其源码实现，'
+					+'类似：Animation(DOM元素集合，变化CSS属性集合，选项)或者'
+					+'Animation(DOM元素集合).animation(变化CSS属性集合，选项)。'
+				},
+				{
+					headerName  : '封装DOM动画类库（二）',
+	        description : '在任务《封装DOM动画类库（一）》基础上继续完善动画库，实现更多选项'
+					+ '能够完成链式调用，实现动画队列。（参考jquery的queue或者ES6的generator）\n'
+				},
+				{
+					headerName  : '仿豆瓣音乐播放器',
+					description : '模仿豆瓣音乐播放器，编写基于 html5的音乐播放器'
+					+'顺序播放音乐列表支持循环，播放，暂停，快进，声音大小控制'
+					+'有封面图片展示以及歌曲名称'
+					+'音乐文件可以是本地或者来自网络'
+					+'界面尽量做到简洁整齐不必和豆瓣界面一样'
+				},
+				{
+					headerName  : '有趣的鼠标悬浮模糊效果',
+				  description :  '类似window 资源管理器,' +
+					+'支持无限层级展示,' +
+					+'支持文件夹展开和隐藏,' +
+					+'不必支持显示文件夹图片,'
+					+'背景图需要进行模糊处理实现按钮边框的从中间到两边扩展开'
+				}
 
-    	template.replece( re, dataMap[$1], dataMap[$2], dataMap[$3], dataMap[$4], dataMap[$5] );
-    	return template;
-    };
-  </script>
+			]
+		}
+	];
+	//projectIndex, itemIndex, projectMap
+	autoCompleteProject = (function(){
+		var projectAddrGen, descriptor, itemAddress, itemName, projectItem;
+		projectAddrGen = function( projectIndex, itemIndex ){
+			var source, preview;
+			if( projectIndex <  10 ){
+				projectIndex = '0' + projectIndex;
+			}
+			if( itemIndex < 10 ){
+				itemIndex = '0' + itemIndex;
+			}
+			source   = 'https://github.com/shimeng28/IFE/blob/master/'
+				+ projectIndex
+				+ '/task' + itemIndex + '/index.html';
+			preview  = 'https://shimeng28.github.io/IFE/'
+				+ projectIndex
+				+ '/task' + itemIndex + '/index.html';
+
+			return {
+				sourceAddr  : source,
+				previewAddr : preview
+			}
+		};
+		descriptor     = function( parag ){
+			return  '<div class="desc">' + parag + '</div>';
+		};
+		itemAddress    = function( previewAddr, sourceAddr ){
+			return '<div class="item_address">'
+				+  '<button><a href="' + previewAddr +  '" target="_blank">预览</a></button>'
+				+  '<button><a href="' + sourceAddr  +  '" target="_blank">源码</a></button>'
+				+'</div>';
+		};
+		itemName       = function( projectIndex, itemIndex, headerName ){
+			return  '<label for="' + projectIndex + 'task' + itemIndex + '">'
+				+ headerName
+				+ '</label>'
+				+ '<input id="' + projectIndex + 'task' + itemIndex
+				+ '"  type="radio" name="item' + projectIndex
+				+ '" />';
+		};
+		projectItem = function( projectIndex, itemIndex, projectMap ){
+			var htmlTemp;
+			if( itemIndex    < 10 ){
+				itemIndex = '0' + itemIndex;
+			}
+			htmlTemp = itemName( projectIndex, itemIndex, projectMap.headerName )
+				+ '<div>'
+				+   itemAddress( projectMap.previewAddr, projectMap.sourceAddr )
+				+   descriptor(     projectMap.description )
+				+ '</div>';
+			return htmlTemp;
+		};
+		return function(){
+			var result = '',  len, i, name, infoList, projectIndex;
+			for( i=0, len=projectList.length; i<len; i++ ){
+				infoList = projectList[i].info;
+				name     = projectList[i].name;
+
+				if( !infoList.length ) continue;
+				projectIndex = (i<10) ? ( '0' + (i+1) ) : (i+1);
+
+				result += '  <label for="' + projectIndex + '">' + name + '</label>'
+					+ '<input id="'  + projectIndex + '" type="radio" name="IFE" />'
+					+ '<div>';
+				infoList.forEach( function(itemMap, index){
+					var address = projectAddrGen( i+1, index+1 );
+					itemMap.sourceAddr  = address.sourceAddr;
+					itemMap.previewAddr = address.previewAddr;
+
+					result += projectItem( i+1, index+1, itemMap );
+				});
+				result +=  '</div>';
+			}
+			return result;
+		}
+	})();
+
+	return {
+		projectList  : projectList,
+    autoComplete : autoCompleteProject
+  }
+})();
+
+var root = document.getElementById('IFEProject');
+root.innerHTML = createProject.autoComplete();
+</script>
 </body>
 </html>
