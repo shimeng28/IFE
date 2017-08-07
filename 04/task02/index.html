@@ -5,8 +5,231 @@
   <meta name="viewport" content="width=device-width, max-scale:1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>标签云</title>
+  <style>
+    body, div {
+      margin: 0;
+      padding: 0;
+    }
+
+    #tag_cloud {
+      width: 400px;
+      height: 400px;
+      margin: 50px auto;
+      position: relative;
+
+      transform-style: preserve-3d;
+      perspective : 800;
+      -webkit-perspective: 800;
+    }
+
+    #tag_cloud > a {
+      font-family: SimHei, sans-serif;
+      font-size: 20px;
+      color: #000;
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    #tag_cloud > a:hover {
+      background-color: #656565;
+    }
+  </style>
 </head>
 <body>
+<div id="tag_cloud">
+  <a target="_blank" href="#">1</a>
+  <a target="_blank" href="#">2</a>
+  <a target="_blank" href="#">3</a>
+  <a target="_blank" href="#">4</a>
+  <a target="_blank" href="#">5</a>
+  <a target="_blank" href="#">6</a>
+  <a target="_blank" href="#">7</a>
+  <a target="_blank" href="#">8</a>
+  <a target="_blank" href="#">9</a>
+  <a target="_blank" href="#">10</a>
+  <a target="_blank" href="#">11</a>
+  <a target="_blank" href="#">12</a>
+  <a target="_blank" href="#">13</a>
+  <a target="_blank" href="#">14</a>
+  <a target="_blank" href="#">15</a>
+  <a target="_blank" href="#">16</a>
+  <a target="_blank" href="#">1</a>
+  <a target="_blank" href="#">2</a>
+  <a target="_blank" href="#">3</a>
+  <a target="_blank" href="#">4</a>
+  <a target="_blank" href="#">5</a>
+  <a target="_blank" href="#">6</a>
+  <a target="_blank" href="#">7</a>
+  <a target="_blank" href="#">8</a>
+  <a target="_blank" href="#">9</a>
+  <a target="_blank" href="#">10</a>
+  <a target="_blank" href="#">11</a>
+  <a target="_blank" href="#">12</a>
+  <a target="_blank" href="#">13</a>
+  <a target="_blank" href="#">14</a>
+  <a target="_blank" href="#">15</a>
+  <a target="_blank" href="#">16</a>
+  <a target="_blank" href="#">1</a>
+  <a target="_blank" href="#">2</a>
+  <a target="_blank" href="#">3</a>
+  <a target="_blank" href="#">4</a>
+  <a target="_blank" href="#">5</a>
+  <a target="_blank" href="#">6</a>
+  <a target="_blank" href="#">7</a>
+  <a target="_blank" href="#">8</a>
+  <a target="_blank" href="#">9</a>
+  <a target="_blank" href="#">10</a>
+  <a target="_blank" href="#">11</a>
+  <a target="_blank" href="#">12</a>
+  <a target="_blank" href="#">13</a>
+  <a target="_blank" href="#">14</a>
+  <a target="_blank" href="#">15</a>
+  <a target="_blank" href="#">16</a>
+  <a target="_blank" href="#">1</a>
+  <a target="_blank" href="#">2</a>
+  <a target="_blank" href="#">3</a>
+  <a target="_blank" href="#">4</a>
+  <a target="_blank" href="#">5</a>
+  <a target="_blank" href="#">6</a>
+  <a target="_blank" href="#">7</a>
+  <a target="_blank" href="#">8</a>
+  <a target="_blank" href="#">9</a>
+  <a target="_blank" href="#">10</a>
+  <a target="_blank" href="#">11</a>
+  <a target="_blank" href="#">12</a>
+  <a target="_blank" href="#">13</a>
+  <a target="_blank" href="#">14</a>
+  <a target="_blank" href="#">15</a>
+  <a target="_blank" href="#">16</a>
+</div>
+<script>
+  /*
+  * 总结 数学还是很重要滴
+  * requestAnimationFrame设置动画
+  *
+  * */
+	'use strict';
+	var tagCloud = (function (rootId) {
+		var configMap, setConfig, Tag, rotateX, rotateY, animate, init;
+		configMap = {
+			container: document.getElementById(rootId),
+			tagElements: null,
+			radius: 220,
+			fallLength: 280,
+			tags: [],
+			angleX: Math.PI / 400,
+			angleY: Math.PI / 400,
+			coordX: null,
+			coordY: null
+		};
+		setConfig = function () {
+			configMap.tagElements = configMap.container.getElementsByTagName('a');
+			configMap.coordX = configMap.container.offsetWidth / 2;
+			configMap.coordY = configMap.container.offsetHeight / 2;
+		};
 
+		Tag = function (dom, x, y, z) {
+			this.dom = dom;
+			this.x = x;
+			this.y = y;
+			this.z = z;
+		};
+		Tag.prototype.move = function () {
+			var fallLength = configMap.fallLength,
+				scale, alpha,
+				radius = configMap.radius,
+				element = this.dom;
+			scale = fallLength / (fallLength - this.z);
+			alpha = ( this.z + radius ) / ( 2 * radius );
+
+
+			element.style.fontSize = 14 * scale + 'px';
+			element.style.opacity = alpha + 0.5;
+			element.style.zIndex = parseInt(scale * 100);
+			element.style.left = this.x + configMap.coordX - element.offsetWidth / 2 + 'px';
+			element.style.top = this.y + configMap.coordY - element.offsetHeight / 2 + 'px';
+
+		};
+
+		//旋转公式
+		//x1 = cosθ * x - sinθ * y;
+		//y1 = cosθ * y + sinθ * x;
+		rotateX = function () {
+			var cos = Math.cos(configMap.angleX),
+				sin = Math.sin(configMap.angleX);
+
+			configMap.tags.forEach(function (tag) {
+				var y = tag.y * cos - tag.z * sin,
+					  z = tag.z * cos + tag.y * sin;
+
+				tag.y = y;
+				tag.z = z;
+			});
+		};
+		rotateY = function () {
+			var cos = Math.cos(configMap.angleY),
+				  sin = Math.sin(configMap.angleY);
+
+			configMap.tags.forEach(function (tag) {
+				var x = tag.x * cos - tag.z * sin,
+					  z = tag.z * cos + tag.x * sin;
+
+				tag.x = x;
+				tag.z = z;
+			});
+		};
+		animate = function () {
+			rotateX();
+			rotateY();
+			configMap.tags.forEach(function (tag) {
+				tag.move();
+			});
+			requestAnimationFrame(animate);
+		};
+
+		init = function () {
+			var i, tagElements = configMap.tagElements, len = tagElements.length,
+				degreeX, degreeY,
+				radius = configMap.radius,
+				x, y, z,
+				tag;
+			for (i = 0; i < len; i++) {
+				//角度公式
+				//θ = arccos(((2 * i) - 1) / len - 1);
+				//Φ = θ * sqrt(len * π);
+				degreeX = Math.acos((2 * (i + 1) - 1) / len - 1);
+				degreeY = degreeX * Math.sqrt(len * Math.PI);
+
+				//球的参数方程
+				//x = r * sinθ * cosΦ;
+				//y = r * sinθ * sinΦ;
+				//z = r * cosθ;
+				//x 轴坐标
+				x = radius * Math.sin(degreeX) * Math.cos(degreeY);
+				//y 轴坐标
+				y = radius * Math.sin(degreeX) * Math.sin(degreeY);
+				//z 轴坐标
+				z = radius * Math.cos(degreeX);
+
+				tag = new Tag(tagElements[i], x, y, z);
+				//随机颜色
+				configMap.tagElements[i].style.color = 'rgb(' + parseInt(Math.random() * 255)
+					+ ',' + parseInt(Math.random() * 255)
+					+ ',' + parseInt(Math.random() * 255)
+					+ ')';
+
+				configMap.tags.push(tag);
+				tag.move(); //初始化位置
+			}
+		};
+
+		setConfig();
+		init();
+		animate();
+
+	})('tag_cloud');
+</script>
 </body>
 </html>
