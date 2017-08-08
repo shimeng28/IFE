@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="22792778-51af-4a27-af4a-da3f569a17c0" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/06/task18/index.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/06/task18/index.js" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/06/task18/hello.js" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/06/task18/index.html" afterPath="$PROJECT_DIR$/06/task18/index.html" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -23,7 +19,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="index.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/06/task18/index.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="112">
@@ -36,21 +32,12 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/index.html">
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/06/task18/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="254">
-              <caret line="396" column="9" lean-forward="true" selection-start-line="396" selection-start-column="9" selection-end-line="396" selection-end-column="9" />
-              <folding>
-                <element signature="n#style#0;n#head#0;n#html#0;n#!!top" expanded="false" />
-                <element signature="e#2065#4538#0" expanded="false" />
-                <element signature="e#4542#6770#0" expanded="false" />
-                <element signature="e#6774#7740#0" expanded="false" />
-                <element signature="e#7744#8023#0" expanded="false" />
-                <element signature="e#8027#8076#0" expanded="false" />
-                <element signature="e#11157#13579#0" expanded="false" />
-                <element signature="e#13592#13666#0" expanded="false" />
-              </folding>
+            <state relative-caret-position="252">
+              <caret line="9" column="9" lean-forward="false" selection-start-line="9" selection-start-column="9" selection-end-line="9" selection-end-column="9" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -234,12 +221,12 @@
       <workItem from="1502064172126" duration="14915000" />
       <workItem from="1502097424179" duration="4720000" />
       <workItem from="1502154872740" duration="2513000" />
-      <workItem from="1502173138578" duration="10278000" />
+      <workItem from="1502173138578" duration="10469000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="140854000" />
+    <option name="totallyTimeSpent" value="141045000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -407,14 +394,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/06/task18/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="6" column="35" lean-forward="true" selection-start-line="6" selection-start-column="35" selection-end-line="6" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/06/task18/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="112">
@@ -423,6 +402,14 @@
             <element signature="e#303#1342#0" expanded="false" />
             <element signature="e#352#480#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/06/task18/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="9" column="9" lean-forward="false" selection-start-line="9" selection-start-column="9" selection-end-line="9" selection-end-column="9" />
+          <folding />
         </state>
       </provider>
     </entry>
