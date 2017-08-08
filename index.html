@@ -393,8 +393,13 @@ var createProject = (function(){
 					+'支持文件夹展开和隐藏,' +
 					+'不必支持显示文件夹图片,'
 					+'背景图需要进行模糊处理实现按钮边框的从中间到两边扩展开'
+				},
+				{
+					headerName  : '网页抓取分析服务系列之一（基础分析）',
+					description :  '安装phantomjs2.0，并查看webpage相关的API http://phantomjs.org/api/webpage/ ,'
+					    + '编写一个task.js脚本，参考官网的includeJs方法，实现根据传入的参数（关键字），抓取百度第一页对应该关键字的搜索结果。'
+					    + '将结果输出为json string回显。'
 				}
-
 			]
 		}
 	];
@@ -474,7 +479,6 @@ var createProject = (function(){
 			return result;
 		}
 	})();
-m
 	return {
 		projectList  : projectList,
     autoComplete : autoCompleteProject
