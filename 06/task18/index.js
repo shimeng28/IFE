@@ -23,7 +23,6 @@ page.open(address, function(status){
 	  var dataList = page.evaluate(function(){
 	  	var content = document.querySelectorAll('.result'),
 		      item, i, len,args = [];
-	  	console.log( content );
 	  	for( i=0,len=content.length; i<len; i++ ){
 	  		item = content[i];
 	  		args.push(
@@ -35,7 +34,6 @@ page.open(address, function(status){
 			   }
 			  );
 		  }
-		  console.log( args );
 	  	return args;
 	  });
 	  result = {
@@ -50,3 +48,4 @@ page.open(address, function(status){
 	console.log( JSON.stringify(result, undefined, 2) );
 	phantom.exit();
 });
+

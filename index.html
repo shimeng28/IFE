@@ -399,6 +399,11 @@ var createProject = (function(){
 					description :  '安装phantomjs2.0，并查看webpage相关的API http://phantomjs.org/api/webpage/ ,'
 					    + '编写一个task.js脚本，参考官网的includeJs方法，实现根据传入的参数（关键字），抓取百度第一页对应该关键字的搜索结果。'
 					    + '将结果输出为json string回显。'
+				},
+				{
+					headerName  : '网页抓取分析服务系列之二（设备模拟）',
+					description :  '在任务1的基础上，增加一个参数，表示device信息，taskjs中，解析该参数并从配置文件找到对应的ua和尺寸，完成设置后再抓取'
+					+ '在结果中也增加一个device字段保存传入的设备名'
 				}
 			]
 		}
