@@ -404,6 +404,10 @@ var createProject = (function(){
 					headerName  : '网页抓取分析服务系列之二（设备模拟）',
 					description :  '在任务1的基础上，增加一个参数，表示device信息，taskjs中，解析该参数并从配置文件找到对应的ua和尺寸，完成设置后再抓取'
 					+ '在结果中也增加一个device字段保存传入的设备名'
+				},
+				{
+					headerName  : '网页抓取分析服务系列之三（服务封装）',
+					description :  '利用nodejs的HTTP模块封装一个node服务，监听8000端口，接受一个参数（关键字），http模块示例参考如下'+'收到请求后，启动phantomjs进程执行taskjs，并将接受到的参数传递给phantomjs'+'phantomjs执行完后告诉node服务，并传回抓取的json结果'
 				}
 			]
 		}
