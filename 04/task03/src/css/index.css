@@ -1,0 +1,80 @@
+body{
+  margin : 0;
+}
+input{
+  border : none;
+}
+div{
+  box-sizing : border-box;
+}
+.clearfix::after{
+  content : ' ';
+  display : block;
+  clear   : both;
+}
+#hugeCanvas{
+  width : 900px;
+  margin : 20px auto;
+}
+#canvas{
+  float  : left;
+  width  : 500px;
+  height : 500px;
+}
+#uploadImg{
+  float : right;
+  width : 300px;
+  margin-left : 100px;
+  padding-top : 200px;
+}
+#imgContainer{
+  width    : 200px;
+  height   : 200px;
+  position : relative;
+}
+#imgContainer > img{
+  width : 200px;
+  height : 200px;
+}
+#imgContainer > .draggable {
+  width    : 50px;
+  height   : 50px;
+  position : absolute;
+  top  : 0;
+  left : 0;
+  border : 2px solid #c9161d;
+  z-index : 3;
+}
+#uploadImg > form{
+  margin-top : 30px;
+  font-size  : 0;
+}
+#uploadImg > form  input{
+  font-size : 16px;
+  vertical-align : top;
+  outline : none;
+  width : 80px;
+  height : 40px;
+
+  background-color : #83868d;
+
+}
+#uploadImg > form label[for=uploadBtn]{
+  display : inline-block;
+
+  font-size : 16px;
+  color     : #fff;
+  width : 80px;
+  height : 40px;
+  line-height : 40px;
+  text-align : center;
+  cursor     : pointer;
+
+  background-color : #44b29e;
+  margin-left : 20px;
+  margin-right : 20px;
+}
+#uploadImg > form  input[type=file]{
+  width : 0;
+  height : 0;
+}

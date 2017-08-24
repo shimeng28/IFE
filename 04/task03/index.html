@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, max-scale:1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>巨型画布</title>
+  <link rel="stylesheet" href="src/css/index.css" />
+</head>
+<body>
+<div id="hugeCanvas" class="clearfix">
+  <div id="canvas"><canvas width="500" height="500"></canvas></div>
+  <div id="uploadImg">
+    <div id="imgContainer"><img src="./src/img/default.jpg" alt=""/></div>
+    <form action="/" method="POST" enctype="multipart/form-data" >
+      <label for="uploadBtn">上传图片</label>
+      <input type="file" value="uploadImg" id="uploadBtn" accept="image/png, image/jpeg, image/gif, image/jpg" />
+    </form>
+  </div>
+</div>
+<script src="src/js/app.js"></script>
+<script>
+	largetCanvas.init();
+</script>
+</body>
+</html>
