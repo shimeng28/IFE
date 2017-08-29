@@ -29,12 +29,12 @@ div{
 }
 #imgContainer{
   width    : 200px;
-  height   : 200px;
   position : relative;
 }
 #imgContainer > img{
   width : 200px;
   height : 200px;
+
 }
 #imgContainer > .draggable {
   width    : 50px;
@@ -44,6 +44,7 @@ div{
   left : 0;
   border : 2px solid #c9161d;
   z-index : 3;
+  cursor : pointer;
 }
 #uploadImg > form{
   margin-top : 30px;

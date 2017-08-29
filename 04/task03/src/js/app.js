@@ -1,10 +1,10 @@
 let largetCanvas = ( function(){
-	let config,         EventUtil,   getImgUrl,        loadImage,
-		  createChoseBox, dragHandler, sequenExec,       borderDetect,
-		  getStyle,       openDrag,    createHideCanvas, drawImageToCanvas,
-		createChoseBoxChain,openDragChain,createHideCanvasChain,
-		drawImageToCanvasChain,
-		  drawImagePixel, init;
+	let config,         EventUtil,   getImgUrl,            loadImage,
+		  createChoseBox, dragHandler, sequenExec,           borderDetect,
+		  getStyle,       openDrag,    createHideCanvas,     drawImageToCanvas,
+		  Chain,          inPath,      createChoseBoxChain,  dragHandlerChain,
+		  createHideCanvasChain,    drawImageToCanvasChain,  drawImagePixel,
+		   getClientCoord, getEleClientCoord, clickHandler, init;
 	//dom管理器
 	config    = {
 		uploadBtn    : document.getElementById( 'uploadBtn' ),
@@ -48,9 +48,7 @@ let largetCanvas = ( function(){
 			this.removeEvent( ele, type, handler );
 		}
 	};
-	sequenExec = function( ...args ){
-		args.forEach( (fn) => { fn(); } );
-	};
+
 	//get style of element
 	getStyle     = function( ele, prop ){
 		if( ele.currentStyle ){
@@ -82,9 +80,33 @@ let largetCanvas = ( function(){
 		}
 		return value;
 	};
+	getClientCoord = function(event){
+		let clientX = event.clientX,
+		    clientY = event.clientY;
+		return {
+			x : clientX,
+			y : clientY
+		}
+	};
+	getEleClientCoord = function( ele ){
+		let clientRect = ele.getBoundingClientRect();
+		let { left, right, bottom, top } = clientRect;
+		bottom -= 50;
+		right  -= 50;
+		return {
+			left,
+			right,
+			bottom,
+			top
+		};
+	};
+	inPath = function( coord, range ){
+		let { x: coordX, y: coordY } = coord;
+		let { left, right, bottom, top } = range;
+		return	( coordX <= right && coordX >= left && coordY >= top && coordY <= bottom );
+	};
 	
-	
-	Chain = function( fn ){
+	Chain  = function( fn ){
 		this.fn = fn;
 		this.fn.next = null;
 	};
@@ -92,7 +114,7 @@ let largetCanvas = ( function(){
 		//若有参数，第一个参数应为this的值，之后为参数
 		this.fn.next = nextStep.bind( ...args );
 	};
-	Chain.prototype.next  = function(){
+	Chain.prototype.next        = function(){
 		this.fn.nextStep();
 	};
 	
@@ -102,6 +124,7 @@ let largetCanvas = ( function(){
 		let target = event.target;
 		if( target.id==='uploadBtn' ){
 			let file = target.files[0];
+			
 			if( file ){
 				config.uploadImg.src = getImgUrl(file);
 			}
@@ -125,10 +148,12 @@ let largetCanvas = ( function(){
 		let originTop  = null;
 		let originLeft = null;
 		let dragging   = null;
+		let clickFlag  = false;
 	  function drag(event=window.event){
 			let target = event.target || event.srcElement;
 			switch( event.type ){
 				case 'mousedown':
+					clickFlag = true;
 					if( target.className.indexOf('draggable') > -1 ){
 						dragging   = target;
 						originLeft = event.clientX - target.offsetLeft;
@@ -137,6 +162,8 @@ let largetCanvas = ( function(){
 				break;
 				case 'mousemove':
 					if( dragging !== null ) {
+						clickFlag = false;
+						EventUtil.removeEvent( document, 'click',   clickHandler );
 						let x = event.clientX - originLeft;
 						let y = event.clientY - originTop;
 						//边界检查
@@ -149,8 +176,14 @@ let largetCanvas = ( function(){
 					}
 				break;
 				case 'mouseup':
-					dragging = null;
-					dragHandler.next && dragHandler.next();
+					if( clickFlag ){
+						EventUtil.addEvent( document, 'click',   clickHandler );
+					}
+					else{
+						dragging = null;
+						dragHandler.next && dragHandler.next();
+					}
+					
 				break;
 			}
 	  }
@@ -165,7 +198,7 @@ let largetCanvas = ( function(){
 		  disable(){
 			  EventUtil.removeEvent( document, 'mousemove', drag );
 			  EventUtil.removeEvent( document, 'mouseup',   drag );
-			  EventUtil.removeEvent( document, 'mouseup',   drag );
+			  EventUtil.removeEvent( document, 'mousedown',   drag );
 		  }
 	  };
 	})();
@@ -219,23 +252,35 @@ let largetCanvas = ( function(){
 			}
 		}
 	};
-	
+	clickHandler = function( event ){
+		let clientCoord = getClientCoord(event),
+			  ele         = config.imgContainer,
+			  choseBox    = config.choseBox,
+		    eleCoord    = getEleClientCoord( ele );
+		if( inPath( clientCoord, eleCoord ) ){
+			choseBox.style.left = clientCoord.x - eleCoord.left + 'px';
+			choseBox.style.top  = clientCoord.y - eleCoord.top  + 'px';
+			createHideCanvas();
+		}
+	};
 	
 	//执行链
 	createChoseBoxChain   = new Chain( createChoseBox   );
-	openDragChain         = new Chain( dragHandler      );
+	dragHandlerChain         = new Chain( dragHandler      );
 	createHideCanvasChain = new Chain( createHideCanvas );
 	drawImageToCanvasChain= new Chain( drawImageToCanvas);
-	createChoseBoxChain.setNextStep(   openDrag         );
-	openDragChain.setNextStep(         createHideCanvas );
-	createHideCanvasChain.setNextStep( drawImageToCanvas);
-	drawImageToCanvasChain.setNextStep( drawImagePixel  );
+	
+	createChoseBoxChain.setNextStep(    openDrag            );
+	dragHandlerChain.setNextStep(       createHideCanvas    );
+	createHideCanvasChain.setNextStep(  drawImageToCanvas   );
+	drawImageToCanvasChain.setNextStep( drawImagePixel      );
 	
 	
 	//init
 	init = function(){
 		EventUtil.addEvent( config.uploadBtn, 'change', loadImage );
 		createChoseBox();
+		EventUtil.addEvent( document, 'click',   clickHandler );
 	};
 	return {
 		init
