@@ -1,0 +1,29 @@
+body{
+  margin : 0;
+  box-sizing : border-box;
+}
+td, input{
+  padding : 0;
+}
+input{
+  border  : none;
+  outline : none;
+}
+
+#calculator{
+  width  : 450px;
+  margin : 0 auto;
+  background-color : #656565;
+}
+input.expression{
+  font-size : 40px;
+  color     : #000;
+
+  width       : 100%;
+  padding     : 8px;
+  height      : 56px;
+  line-height : 56px;
+
+  text-align  : right;
+}
+

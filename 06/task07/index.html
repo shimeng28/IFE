@@ -21,7 +21,7 @@ domCache将属性的路径和值保存起来  路径作为domCache的属性，�
 function Vue(data){
   this.data = data;
   this.container = null;  //容器元素
-  this.mainTemp = null;   //模板内容
+  //this.mainTemp = null;   //模板内容
   this.cacheInfo = {};   //缓存模板信息
 
 								//构造器
@@ -30,7 +30,7 @@ function Vue(data){
 }
 Vue.prototype.info = function(obj){
 	this.container = document.querySelector(obj.el);
-	this.mainTemp  = this.container.innerHTML;
+	//this.mainTemp  = this.container.innerHTML; 多余
 };
 Vue.prototype.walk = function(obj,path){
 	var val,
@@ -94,7 +94,7 @@ Vue.prototype.domCache = function(path, key, value){
 
 Vue.prototype.transform = function(){  //替换视图中的内容
   var key, value, temp;
-  temp = this.mainTemp;
+  temp = this.container.innerHTML;
   for(key in this.cacheInfo){
 	if(this.cacheInfo.hasOwnProperty(key)){
 	  value = this.cacheInfo[key][0];

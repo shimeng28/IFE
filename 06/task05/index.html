@@ -13,7 +13,7 @@
   function Vue(data){
 	this.data = data;
 	this.container = null;
-	this.mainTemp = null;
+	//this.mainTemp = null;
 
 
 	//构造器
@@ -22,7 +22,7 @@
 }
   Vue.prototype.viewInfo = function(obj){
 	this.container = document.querySelector(obj.el);
-	this.mainTemp  = this.container.innerHTML;
+	//this.mainTemp  = this.container.innerHTML;
 };
   Vue.prototype.walk = function(obj){
 	for(var key in obj){
@@ -38,8 +38,7 @@
 		var name = dataName + "." + key;
 		var value = dataVal[key];
 		var reg   = "{{" + name + "}}";
-		this.mainTemp = this.mainTemp.replace(new RegExp(reg, "g"), value);
-		this.container.innerHTML = this.mainTemp;
+		this.container.innerHTML = this.container.innerHTML.replace(new RegExp(reg, "g"), value);
 	  }
 	}
 };
