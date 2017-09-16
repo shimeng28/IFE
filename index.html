@@ -20,10 +20,9 @@
       font-family : SimSun, "Helvetica Neue",Helvetica,Arial,sans-serif;
       width       : 350px;
       margin      : 20px auto;
-      background-color : #adadad;
     }
     #IFEProject > label{
-      background-color : #83868d;
+      color : #fff;
     }
     #IFEProject > label, #IFEProject > div > label{
       display     : block;
@@ -31,13 +30,31 @@
       font-size   : 24px;
       margin-bottom : 10px;
     }
+    #IFEProject > label:nth-of-type(1), #IFEProject > div:nth-of-type(1) > input:checked + label{
+      background-color: #f44336;
+    }
+    #IFEProject > label:nth-of-type(2), #IFEProject > div:nth-of-type(2) > input:checked + label{
+      background-color: #e91e63;
+    }
+    #IFEProject > label:nth-of-type(3), #IFEProject > div:nth-of-type(3) > input:checked + label{
+      background-color: #3f51b5;
+    }
+    #IFEProject > label:nth-of-type(4), #IFEProject > div:nth-of-type(4) > input:checked + label{
+      background-color: #2196f3;
+    }
+    #IFEProject > label:nth-of-type(5), #IFEProject > div:nth-of-type(5) > input:checked + label{
+      background-color: #4caf50;
+    }
+    #IFEProject > label:nth-of-type(6), #IFEProject > div:nth-of-type(6) > input:checked + label{
+      background-color: #cddc39;
+    }
     #IFEProject > input, #IFEProject > div > input{
       display : none;
     }
-    #IFEProject > input + div, #IFEProject > div > input + div{
+    #IFEProject > input ~ div, #IFEProject > div > input ~ div{
       display: none;
     }
-    #IFEProject > input:checked + div, #IFEProject > div > input:checked + div {
+    #IFEProject > input:checked  + div, #IFEProject > div > input:checked + label + div {
       display : block;
     }
     #IFEProject > div > label{
@@ -53,7 +70,7 @@
       margin-left : 50px;
     }
     .item_address > button{
-      background-color : #8c8e93;
+      background-color : #3b8677;
       margin : 0 20px;
       padding : 10px;
       border-width  : 0;
@@ -450,12 +467,12 @@ var createProject = (function(){
 				+'</div>';
 		};
 		itemName       = function( projectIndex, itemIndex, headerName ){
-			return  '<label for="' + projectIndex + 'task' + itemIndex + '">'
+			return  '<input id="' + projectIndex + 'task' + itemIndex
+			    + '"  type="radio" name="item' + projectIndex
+				+ '" />'
+				+ '<label for="' + projectIndex + 'task' + itemIndex + '">'
 				+ headerName
-				+ '</label>'
-				+ '<input id="' + projectIndex + 'task' + itemIndex
-				+ '"  type="radio" name="item' + projectIndex
-				+ '" />';
+				+ '</label>';
 		};
 		projectItem = function( projectIndex, itemIndex, projectMap ){
 			var htmlTemp;
@@ -494,8 +511,8 @@ var createProject = (function(){
 		}
 	})();
 	return {
-		projectList  : projectList,
-    autoComplete : autoCompleteProject
+	  projectList  : projectList,
+      autoComplete : autoCompleteProject
   }
 })();
 
