@@ -16,8 +16,8 @@ var musicPlay = (function(){
 		//查询框
 		searchInput   : document.getElementById( 'search_song'),
 		//歌曲播放元素
-	  videoEle      : document.getElementById( 'play_video' ),
-	  //控制面板
+	    videoEle      : document.getElementById( 'play_video' ),
+	    //控制面板
 		playControl   : document.getElementById( 'play_control' ),
 		//播放列表
 		songList      : document.getElementById( 'song_list' ),
@@ -321,7 +321,8 @@ var musicPlay = (function(){
 		}
 		if( control ) {
 			configMap.timer && clearInterval( configMap.timer );
-			btn.className = 'playNow';
+			ClassUtil.add( btn, 'playNow')
+			ClassUtil.add(configMap.songCover, 'playing');
 			configMap.videoEle.play();
 			configMap.timer = setInterval(function(){
 				var currTime = configMap.videoEle.currentTime*1000;
@@ -333,7 +334,8 @@ var musicPlay = (function(){
 		}
 		else{
 			configMap.timer && clearInterval( configMap.timer );
-			btn.className = '';
+			ClassUtil.remove( btn, 'playNow' );
+			ClassUtil.remove( configMap.songCover, 'playing' );
 			configMap.videoEle.pause();
 		}
 	};

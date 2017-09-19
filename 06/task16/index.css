@@ -10,9 +10,10 @@ input{
   border  : none;
   outline : none;
 }
+
 body{
   font-size : 16px;
-  background-color : #635555;
+  background-color : #fff;
   min-width : 1330px;
 }
 #player{
@@ -34,7 +35,8 @@ body{
   padding   : 10px;
   width     : 700px;
   height    : 42px;
-  background-color : #aabbd0;
+  border    : 1px solid #cec2c2;
+  background-color : #fff;
 }
 #player > div:nth-child(2) > label{
   display        : inline-block;
@@ -46,6 +48,9 @@ body{
   text-align  : center;
   border      : 1px solid #8c8e93;
   cursor      : pointer;
+}
+#player > div:nth-child(2) > label:hover{
+  background-color : #ccc;
 }
 #player_list {
   height    : 240px;
@@ -61,14 +66,23 @@ body{
   position      : absolute;
   top           : 0;
   left          : 0;
+  cursor:        pointer;
 }
 #player_list li{
   width         : 100%;
   border-bottom : 1px solid #aaa;
   font-size     : 0;
+  background-color: #fff;
+  
+}
+#player_list li.songList{
+  transition    : background-color;
+}
+#player_list li.songList:hover{
+  background-color: #bbaeae;
 }
 #player_list  li.chosedItem {
-  background-color : #bbaeae;
+  background-color : #8cbfd8;
 }
 #player_list li > div{
   font-size   : 16px;
@@ -92,7 +106,7 @@ body{
   left     : 630px;
   width    : 5px;
   height   : 225px;
-  background-color : #6e8095;
+  background-color : #cec2c2;
   z-index  : 3;
 }
 #player_list .scrollBar > div{
@@ -113,14 +127,31 @@ body{
 }
 #player_cover > div{
   width       : 200px;
-  height      : 200px;
 }
 #player_cover > div > img{
   width  : 200px;
   height : 200px;
   max-width : 200px;
   max-height: 200px;
+  border-radius : 50%;
+ 
 }
+#player_cover > div > img.playing{
+  animation-name : travel;
+  animation-duration : 3s;
+  animation-iteration-count : infinite;
+  animation-timing-function : linear;
+}
+
+@keyframes travel{
+  from{
+    transform : rotate(0);
+  }
+  to{
+    transform : rotate(360deg);
+  }
+}
+
 #player_song{
   font-size : 0;
   position : fixed;
@@ -143,7 +174,7 @@ body{
   margin-right     : 80px;
 
   border-radius    : 3px;
-  background-color : #e0cdcd;
+  background-color : #000;
 
   vertical-align   : top;
   cursor           : pointer;
@@ -153,14 +184,14 @@ body{
   display             : inline-block;
   width               : 0;
   height              : 0;
-  border              : 18px solid #e0cdcd;
-  border-top-color    : #635555;
-  border-bottom-color : #635555;
+  border              : 18px solid #000;
+  border-top-color    : #fff;
+  border-bottom-color : #fff;
   position            : absolute;
   cursor              : pointer;
 }
 #play_control > span:nth-child(1) > i{  /*上一首*/
-  border-left-color  : #635555;
+  border-left-color  : #fff;
   top  : -3px;
   left : -10px;
 }
@@ -170,28 +201,30 @@ body{
 }
 #play_control > span:nth-child(2) > i{
   border-width       : 20px;
-  border-right-color : #635555;
+  border-right-color : #fff;
   top                : -4px;
 }
 #play_control > span:nth-child(2) > i.playNow{
   border : none;
   width  : 10px;
   height : 36px;
-  border-right : 10px solid #e0cdcd;
-  border-left  : 10px solid #e0cdcd;
+  border-right : 10px solid #000;
+  border-left  : 10px solid #000;
+  left         : -5px;
+  top          : -2px;
 }
 #play_control > span:nth-child(3){/*下一首*/
   margin-left    : 18px;
 
 }
 #play_control > span:nth-child(3) > i{
-  border-right-color : #635555;
+  border-right-color : #fff;
   top  : -3px;
   left : -18px;
 }
 #song_info{
   margin-left : 50px;
-  color : #fff;
+  color : #000;
 }
 #song_info > div{
   font-size : 20px;
@@ -204,6 +237,7 @@ body{
 #song_info > div:nth-child(2){
   height : 50px;
   line-height:40px;
+  vertical-align: top;
 }
 #song_info > div:nth-child(2) > .progress_control{
   display: inline-block;
@@ -219,7 +253,7 @@ body{
 .progress_control{
   width : 400px;
   height : 4px;
-  background-color : #6e8095;
+  background-color : #cec2c2;
   position : relative;
   z-index  : 3;
 }
@@ -237,24 +271,26 @@ body{
   width  : 10px;
   height : 10px;
   border-radius    : 5px;
-  background-color : #cbcbcb;
+  background-color : #000;
   position : absolute;
   top      : -4px;
   right    : -10px;
   z-index  : 3;
+
+  cursor   : pointer;
 }
 .song_info_volume{
   display : inline-block;
   vertical-align: top;
-  width  : 38px;
-  height : 38px;
-  margin-left : 10px;
+  width  : 28px;
+  height : 28px;
+  margin-top : 10px;
 }
-.song_info_volume img{
-  width : 38px;
-  height : 38px;
-  max-width : 38px;
-  max-height : 38px;
+.song_info_volume > img{
+  width   : 28px;
+  height : 28px;
+  display : inline-block;
+  content : "\e037";
 }
 #play_video{
   display: none;
